@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Piece : MonoBehaviour
 {
-    public string shape; // name
-    public string colour;
+    public GameObject prefab;
     bool placed = false;
-    public GameObject prefab; 
+
+    // position if placed (x, y, z ?)
    
     // positions of the spheres: FindAllChildren<3D Object: Sphere>
 

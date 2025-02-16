@@ -6,6 +6,8 @@ public class GridFunct : MonoBehaviour
 {
     // Grid variable? and script attached to empty object?
 
+    // if a piece is placed, make it child obj -> so that it moves together with grid?
+
     // Start is called before the first frame update
     void Start()
     {
