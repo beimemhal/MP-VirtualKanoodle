@@ -5,13 +5,13 @@ using UnityEngine;
 public class GridFunct : MonoBehaviour 
 {
     // Grid variable? and script attached to empty object?
+    List<GameObject> gridPoints = new List<GameObject>();
 
     // if a piece is placed, make it child obj -> so that it moves together with grid?
 
-    // Start is called before the first frame update
     void Start()
     {
-        
+        // gridPoints = find all children (spheres)
     }
 
     // Update is called once per frame
@@ -20,10 +20,12 @@ public class GridFunct : MonoBehaviour
         
     }
 
-    // when a piece is placed on the grid, the ghost sphere visualising the grid point is disabled 
-    void DisableGhostSphere() { } // recieves position of the grid
+    // when a piece is placed on the grid, the ghost sphere visualising the grid point is disabled -> no need for extra methods
+    void DisableGhostSphere() { 
+    } // recieves reference to sphere (position of the grid)
 
     // re-enables ghost sphere on, when a piece is removed from the grid
-    void EnableGhostSphere() { } // recieves position of the grid
+    void EnableGhostSphere() { 
+    } // recieves reference to sphere (position of the grid)
 
 }

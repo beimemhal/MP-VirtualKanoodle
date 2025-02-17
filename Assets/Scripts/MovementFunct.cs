@@ -4,33 +4,36 @@ using UnityEngine;
 
 public class MovementFunct : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    // all need prefab instance = selected GameObject in GameManager
+    void TurnRight() { // rotate in y + 60
+                       
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    void TurnLeft() { 
+        // 5 times TurnRight(); 
     }
 
-    void TurnRight() { }
+    // void Flip() { // not nececarry cause turnable in all axes -> turn 3 times = flipped
+        // rotate in x + 180
+        // }
 
-    void TurnLeft() { }
+    void TurnXPlus() {
+        // rotate x + 60
+    }
 
-    void Flip() { } // On enough if pyramid ?
+    void TurnXMinus() { 
+        // 5 times TurnXPlus(); 
+    }
 
-    void Place() { }
+    void Place() {
+    }
 
-    void Remove() { }
+    void Remove() { 
+    }
 
-    void TurnUpwardsRight() { } // if pyramid
+    void Restart() { // in GameManager?
+    }
 
-    void TurnUpwardsLeft() { } // if pyramid
-
-    void Restart() { }
-
-    void BackToMainMenu() { }
+    void BackToMainMenu() { // in GameManager?
+    }
 }

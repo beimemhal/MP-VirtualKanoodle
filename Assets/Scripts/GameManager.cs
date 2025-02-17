@@ -15,7 +15,8 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // initialise the 12 pieces by hand? -> needs 
+        // initialise the 12 pieces by hand? -> needs prefabs and positions
+        // initialise grid prefab
     }
 
     // Update is called once per frame
