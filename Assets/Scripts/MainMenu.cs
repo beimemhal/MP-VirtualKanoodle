@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class MainMenu : MonoBehaviour
 {
-    // play / level / difficulty
+    // play / level / difficulty TODO
 
-    // info: How to play & credits
+    // info: How to play & credits TODO
 
-    // (settings? -> sound)
+    // (settings? -> sound) TODO
 
-    // Quit?
+    // Quit? TODO
 
 }
