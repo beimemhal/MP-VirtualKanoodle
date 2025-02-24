@@ -7,7 +7,7 @@ public class GridFunct : MonoBehaviour
     // Grid variable? and script attached to gridObj
     List<GameObject> gridPoints = new List<GameObject>();
 
-    // gridWidthX, gridWidthY, gridWidthZ TODO
+    static float gridHeightY = 0.8164966F, gridHeightZ = 0.8660254F; // gridWidthX = 1
 
     // if a piece is placed, make it child obj -> so that it moves together with grid or joint TODO
 
@@ -31,6 +31,14 @@ public class GridFunct : MonoBehaviour
 
     // see Unitys class Grid for useful functions TODO
 
-    // CalcGlobalSpace, CalcLocalSpace TODO
+    // CalcGlobalToLocalSpace TODO
 
+    public static Vector3 CalcGridToGlobalSpace(Vector3Int gridPos)
+    {
+        float x = (float) gridPos.x;
+        float y = (float) gridPos.y;
+        float z = (float) gridPos.z;
+        
+        return new Vector3(x - 8F + 0.5F*(y + z), gridHeightY*y + 0.5F, gridHeightZ*(z + y/2F));
+    }
 }

@@ -187,6 +187,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3029566855975631525, guid: 2c313c71ecaf53840b54e69a5d53c856, type: 3}
+      propertyPath: referenceSphere
+      value: 
+      objectReference: {fileID: 1091673846}
     - target: {fileID: 5461417705364269484, guid: 2c313c71ecaf53840b54e69a5d53c856, type: 3}
       propertyPath: m_Name
       value: beige
@@ -322,6 +326,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 604b1e913adb9614ab61a76338c2d2e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonNr: 0
 --- !u!4 &113691153
 Transform:
   m_ObjectHideFlags: 0
@@ -404,7 +409,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2556587873660946039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
       propertyPath: m_Name
-      value: TurnXPlus (3)
+      value: MoveYMinus
       objectReference: {fileID: 0}
     - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
       propertyPath: m_LocalPosition.x
@@ -446,75 +451,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4682346825836900908, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: buttonNr
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 881339032859840282, guid: da80522226c1cc847bf504733999f7f6, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 162162331}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da80522226c1cc847bf504733999f7f6, type: 3}
---- !u!1 &162162330 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 881339032859840282, guid: da80522226c1cc847bf504733999f7f6, type: 3}
-  m_PrefabInstance: {fileID: 162162329}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &162162331
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 162162330}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Navigation:
-    m_Mode: 3
-    m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 0
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 113691152}
-        m_TargetAssemblyTypeName: ButtonFunct, Assembly-CSharp
-        m_MethodName: TurnPieceXPlus
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!1001 &180511508
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -582,11 +527,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2556587873660946039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
       propertyPath: m_Name
-      value: TurnXPlus (8)
+      value: TurnGridPlus
       objectReference: {fileID: 0}
     - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7.25
+      value: -6.5
       objectReference: {fileID: 0}
     - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
       propertyPath: m_LocalPosition.y
@@ -624,76 +569,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3726285509672452059, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4682346825836900908, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: buttonNr
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 881339032859840282, guid: da80522226c1cc847bf504733999f7f6, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 226775879}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da80522226c1cc847bf504733999f7f6, type: 3}
---- !u!1 &226775878 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 881339032859840282, guid: da80522226c1cc847bf504733999f7f6, type: 3}
-  m_PrefabInstance: {fileID: 226775877}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &226775879
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 226775878}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Navigation:
-    m_Mode: 3
-    m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 0
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 113691152}
-        m_TargetAssemblyTypeName: ButtonFunct, Assembly-CSharp
-        m_MethodName: TurnPieceXPlus
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!1001 &264127257
+--- !u!1001 &227952151
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -703,11 +592,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2556587873660946039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
       propertyPath: m_Name
-      value: TurnXPlus (6)
+      value: RemoveButton
       objectReference: {fileID: 0}
     - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -10
+      value: -2.5
       objectReference: {fileID: 0}
     - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
       propertyPath: m_LocalPosition.y
@@ -715,7 +604,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4
+      value: -3.5
       objectReference: {fileID: 0}
     - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
       propertyPath: m_LocalRotation.w
@@ -745,75 +634,76 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4682346825836900908, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: buttonNr
+      value: 14
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 881339032859840282, guid: da80522226c1cc847bf504733999f7f6, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 264127259}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da80522226c1cc847bf504733999f7f6, type: 3}
---- !u!1 &264127258 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 881339032859840282, guid: da80522226c1cc847bf504733999f7f6, type: 3}
-  m_PrefabInstance: {fileID: 264127257}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &264127259
-MonoBehaviour:
+--- !u!1001 &264127257
+PrefabInstance:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 264127258}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Navigation:
-    m_Mode: 3
-    m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 0
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 113691152}
-        m_TargetAssemblyTypeName: ButtonFunct, Assembly-CSharp
-        m_MethodName: TurnPieceXPlus
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2556587873660946039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_Name
+      value: TurnXPlus
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -3.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.99834186
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.057563975
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -6.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4682346825836900908, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: buttonNr
+      value: 9
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: da80522226c1cc847bf504733999f7f6, type: 3}
 --- !u!1001 &442882150
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -871,6 +761,67 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a5ab4394438fb1c42823c3737c1f35e9, type: 3}
+--- !u!1001 &447891185
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2556587873660946039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_Name
+      value: TurnYMinus
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -5.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -3.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.99834186
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.057563975
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -6.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4682346825836900908, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: buttonNr
+      value: 12
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: da80522226c1cc847bf504733999f7f6, type: 3}
 --- !u!1001 &623048902
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -928,6 +879,79 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 71bd7ab6517ef44468233c88b845faf8, type: 3}
+--- !u!1001 &648796462
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2556587873660946039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_Name
+      value: RestartButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.99834186
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.057563975
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -6.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4682346825836900908, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: buttonNr
+      value: 15
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: da80522226c1cc847bf504733999f7f6, type: 3}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -1032,7 +1056,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2556587873660946039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
       propertyPath: m_Name
-      value: TurnXPlus (1)
+      value: MoveXMinus
       objectReference: {fileID: 0}
     - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1074,75 +1098,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4682346825836900908, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: buttonNr
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 881339032859840282, guid: da80522226c1cc847bf504733999f7f6, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 724778236}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da80522226c1cc847bf504733999f7f6, type: 3}
---- !u!1 &724778235 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 881339032859840282, guid: da80522226c1cc847bf504733999f7f6, type: 3}
-  m_PrefabInstance: {fileID: 724778234}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &724778236
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 724778235}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Navigation:
-    m_Mode: 3
-    m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 0
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 113691152}
-        m_TargetAssemblyTypeName: ButtonFunct, Assembly-CSharp
-        m_MethodName: TurnPieceXPlus
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!1001 &728162179
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1324,7 +1288,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2556587873660946039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
       propertyPath: m_Name
-      value: TurnXPlus (7)
+      value: TurnXMinus
       objectReference: {fileID: 0}
     - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1336,7 +1300,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4
+      value: -3.5
       objectReference: {fileID: 0}
     - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1366,75 +1330,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4682346825836900908, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: buttonNr
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 881339032859840282, guid: da80522226c1cc847bf504733999f7f6, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 910806564}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da80522226c1cc847bf504733999f7f6, type: 3}
---- !u!1 &910806563 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 881339032859840282, guid: da80522226c1cc847bf504733999f7f6, type: 3}
-  m_PrefabInstance: {fileID: 910806562}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &910806564
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 910806563}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Navigation:
-    m_Mode: 3
-    m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 0
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 113691152}
-        m_TargetAssemblyTypeName: ButtonFunct, Assembly-CSharp
-        m_MethodName: TurnPieceXPlus
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!1001 &959750942
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1584,6 +1488,145 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 55, y: 0, z: 0}
+--- !u!1 &1091673846 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 230623065605022861, guid: 2c313c71ecaf53840b54e69a5d53c856, type: 3}
+  m_PrefabInstance: {fileID: 20008170}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1102381773
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2556587873660946039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_Name
+      value: BackToMainMenuButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.99834186
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.057563975
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -6.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4682346825836900908, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: buttonNr
+      value: 16
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+--- !u!1001 &1203299602
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2556587873660946039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_Name
+      value: TurnYPlus
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -3.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.99834186
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.057563975
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -6.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4682346825836900908, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: buttonNr
+      value: 11
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: da80522226c1cc847bf504733999f7f6, type: 3}
 --- !u!1 &1358928266
 GameObject:
   m_ObjectHideFlags: 0
@@ -1652,67 +1695,67 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1494872130 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 881339032859840282, guid: da80522226c1cc847bf504733999f7f6, type: 3}
-  m_PrefabInstance: {fileID: 2066023539}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1494872134
-MonoBehaviour:
+--- !u!1001 &1458171636
+PrefabInstance:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1494872130}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Navigation:
-    m_Mode: 3
-    m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 0
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 113691152}
-        m_TargetAssemblyTypeName: ButtonFunct, Assembly-CSharp
-        m_MethodName: TurnPieceXPlus
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2556587873660946039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_Name
+      value: PlaceButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -3.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.99834186
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.057563975
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -6.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4682346825836900908, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: buttonNr
+      value: 13
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: da80522226c1cc847bf504733999f7f6, type: 3}
 --- !u!1001 &1782220963
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1780,7 +1823,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2556587873660946039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
       propertyPath: m_Name
-      value: TurnXPlus (4)
+      value: MoveZPlus
       objectReference: {fileID: 0}
     - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1822,75 +1865,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4682346825836900908, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: buttonNr
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 881339032859840282, guid: da80522226c1cc847bf504733999f7f6, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1911201370}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da80522226c1cc847bf504733999f7f6, type: 3}
---- !u!1 &1911201369 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 881339032859840282, guid: da80522226c1cc847bf504733999f7f6, type: 3}
-  m_PrefabInstance: {fileID: 1911201368}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1911201370
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1911201369}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Navigation:
-    m_Mode: 3
-    m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 0
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 113691152}
-        m_TargetAssemblyTypeName: ButtonFunct, Assembly-CSharp
-        m_MethodName: TurnPieceXPlus
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!1001 &1953585726
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1901,7 +1884,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2556587873660946039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
       propertyPath: m_Name
-      value: TurnXPlus (2)
+      value: MoveYPlus
       objectReference: {fileID: 0}
     - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1943,75 +1926,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4682346825836900908, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: buttonNr
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 881339032859840282, guid: da80522226c1cc847bf504733999f7f6, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1953585728}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da80522226c1cc847bf504733999f7f6, type: 3}
---- !u!1 &1953585727 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 881339032859840282, guid: da80522226c1cc847bf504733999f7f6, type: 3}
-  m_PrefabInstance: {fileID: 1953585726}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1953585728
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1953585727}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Navigation:
-    m_Mode: 3
-    m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 0
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 113691152}
-        m_TargetAssemblyTypeName: ButtonFunct, Assembly-CSharp
-        m_MethodName: TurnPieceXPlus
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!1001 &1985612548
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2022,11 +1945,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2556587873660946039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
       propertyPath: m_Name
-      value: TurnXPlus (9)
+      value: TurnGridMinus
       objectReference: {fileID: 0}
     - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.25
+      value: -4.5
       objectReference: {fileID: 0}
     - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2064,75 +1987,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4682346825836900908, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: buttonNr
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 881339032859840282, guid: da80522226c1cc847bf504733999f7f6, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1985612550}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da80522226c1cc847bf504733999f7f6, type: 3}
---- !u!1 &1985612549 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 881339032859840282, guid: da80522226c1cc847bf504733999f7f6, type: 3}
-  m_PrefabInstance: {fileID: 1985612548}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1985612550
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1985612549}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Navigation:
-    m_Mode: 3
-    m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 0
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 113691152}
-        m_TargetAssemblyTypeName: ButtonFunct, Assembly-CSharp
-        m_MethodName: TurnPieceXPlus
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!1001 &2066023539
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2143,7 +2006,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2556587873660946039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
       propertyPath: m_Name
-      value: TurnXPlus
+      value: MoveXPlus
       objectReference: {fileID: 0}
     - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2185,13 +2048,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4682346825836900908, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: buttonNr
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 881339032859840282, guid: da80522226c1cc847bf504733999f7f6, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1494872134}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da80522226c1cc847bf504733999f7f6, type: 3}
 --- !u!1 &2094086013
 GameObject:
@@ -2309,7 +2173,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2556587873660946039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
       propertyPath: m_Name
-      value: TurnXPlus (5)
+      value: MoveZMinus
       objectReference: {fileID: 0}
     - target: {fileID: 2556587873661246039, guid: da80522226c1cc847bf504733999f7f6, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2351,75 +2215,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4682346825836900908, guid: da80522226c1cc847bf504733999f7f6, type: 3}
+      propertyPath: buttonNr
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 881339032859840282, guid: da80522226c1cc847bf504733999f7f6, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2146704689}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da80522226c1cc847bf504733999f7f6, type: 3}
---- !u!1 &2146704688 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 881339032859840282, guid: da80522226c1cc847bf504733999f7f6, type: 3}
-  m_PrefabInstance: {fileID: 2146704687}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2146704689
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2146704688}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Navigation:
-    m_Mode: 3
-    m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 0
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 113691152}
-        m_TargetAssemblyTypeName: ButtonFunct, Assembly-CSharp
-        m_MethodName: TurnPieceXPlus
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!1001 &7633931679722283801
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2475,8 +2279,28 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5379062574976165666, guid: 0f14cc0ee2d5ce24db5c87b9fcee2ed8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7633931679722283803}
   m_SourcePrefab: {fileID: 100100000, guid: 0f14cc0ee2d5ce24db5c87b9fcee2ed8, type: 3}
+--- !u!1 &7633931679722283802 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5379062574976165666, guid: 0f14cc0ee2d5ce24db5c87b9fcee2ed8, type: 3}
+  m_PrefabInstance: {fileID: 7633931679722283801}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7633931679722283803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7633931679722283802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af6506a4d975ddf468d5ad93ad20e188, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -2498,6 +2322,8 @@ SceneRoots:
   - {fileID: 623048902}
   - {fileID: 1782220963}
   - {fileID: 1358928269}
+  - {fileID: 226775877}
+  - {fileID: 1985612548}
   - {fileID: 2066023539}
   - {fileID: 724778234}
   - {fileID: 1953585726}
@@ -2506,6 +2332,10 @@ SceneRoots:
   - {fileID: 2146704687}
   - {fileID: 264127257}
   - {fileID: 910806562}
-  - {fileID: 226775877}
-  - {fileID: 1985612548}
+  - {fileID: 1203299602}
+  - {fileID: 447891185}
+  - {fileID: 1458171636}
+  - {fileID: 227952151}
+  - {fileID: 648796462}
+  - {fileID: 1102381773}
   - {fileID: 113691153}

@@ -441,7 +441,7 @@ FixedJoint:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1045353090739360119}
-  m_ConnectedBody: {fileID: 0}
+  m_ConnectedBody: {fileID: 7216146985902038298}
   m_ConnectedArticulationBody: {fileID: 0}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
@@ -592,7 +592,7 @@ FixedJoint:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4166366547208813377}
-  m_ConnectedBody: {fileID: 0}
+  m_ConnectedBody: {fileID: 7706643473373771874}
   m_ConnectedArticulationBody: {fileID: 0}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
@@ -610,6 +610,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7471109837255824101}
   - component: {fileID: 3029566855975631525}
+  - component: {fileID: 4321253121954271345}
+  - component: {fileID: 1715857498970488628}
   m_Layer: 0
   m_Name: beige
   m_TagString: Untagged
@@ -652,6 +654,51 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 5461417705364269484}
+  initialPosition: {x: 0, y: 0, z: 0}
+  referenceSphere: {fileID: 230623065605022861}
+  gridPos: {x: -1, y: -1, z: -1}
+--- !u!54 &4321253121954271345
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5461417705364269484}
+  serializedVersion: 4
+  m_Mass: 0.0000001
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!138 &1715857498970488628
+FixedJoint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5461417705364269484}
+  m_ConnectedBody: {fileID: 5520657253594607763}
+  m_ConnectedArticulationBody: {fileID: 0}
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_EnableCollision: 0
+  m_EnablePreprocessing: 1
+  m_MassScale: 1
+  m_ConnectedMassScale: 1
 --- !u!1 &5667561652303277092
 GameObject:
   m_ObjectHideFlags: 0
@@ -793,7 +840,7 @@ FixedJoint:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5667561652303277092}
-  m_ConnectedBody: {fileID: 5520657253594607763}
+  m_ConnectedBody: {fileID: 3956044185564861395}
   m_ConnectedArticulationBody: {fileID: 0}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
@@ -1093,7 +1140,7 @@ FixedJoint:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9067764858899291752}
-  m_ConnectedBody: {fileID: 0}
+  m_ConnectedBody: {fileID: 4321253121954271345}
   m_ConnectedArticulationBody: {fileID: 0}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity

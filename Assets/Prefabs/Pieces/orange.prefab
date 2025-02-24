@@ -292,7 +292,7 @@ FixedJoint:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 944125476290783043}
-  m_ConnectedBody: {fileID: 4970970852428336496}
+  m_ConnectedBody: {fileID: 4086197901852020836}
   m_ConnectedArticulationBody: {fileID: 0}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
@@ -610,6 +610,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3568632131863009140}
   - component: {fileID: 219820209432809382}
+  - component: {fileID: 4086197901852020836}
+  - component: {fileID: 1446724116780205849}
   m_Layer: 0
   m_Name: orange
   m_TagString: Untagged
@@ -651,6 +653,51 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 5205675997689355610}
+  initialPosition: {x: 0, y: 0, z: 0}
+  referenceSphere: {fileID: 6526990056752770097}
+  gridPos: {x: -1, y: -1, z: -1}
+--- !u!54 &4086197901852020836
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5205675997689355610}
+  serializedVersion: 4
+  m_Mass: 0.0000001
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!138 &1446724116780205849
+FixedJoint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5205675997689355610}
+  m_ConnectedBody: {fileID: 4970970852428336496}
+  m_ConnectedArticulationBody: {fileID: 0}
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_EnableCollision: 0
+  m_EnablePreprocessing: 1
+  m_MassScale: 1
+  m_ConnectedMassScale: 1
 --- !u!1 &6526990056752770097
 GameObject:
   m_ObjectHideFlags: 0

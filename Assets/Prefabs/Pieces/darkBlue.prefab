@@ -590,7 +590,7 @@ FixedJoint:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6936767779173209693}
-  m_ConnectedBody: {fileID: 4450092086271802363}
+  m_ConnectedBody: {fileID: 6532128586101810913}
   m_ConnectedArticulationBody: {fileID: 0}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
@@ -1057,6 +1057,8 @@ GameObject:
   m_Component:
   - component: {fileID: 285015181500293438}
   - component: {fileID: 8888361505435187801}
+  - component: {fileID: 6532128586101810913}
+  - component: {fileID: 5900057077276432863}
   m_Layer: 0
   m_Name: darkBlue
   m_TagString: Untagged
@@ -1099,3 +1101,48 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 9071868789706708212}
+  initialPosition: {x: 0, y: 0, z: 0}
+  referenceSphere: {fileID: 8211726442005189728}
+  gridPos: {x: -1, y: -1, z: -1}
+--- !u!54 &6532128586101810913
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9071868789706708212}
+  serializedVersion: 4
+  m_Mass: 0.0000001
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!138 &5900057077276432863
+FixedJoint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9071868789706708212}
+  m_ConnectedBody: {fileID: 4450092086271802363}
+  m_ConnectedArticulationBody: {fileID: 0}
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_EnableCollision: 0
+  m_EnablePreprocessing: 1
+  m_MassScale: 1
+  m_ConnectedMassScale: 1

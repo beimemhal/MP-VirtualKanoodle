@@ -1,62 +1,50 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.ProBuilder.MeshOperations;
 
+// component of EventSystem
 public class GameManager : MonoBehaviour
 {
     bool won = false; // TODO check function
 
-    GameObject selected;
-    // if a piece is selected, calculate how far the furthest sphere is away from sphere 1
-    int x_min = 0, x_max = 0, y_min = 0, y_max = 0, z_min = 0, z_max = 0;
+    public static Piece selectedPiece;
 
-    public static List<GameObject> allPieces = new List<GameObject>(); // how to create and put pieces in there effectively?
-    List<GameObject> buttons = new List<GameObject>();
-
-    public static void TurnGridY(int i) // TODO
+    public static List<GameObject> allPieces = new();
+    public static List<GameObject> buttons = new();
+    public static GameObject gridParent;
+    
+    // turn grids ghost spheres & its attached pieces -> pieces still on disabled ghost spheres
+    public static void TurnGridY(int i) // i = 1 if turned right, i = -1 if turned left
     {
-        // don't turn grids ghost spheres, only its attached pieces -> maybe not necessary
-        // y + i selected
+        gridParent.transform.Rotate(0, 120 * i, 0);
     }
 
-    public static void MovePieceY(int dir) // x, y, z also as variable (1, 2, 3 and then if
+    public static void MovePiece(char dir, int posNeg) // dir = 'x' or 'y' or 'z'
     {
         // check if outside grid
-        if (OutsideGrid('y')) { 
-
+        if (OutsideGrid('x')) { 
+            // TODO 
             return; 
         }
-        // y + () * i TODO
+        
+        // calculate new position in grid
+        if (dir == 'x') // x + () * i
+            selectedPiece.gridPos.x += posNeg;
+        else if (dir == 'y')
+            selectedPiece.gridPos.y += posNeg;
+        else // z
+            selectedPiece.gridPos.z += posNeg;
+
+        selectedPiece.gameObject.transform.position = GridFunct.CalcGridToGlobalSpace(selectedPiece.gridPos); // no move piece when only child is moved -> transform parent
     }
 
-    public static void MovePieceX(int dir)
+    public static void TurnPiece(char dir, int negPos)
     {
-        // x + () * i TODO
-    }
-
-    public static void MovePieceZ(int dir)
-    {
-        // z + () * i TODO
-    }
-
-    public static void TurnPieceY(int i)
-    {
-        // y + i TODO
-    }
-
-    public static void TurnPieceX(int i)
-    {
-        // y + i TODO
-    }
-
-    // TODO turn in z necessary ?
-
-    void Start() // TODO
-    {
-        // initialise the 12 pieces list -> find
-        InitPieces();
-        // initialise buttons list
-        InitButtons();
+        if (dir ==  'y') selectedPiece.gameObject.transform.Rotate(0, 120 * negPos, 0);
+        else // x
+            selectedPiece.gameObject.transform.Rotate(120 * negPos, 0, 0);
+        // TODO turn in z ?
     }
 
     void Update() // TODO
@@ -67,34 +55,20 @@ public class GameManager : MonoBehaviour
 
     // restart funct here ? TODO
 
-    // help functions for Start
-    void InitPieces()
-    {
-        // TODO
-    }
-
-    void InitButtons()
-    {
-        // TODO
-    }
-
     public void DisableButtons()
     {
-        if (selected == null)
+        if (selectedPiece == null)
         {
             foreach (GameObject g in buttons) g.SetActive(false);
         }
         // TODO
     }
-
-    static bool OutsideGrid(char dir) // at least one of the pieces spheres has to remain on a grid position
+    
+    // at least one of the pieces spheres has to remain on a grid position
+    static bool OutsideGrid(char dir) // dir = 'x' or 'y' or 'z'
     {
         // if ( == 1) disable Minus Buttons TODO
-        // return false; 
+        return false; 
     }
 
-    void PieceSelected()
-    {
-        // search from low to up for free grid position and put piece's sphere 1 there TODO
-    }
 }
