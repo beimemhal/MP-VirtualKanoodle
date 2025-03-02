@@ -8,7 +8,7 @@ public class ButtonFunct : MonoBehaviour
 
     private void Start()
     {
-        GameManager.buttons.Add(gameObject);
+        GameManager.buttons.Add(this);
     }
 
     private void Update() // only be when Button it's attached to is active
@@ -27,52 +27,35 @@ public class ButtonFunct : MonoBehaviour
                     if (buttonNr == 1) GameManager.TurnGridY(1); // TODO refactor switch-case
                     else if (buttonNr == 2) GameManager.TurnGridY(-1);
                     // move pieces
-                    else if (buttonNr == 3) GameManager.MovePiece('x', 1);
-                    else if (buttonNr == 4) GameManager.MovePiece('x', -1);
-                    else if (buttonNr == 5) GameManager.MovePiece('y', 1);
-                    else if (buttonNr == 6) GameManager.MovePiece('y', -1);
-                    else if (buttonNr == 7) GameManager.MovePiece('z', 1);
-                    else if (buttonNr == 8) GameManager.MovePiece('z', -1);
+                    else if (buttonNr == 3) GameManager.MovePiece('x', -1); // left
+                    else if (buttonNr == 4) GameManager.MovePiece('x', 1); // right
+                    else if (buttonNr == 5) GameManager.MovePiece('y', -1); // down
+                    else if (buttonNr == 6) GameManager.MovePiece('y', 1); // up
+                    else if (buttonNr == 7) GameManager.MovePiece('z', -1); // forward left 
+                    else if (buttonNr == 8) GameManager.MovePiece('z', 1); // backwards right
                     // turn pieces
                     else if (buttonNr == 9) GameManager.TurnPiece('x', 1);
                     else if (buttonNr == 10) GameManager.TurnPiece('x', -1);
                     else if (buttonNr == 11) GameManager.TurnPiece('y', 1);
                     else if (buttonNr == 12) GameManager.TurnPiece('y', -1);
+                    else if (buttonNr == 13) GameManager.TurnPiece('z', 1);
+                    else if (buttonNr == 14) GameManager.TurnPiece('z', -1);
                     // other
-                    else if (buttonNr == 13) Place();
-                    else if (buttonNr == 14) Remove();
-                    else if (buttonNr == 15) Restart();
-                    else if (buttonNr == 16) BackToMainMenu();
+                    else if (buttonNr == 15) GameManager.Place();
+                    else if (buttonNr == 16) GameManager.Remove();
+                    else if (buttonNr == 17) GameManager.Restart();
+                    else if (buttonNr == 18) BackToMainMenu();
 
-                    else Debug.Log("Error in ButtonFunct for buttonNr.: " + buttonNr);
+                    else 
+                        Debug.Log("Error in ButtonFunct for buttonNr.: " + buttonNr);
                 }
             }
         }
     }
 
-    public void Place() // 1
-    {
-        // check if position valid/ placeable -> all spheres on active ghost spheres TODO 
-
-        // attach piece to grid TODO
-
-        // disable each ghost sphere that overlaps with a pieces sphere TODO
-
-    }
-
-    public void Remove()  // 1
+    public void BackToMainMenu() // in GameManager? TODO
     { 
-        // TODO
-    }
+        // 
 
-    public void Restart() // in GameManager?
-    { 
-        // put pieces at initial positions (after detaching them from the grid) TODO
-        // reset grid spheres
-    }
-
-    public void BackToMainMenu() // in GameManager?
-    { 
-        // TODO
     }
 }

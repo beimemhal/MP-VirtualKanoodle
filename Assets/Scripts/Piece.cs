@@ -6,21 +6,27 @@ using UnityEngine;
 public class Piece : MonoBehaviour
 {
     public GameObject prefab;
-    bool placed = false; // TODO use
-    public Vector3 initialPosition; // or just work with Transform.Position
+
+    public bool placed = false; // TODO use
     bool moveable = true; // if piece gets set in the level setup, it cannot be moved => cannot be selected
+
+    public Vector3 initialPosition; // or just work with Transform.Position
 
     // when piece is placed on the grid, saves the sphere which was used last to position the piece
     public GameObject referenceSphere;
-    public Vector3Int gridPos = new Vector3Int(-1, -1, -1);
+    public Vector3Int gridPos = new Vector3Int(-1, -1, -1); // position in grid if placed or selected
 
-    // position in grid if placed TODO
+    public int sphereNr;
+    public GameObject[] overlapsGridSpheres;
 
     // store initial position in initialPosition variable
     void Start()
     {
         initialPosition = prefab.transform.position;
+
         GameManager.allPieces.Add(gameObject);
+
+        overlapsGridSpheres = new GameObject[sphereNr];
     }
 
     // if clicked on, becomes selected piece in GameManager 
@@ -48,38 +54,50 @@ public class Piece : MonoBehaviour
         }
     }
 
-    // if selected: attach to grid so that it moves together TODO (= 
     public void PieceSelected()
     {
-        Debug.Log("Piece " + prefab.name + " selected.");
-        // if other piece is currently selected: reset it (to initial position)
-        if (GameManager.selectedPiece != null) PieceUnselected();
+        Debug.Log("Piece " + prefab.name + " selected."); // TODO later delete
 
-        // enable buttons TODO
+        // 1 if other piece is currently selected: reset it (to initial position)
+        if (GameManager.selectedPiece != null) 
+            PieceUnselected();
+        else // 2 enable movement buttons
+            GameManager.DisOrEnableMovement(true);
 
-        // search from low to up for free grid position and put piece's sphere 1 there TODO
+        // 3 disable sphere colliders, so that piece can move freely in the grid
+        SphereCollider[] components = gameObject.GetComponentsInChildren<SphereCollider>(true); // (true = also inactive objects) TODO later: source ChatGPT
+        foreach (SphereCollider component in components)
+        {
+            component.enabled = false; // disable colliders
+        }
 
-        // set selectedPiece in GameManager and put at top of grid TODO weg?
+        // better than below?: search from low to up for free grid position and put piece's sphere 1 there TODO later
+        // 4 set selectedPiece in GameManager and put at top of grid
         GameManager.selectedPiece = this;
         gridPos = new Vector3Int(0, 5, 0);
         gameObject.transform.position = GridFunct.CalcGridToGlobalSpace(gridPos);
 
-        // disable sphere colliders, so that piece can move freely in the grid
-        SphereCollider[] components = gameObject.GetComponentsInChildren<SphereCollider>(true); // (true = also inactive objects) TODO source ChatGPT
-        foreach (SphereCollider component in components)
-        {
-            component.enabled = false; // Disable the component
-        }
+        // 5 attach to grid so that it moves together
+        gameObject.transform.SetParent(GameManager.gridParent.transform);
     }
 
+    // when piece is no longer selected but also not placed on grid => put back at initial position
     public void PieceUnselected()
     {
-        // put selected to initial position TODO
+        // 1 & 2 put selected to initial position & reset orientation
+        gameObject.transform.SetPositionAndRotation(initialPosition, Quaternion.identity);
 
-        // reset orientation TODO
+        // 3 set sphereColliders active TODO later: necessary? (also in selected)
+        SphereCollider[] components = gameObject.GetComponentsInChildren<SphereCollider>(true); // (true = also inactive objects)
+        foreach (SphereCollider component in components)
+        {
+            component.enabled = true; // enable sphere collidors
+        }
 
-        // set sphereColliders active TODO
+        // 4 selected = null
+        GameManager.selectedPiece = null;
 
-        // selected = null TODO
+        // 5 detach from grid (no child of grid anymore) TODO
+        gameObject.transform.SetParent(null);
     }
 }
