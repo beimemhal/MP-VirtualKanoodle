@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 // Sphere1 is always the reference for positioning (= 0,0,0 local space) TODO true?
@@ -7,8 +8,8 @@ public class Piece : MonoBehaviour
 {
     public GameObject prefab;
 
-    public bool placed = false; // TODO use
-    bool moveable = true; // if piece gets set in the level setup, it cannot be moved => cannot be selected
+    public bool placed = false;
+    public bool moveable = true; // if piece gets set in the level setup, it cannot be moved => cannot be selected
 
     public Vector3 initialPosition; // or just work with Transform.Position
 
@@ -57,47 +58,52 @@ public class Piece : MonoBehaviour
     public void PieceSelected()
     {
         Debug.Log("Piece " + prefab.name + " selected."); // TODO later delete
+        
+        // check if piece that's being tried to be selected = moveable
+        if (!moveable)
+        {
+            // TODO pop-up message that piece can't be selected
+            Debug.Log("The " + name + " piece can't be removed because it is pre-set.");
+            return;
+        }
 
         // 1 if other piece is currently selected: reset it (to initial position)
-        if (GameManager.selectedPiece != null) 
-            PieceUnselected();
-        else // 2 enable movement buttons
-            GameManager.DisOrEnableMovement(true);
-
-        // 3 disable sphere colliders, so that piece can move freely in the grid
-        SphereCollider[] components = gameObject.GetComponentsInChildren<SphereCollider>(true); // (true = also inactive objects) TODO later: source ChatGPT
-        foreach (SphereCollider component in components)
-        {
-            component.enabled = false; // disable colliders
-        }
+        if (GameManager.selectedPiece != null)
+            GameManager.PieceUnselected();
 
         // better than below?: search from low to up for free grid position and put piece's sphere 1 there TODO later
-        // 4 set selectedPiece in GameManager and put at top of grid
-        GameManager.selectedPiece = this;
-        gridPos = new Vector3Int(0, 5, 0);
-        gameObject.transform.position = GridFunct.CalcGridToGlobalSpace(gridPos);
-
-        // 5 attach to grid so that it moves together
-        gameObject.transform.SetParent(GameManager.gridParent.transform);
-    }
-
-    // when piece is no longer selected but also not placed on grid => put back at initial position
-    public void PieceUnselected()
-    {
-        // 1 & 2 put selected to initial position & reset orientation
-        gameObject.transform.SetPositionAndRotation(initialPosition, Quaternion.identity);
-
-        // 3 set sphereColliders active TODO later: necessary? (also in selected)
-        SphereCollider[] components = gameObject.GetComponentsInChildren<SphereCollider>(true); // (true = also inactive objects)
-        foreach (SphereCollider component in components)
+        // 2 set selectedPiece in GameManager and put at top of grid
+        if (!placed)
         {
-            component.enabled = true; // enable sphere collidors
+            GameManager.selectedPiece = this;
+            gridPos = new Vector3Int(0, 5, 0);
+            gameObject.transform.position = GridFunct.CalcGridToGlobalSpace(gridPos);
         }
 
-        // 4 selected = null
-        GameManager.selectedPiece = null;
+        // 3 attach to grid so that it moves together
+        gameObject.transform.SetParent(GameManager.gridParent.transform);
 
-        // 5 detach from grid (no child of grid anymore) TODO
-        gameObject.transform.SetParent(null);
+        // 4 buttons dis- and enabling
+        GameManager.DynamicButtonCheck(); // movement
+
+        // remove or placed buttons should be disabled
+        int[] placeRemoveB = new int[6];
+        if (placed) placeRemoveB[0] = 15; // placeB
+        else
+            placeRemoveB[0] = 16; // removeB
+        GameManager.DisOrEnableButtons(placeRemoveB, false);
+
+        if (placed) placeRemoveB[0] = 16; // removeB
+        else
+            placeRemoveB[0] = 15; // placeB
+        GameManager.DisOrEnableButtons(placeRemoveB, true);
+
+        // rotation
+        for (int i = 0; i < placeRemoveB.Length; i++)
+        { 
+            placeRemoveB[i] = i + 9;
+        }
+        GameManager.DisOrEnableButtons(placeRemoveB, true);
+
     }
 }
