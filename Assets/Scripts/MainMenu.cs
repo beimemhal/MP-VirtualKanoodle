@@ -1,15 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    // play / level / difficulty TODO
+    public void Play() // TODO difficulty levels
+    {
+        SceneManager.LoadScene("GamePlayScene");
+    }
 
-    // info: How to play & credits TODO
+    public void Quit() // only useable if desktop application
+    {
+        Application.Quit();
+    }
 
-    // (settings? -> sound) TODO
+    // info: How to play & credits TODO ? later
 
-    // Quit? TODO
+    // (settings? -> sound) TODO later
 
 }

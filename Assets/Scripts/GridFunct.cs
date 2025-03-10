@@ -2,23 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GridFunct : MonoBehaviour 
+public static class GridFunct 
 {
-    // Grid variable? and script attached to gridObj
-    List<GameObject> gridPoints = new List<GameObject>();
+    // Grid variable? and script attached to gridObj TODO delete
+    public static SphereCollider[] gridPoints = GameManager.gridParent.transform.GetComponentsInChildren<SphereCollider>();
 
     static float gridHeightY = 0.8164966F, gridHeightZ = 0.8660254F; // gridWidthX = 1
 
-    void Start()
-    {
-        // gridPoints = find all children (spheres) TODO
-    }
+    // see Unitys class Grid for useful functions TODO delete
 
-    // see Unitys class Grid for useful functions TODO
+    // CalcGlobalToLocalSpace TODO delete
 
-    // CalcGlobalToLocalSpace TODO
-
-    public static Vector3 CalcGridToGlobalSpace(Vector3Int gridPos) // still working if grid gets turned? TODO
+    public static Vector3 CalcGridToGlobalSpace(Vector3Int gridPos)
     {
         float x = (float) gridPos.x;
         float y = (float) gridPos.y;

@@ -5,48 +5,62 @@ using UnityEngine;
 using UnityEngine.ProBuilder.MeshOperations;
 
 // component of EventSystem
-public class GameManager : MonoBehaviour // TODO move main fcts to top and help fcts down in same order as called main fct
+public class GameManager : MonoBehaviour // TODO later move main fcts to top and help fcts down in same order as called main fct
 {
     public static List<GameObject> allPieces = new();
     public static List<ButtonFunct> buttons = new();
+
     public static GameObject gridParent;
 
-    public static Piece selectedPiece;
+    public static Piece selectedPiece = null;
 
-    Dictionary<string, Vector3> solutionPositions = new();
-    Dictionary<string, Quaternion> solutionRotations = new();
-
-    public static GameObject WinMessageCanvas;
+    public static bool userNotAlgo = true;
+    [SerializeField] public GameObject WinMessageCanvas;
 
     private void Start()
     {
         // needed for Rotate which needs gridParent to be static 
         gridParent = gameObject;
-        WinMessageCanvas = GameObject.Find("WinMessageCanvas");
 
-        // disable all buttons
-        int[] toDisable = new int[16];
-
-        for (int i = 0; i < toDisable.Length; i++)
-            toDisable[i] = i + 3;
-
-        DisOrEnableButtons(toDisable, false);
+        // disable all (movement) buttons
+        DisableAllButtons();
     }
 
     // turn grids ghost spheres & its attached pieces -> pieces still on disabled ghost spheres
     public static void TurnGridY(int negPos) // i = 1 if turned right, i = -1 if turned left
     {
         Vector3 turnPoint = new Vector3(-5.5F, 2.541241F, 1.443376F); // = middle of the grid
-        
         Vector3 direction = gridParent.transform.position - turnPoint; // vector from turnPoint to object
 
-        // rotate this vector around the axis
+        // rotate this vector around the y axis
         Quaternion rotation = Quaternion.AngleAxis(120F * negPos, Vector3.up);
         Vector3 newDirection = rotation * direction;
 
-        // Apply new position and rotation
-        gridParent.transform.position = turnPoint + newDirection;
+        // set grids new position and rotate
+        gridParent.transform.position = turnPoint + newDirection; // grid centre + rotated vector from turnPoint to gridPrefab
         gridParent.transform.Rotate(Vector3.up, 120F * negPos, Space.World);
+
+        // Debug.Log("gridparent " + gridParent.name);
+
+        // change grid pos of child pieces
+        foreach (var piece in allPieces) // iterate through all pieces
+        {
+            // Debug.Log("piece " + piece.name);
+            if (piece.transform.parent != null)
+            {
+                // Debug.Log("pieces parent " + piece.transform.parent.name);
+
+                if (piece.transform.parent.name == gridParent.name) // if piece is a child of grid
+                {
+                    // Debug.Log("is child");
+
+                    piece.GetComponent<Piece>().CalcNewGridCoords(negPos);
+                }
+            }
+        }
+
+        // check if movement buttons changed
+        if (selectedPiece != null) DynamicButtonCheck();
 
         Debug.Log("Grid turned");
     }
@@ -63,7 +77,7 @@ public class GameManager : MonoBehaviour // TODO move main fcts to top and help 
             newPos.z = selectedPiece.gridPos.z + posNeg;
 
         // check if outside grid
-        if (OutsideGrid(newPos)) {
+        if (OutsideGrid(newPos)) { // shouldn't be possible because buttons disabled accordingly
             Debug.Log("Piece can't be moved in " + (posNeg > 0 ? "positive " : "negative ") + dir + "-direction because it's outside the grid.");
             return; 
         }
@@ -78,38 +92,152 @@ public class GameManager : MonoBehaviour // TODO move main fcts to top and help 
 
     public static void TurnPiece(char dir, int negPos) // TODO rework !!!
     {
-        if (dir == 'y') selectedPiece.gameObject.transform.Rotate(eulers: 60F * negPos * Vector3.up); // rotation *= Quaternion.AngleAxis(60F * negPos, Vector3.up); // 0, 60F * negPos, 0);
+        if (dir == 'y')
+        {
+            selectedPiece.gameObject.transform.Rotate(eulers: 60F * negPos * Vector3.up); // rotation *= Quaternion.AngleAxis(60F * negPos, Vector3.up); // 0, 60F * negPos, 0);
+            
+            selectedPiece.rotationNrs.y = (selectedPiece.rotationNrs.y + negPos + 6) % 6; // TODO has 4 or 6 states?
+        }
         else if (dir == 'x')
-            selectedPiece.gameObject.transform.Rotate(eulers: 60F * negPos * Vector3.right); // rotation *= Quaternion.AngleAxis(60F * negPos, Vector3.right); // 60F * negPos, 0, 0);
+        {
+            if  (CalcRotationAmount(selectedPiece.rotationNrs.x, selectedPiece.rotationNrs.z, selectedPiece.rotationNrs.y, negPos))
+                selectedPiece.gameObject.transform.Rotate(eulers: 70.52877936F * negPos * Vector3.right); // rotation *= Quaternion.AngleAxis(60F * negPos, Vector3.right); // 60F * negPos, 0, 0);
+            else
+                selectedPiece.gameObject.transform.Rotate(eulers: 2 * 54.73561032F * negPos * Vector3.right);
+
+            selectedPiece.rotationNrs.x = (selectedPiece.rotationNrs.x + negPos + 4) % 4;
+        }
         else // z
-            selectedPiece.gameObject.transform.Rotate(eulers: 60F * negPos * Vector3.forward); // rotation *= Quaternion.AngleAxis(60F * negPos, Vector3.forward); // 0, 0, 60F * negPos);
+        {
+            if  (CalcRotationAmount(selectedPiece.rotationNrs.z - 1, selectedPiece.rotationNrs.x, selectedPiece.rotationNrs.y, negPos))
+                selectedPiece.gameObject.transform.rotation *= Quaternion.AngleAxis(70.52877937F * negPos, new Vector3(0.5F, 0, 0.8660254F)); // Vector3.forward); // Rotate(eulers: 60F * negPos * new Vector3(0.5F, 0, 0.8660254F)); // 0, 0, 60F * negPos);
+            else
+                selectedPiece.gameObject.transform.rotation *= Quaternion.AngleAxis(2 * 54.73561032F * negPos, new Vector3(0.5F, 0, 0.8660254F));
+
+            selectedPiece.rotationNrs.z = (selectedPiece.rotationNrs.z + negPos + 4) % 4;
+        }
     }
 
-    // restart funct here ? TODO = initial game state + initial level build
+    public static bool Place()
+    {
+        Debug.Log("Place button pressed");
+
+        // 1 check if position valid/ placeable -> all piece spheres on active grid spheres
+        GameObject[] gridSpheres = new GameObject[selectedPiece.sphereNr];
+        gridSpheres = GetOverlappingSpheres();
+        if (gridSpheres[selectedPiece.sphereNr - 1] == null) // not placeable
+        {
+            // TODO (only if player not solution algo) show pop up message "Piece can't be placed there (bc out of grid/ overlaps with other piece)"
+            Debug.Log("Placing not possible");
+            return false;
+        }
+        else // save in placed piece
+        {
+            selectedPiece.overlapsGridSpheres = gridSpheres;
+        }
+
+        // 2 attach piece to grid
+        selectedPiece.transform.SetParent(gridParent.transform);
+
+        // 3 disable ghost spheres that overlap with a pieces sphere
+        DisOrEnableGridSpheres(gridSpheres, false);
+
+        // 4 placed variable in piece = true
+        selectedPiece.placed = true;
+
+        // 5 remove outline script
+        Destroy(selectedPiece.gameObject.GetComponent<Outline>());
+
+        // 6 selectedPiece = null
+        selectedPiece = null;
+
+        // 7 disable buttons
+        DisableAllButtons();
+
+        // 8 check if won (only place because its more efficient than checking in update) TODO if (solverAlgo) don't
+        if (userNotAlgo && CheckWon())
+            // activate winning screen/ pop up window 
+            gridParent.GetComponent<GameManager>().WinMessageCanvas.SetActive(true); // TODO disables/ blocks everything else ?
+
+        Debug.Log("Placing successful");
+        return true;
+    }
+
+    public static void Remove()
+    {
+        Debug.Log("Remove button pressed");
+
+        // 1 enable ghost spheres that overlap with a piece's sphere
+        DisOrEnableGridSpheres(selectedPiece.overlapsGridSpheres, true);
+
+        // 2 placed variable in piece = false
+        selectedPiece.placed = false;
+
+        // 3 deselect (inital position) TODO later: should stay on the grid as a selected but not placed piece?
+        PieceUnselected();
+    }
+
+    // TODO = initial game state + initial level build
+    public static void Restart() // TODO
+    {
+        Debug.Log("Restart button pressed");
+
+        // 1 reset selectedPiece
+        PieceUnselected();
+
+        // 1 put pieces in grid at initial positions if moveable TODO
+        // 1.1 after detaching them from the grid 
+        // 1.2 reset grid spheres piece was on
+
+        // reset piece's overlapsGridSpheres var to empty
+
+    }
+
+    static bool CalcRotationAmount(int toTurn, int other, int y, int negPos) // toTurn x if dir=x, z if dir=z; independent of grid rotation
+    {
+        return (
+                  (toTurn % 2 != 0 && negPos == 1 || toTurn % 2 == 0 && negPos == -1) && y % 2 == 0
+                  ||
+                  !(toTurn % 2 != 0 && negPos == 1 || toTurn % 2 == 0 && negPos == -1) && y % 2 != 0
+                 )
+                 &&
+                 other % 2 == 0
+
+                 ||
+
+                !(
+                  (toTurn % 2 != 0 && negPos == 1 || toTurn % 2 == 0 && negPos == -1) && y % 2 == 0
+                  ||
+                  !(toTurn % 2 != 0 && negPos == 1 || toTurn % 2 == 0 && negPos == -1) && y % 2 != 0
+                 )
+                 &&
+                 other % 2 != 0;
+    }
 
     public static void DisOrEnableButtons(int[] toChange, bool disOrEnable) // button numbers of buttons that should be dis- or enabled
     {
-        foreach (ButtonFunct button in buttons) 
+        for (int i = 0; i < toChange.Length; i++)
         {
-            for (int i = 0; i < toChange.Length; i++)
-            {
+            // Debug.Log("Buttons " + toChange[i] + " disabled.");
+            foreach (ButtonFunct button in buttons) 
+            {                
                 if (button.buttonNr == toChange[i])
                 {
                     button.gameObject.SetActive(disOrEnable); // TODO not setActive, dis- or enable collidor
-                    // TODO if disabled make button colour darker
+                    // TODO later if disabled make button colour darker
                 }
             }
         }
     }
 
-    // piece sphere 1 has to remain on a grid position
-    static bool OutsideGrid(Vector3Int newPos)
+    static void DisableAllButtons() // except restart and backtomainmenu
     {
-        if (newPos.x < 0 || newPos.x > 5 - newPos.y - newPos.z ||
-            newPos.y < 0 || newPos.y > 5 - newPos.x - newPos.z ||
-            newPos.z < 0 || newPos.z > 5 - newPos.y - newPos.x)
-            return true;
-        return false; 
+        int[] toDisable = new int[14];
+
+        for (int i = 0; i < toDisable.Length; i++)
+            toDisable[i] = i + 3;
+
+        DisOrEnableButtons(toDisable, false);
     }
 
     // disable buttons according to piece's position -> check after each movement
@@ -151,68 +279,14 @@ public class GameManager : MonoBehaviour // TODO move main fcts to top and help 
         DisOrEnableButtons(toEnable, true);
     }
 
-    public static void Place()
+    // piece sphere 1 has to remain on a grid position
+    static bool OutsideGrid(Vector3Int newPos)
     {
-        Debug.Log("Place button pressed");
-        
-        // 1 check if position valid/ placeable -> all piece spheres on active grid spheres
-        GameObject[] gridSpheres = new GameObject[selectedPiece.sphereNr];
-        gridSpheres = GetOverlappingSpheres();
-        if (gridSpheres[selectedPiece.sphereNr - 1] == null) // not placeable
-        {
-            // TODO show pop up message "Piece can't be placed there (bc out of grid/ overlaps with other piece)"
-            return;
-        }
-        else // save in placed piece
-        {
-            selectedPiece.overlapsGridSpheres = gridSpheres;
-        }
-
-        // 2 attach piece to grid
-        selectedPiece.transform.SetParent(gridParent.transform);
-
-        // 3 disable ghost spheres that overlap with a pieces sphere
-        DisOrEnableGridSpheres(gridSpheres, false);
-
-        // 4 placed variable in piece = true
-        selectedPiece.placed = true;
-
-        // 5 selectedPiece = null
-        selectedPiece = null;
-
-        // 6 check if won
-        if (CheckWon())
-            // activate winning screen/ pop up window 
-            WinMessageCanvas.SetActive(true); // TODO disable/ block everything else
-    }
-
-    public static void Remove()
-    {
-        Debug.Log("Remove button pressed");
-
-        // 1 enable ghost spheres that overlap with a piece's sphere
-        DisOrEnableGridSpheres(selectedPiece.overlapsGridSpheres, true);
-
-        // 2 placed variable in piece = false
-        selectedPiece.placed = false;
-
-        // 3 deselect (inital position)
-        PieceUnselected();
-    }
-
-    public static void Restart() // TODO
-    {
-        Debug.Log("Restart button pressed");
-
-        // 1 reset selectedPiece
-        PieceUnselected();
-
-        // 1 put pieces in grid at initial positions if moveable TODO
-        // 1.1 after detaching them from the grid 
-        // 1.2 reset grid spheres piece was on
-
-        // reset piece's overlapsGridSpheres var to empty
-
+        if (newPos.x < 0 || newPos.x > 5 - newPos.y - newPos.z ||
+            newPos.y < 0 || newPos.y > 5 - newPos.x - newPos.z ||
+            newPos.z < 0 || newPos.z > 5 - newPos.y - newPos.x)
+            return true;
+        return false; 
     }
 
     // returns array of grid spheres that have to be disabled
@@ -224,7 +298,7 @@ public class GameManager : MonoBehaviour // TODO move main fcts to top and help 
         // iterate through all spheres of the piece
         for (int i = 0; i < selectedPiece.sphereNr; i++)
         {
-            // check if collider detects collisions (doesn't if gridSphere disabled)
+            // check if collider detects collisions (still does if gridSphere disabled)
             Collider pieceSphere = selectedPiece.gameObject.transform.GetChild(i).gameObject.GetComponent<SphereCollider>();
 
             bool isOverlapping = false;
@@ -232,11 +306,15 @@ public class GameManager : MonoBehaviour // TODO move main fcts to top and help 
             for (int k = 0; k < 56; k++) // iterate through all gridSpheres
             {
                 Collider gridSphere = gridParent.gameObject.transform.GetChild(k).gameObject.GetComponent<SphereCollider>();
+
+                // check if gridSphere is active, if not: continue with next gridSphere
+                if (!gridSphere.gameObject.activeSelf) continue;
+
                 isOverlapping = pieceSphere.bounds.Intersects(gridSphere.bounds); // TODO source ChatGPT
                 if (isOverlapping)
                 {
                     overlappingSpheres[j++] = gridSphere.gameObject;
-                    break; // go to next pieceSphere if overlapping gridSphere found
+                    break; // go to next pieceSphere if overlapping gridSphere found TODO maybe: remove to forbid overlapping with more than one gridSphere, if rotation doesn't forbid it
                 }
             }
         }
@@ -250,14 +328,16 @@ public class GameManager : MonoBehaviour // TODO move main fcts to top and help 
             sphere.SetActive(disOrEnable);
     }
 
-    static bool CheckWon()
+    public static bool CheckWon()
     {
-        SphereCollider[] gridSpheres = gridParent.transform.GetComponentsInChildren<SphereCollider>(); // only direct children, not SphereColliders in prefabs
+        Debug.Log("Check won called on " + GridFunct.gridPoints);
 
         // if all grid spheres are disabled = solution found
-        foreach (SphereCollider sphere in gridSpheres)
+        foreach (SphereCollider sphere in GridFunct.gridPoints)
             if (sphere.gameObject.activeSelf)
                 return false;
+
+        Debug.Log("Game won");
 
         return true;
     }
@@ -271,10 +351,16 @@ public class GameManager : MonoBehaviour // TODO move main fcts to top and help 
         // 2 detach from grid (no child of grid anymore)
         selectedPiece.gameObject.transform.SetParent(null);
 
-        // 3 selected = null
+        // 3 remove outline script
+        Destroy(selectedPiece.gameObject.GetComponent<Outline>());
+
+        // 4 reset rotationNrs
+        selectedPiece.rotationNrs = new Vector3Int(0, 0, 0);
+
+        // 5 selected = null
         selectedPiece = null;
 
-        // 4 disable buttons
+        // 6 disable buttons (movement, rotation and place/ remove)
         int[] toDisable = new int[14];
 
         for (int i = 0; i < toDisable.Length; i++)

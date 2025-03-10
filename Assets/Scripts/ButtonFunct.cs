@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ButtonFunct : MonoBehaviour
 {
@@ -53,9 +54,12 @@ public class ButtonFunct : MonoBehaviour
         }
     }
 
-    public void BackToMainMenu() // in GameManager? TODO
-    { 
-        // 
+    public void BackToMainMenu()
+    {
+        // empty button and pieces list
+        GameManager.buttons.Clear();
+        GameManager.allPieces.Clear();
 
+        SceneManager.LoadScene("MainMenuScene");
     }
 }

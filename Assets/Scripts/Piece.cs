@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-// Sphere1 is always the reference for positioning (= 0,0,0 local space) TODO true?
 public class Piece : MonoBehaviour
 {
     public GameObject prefab;
@@ -11,11 +10,11 @@ public class Piece : MonoBehaviour
     public bool placed = false;
     public bool moveable = true; // if piece gets set in the level setup, it cannot be moved => cannot be selected
 
-    public Vector3 initialPosition; // or just work with Transform.Position
+    public Vector3 initialPosition;
 
     // when piece is placed on the grid, saves the sphere which was used last to position the piece
-    public GameObject referenceSphere;
     public Vector3Int gridPos = new Vector3Int(-1, -1, -1); // position in grid if placed or selected
+    public Vector3Int rotationNrs = new Vector3Int(0, 0, 0); // saves amount of rotations for x & z direction for turning the piece
 
     public int sphereNr;
     public GameObject[] overlapsGridSpheres;
@@ -67,43 +66,78 @@ public class Piece : MonoBehaviour
             return;
         }
 
-        // 1 if other piece is currently selected: reset it (to initial position)
-        if (GameManager.selectedPiece != null)
+        // 1 if other piece is currently selected & != placed: reset it (to initial position) 
+        if (GameManager.selectedPiece != null && !GameManager.selectedPiece.placed)
             GameManager.PieceUnselected();
 
         // better than below?: search from low to up for free grid position and put piece's sphere 1 there TODO later
-        // 2 set selectedPiece in GameManager and put at top of grid
+        // 2 set selectedPiece in GameManager 
         if (!placed)
         {
             GameManager.selectedPiece = this;
+
+            // 3 put at top of grid & attach to grid so that it moves together
             gridPos = new Vector3Int(0, 5, 0);
             gameObject.transform.position = GridFunct.CalcGridToGlobalSpace(gridPos);
+
+            gameObject.transform.SetParent(GameManager.gridParent.transform);
+        }
+        else // 2
+        {
+            GameManager.selectedPiece = this;
         }
 
-        // 3 attach to grid so that it moves together
-        gameObject.transform.SetParent(GameManager.gridParent.transform);
-
-        // 4 buttons dis- and enabling
-        GameManager.DynamicButtonCheck(); // movement
-
-        // remove or placed buttons should be disabled
+        // 4 dis- and enabling buttons
         int[] placeRemoveB = new int[6];
-        if (placed) placeRemoveB[0] = 15; // placeB
+        // disable place or remove
+        if (placed)
+        {
+            placeRemoveB[0] = 15; // placeB
+        }
         else
             placeRemoveB[0] = 16; // removeB
         GameManager.DisOrEnableButtons(placeRemoveB, false);
 
+        // enable place or remove
         if (placed) placeRemoveB[0] = 16; // removeB
         else
             placeRemoveB[0] = 15; // placeB
         GameManager.DisOrEnableButtons(placeRemoveB, true);
 
-        // rotation
-        for (int i = 0; i < placeRemoveB.Length; i++)
-        { 
-            placeRemoveB[i] = i + 9;
-        }
-        GameManager.DisOrEnableButtons(placeRemoveB, true);
+        if (!placed)
+        {
+            // movement buttons
+            GameManager.DynamicButtonCheck(); 
 
+            //  rotation buttons enabled
+            for (int i = 0; i < placeRemoveB.Length; i++)
+            {
+                placeRemoveB[i] = i + 9;
+            }
+            GameManager.DisOrEnableButtons(placeRemoveB, true);
+        }
+        // 6 add outline script (TODO maybe set parameters)
+        gameObject.AddComponent<Outline>();
     }
+
+    public void CalcNewGridCoords(int negPos)
+    {
+        Debug.Log("Old coords: " + gridPos.x + ", " + gridPos.y + ", " + gridPos.z);
+
+        if (negPos == 1)
+        {
+            int xOld = gridPos.x;
+            gridPos.x = gridPos.z;
+            gridPos.z = 5 - xOld - gridPos.y - gridPos.z;
+        }
+        else
+        {
+            int xOld = gridPos.x;
+            gridPos.x = 5 - xOld - gridPos.y - gridPos.z;
+            gridPos.z = xOld;
+        }
+
+        Debug.Log("New coords: " + gridPos.x + ", " + gridPos.y + ", " + gridPos.z);
+    }
+
 }
