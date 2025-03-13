@@ -25,7 +25,7 @@ public class ButtonFunct : MonoBehaviour
                 if (hit.collider.gameObject == gameObject)
                 {
                     // turn grid
-                    if (buttonNr == 1) GameManager.TurnGridY(1); // TODO refactor switch-case
+                    if (buttonNr == 1) GameManager.TurnGridY(1); // TODO refactoring: switch-case
                     else if (buttonNr == 2) GameManager.TurnGridY(-1);
                     // move pieces
                     else if (buttonNr == 3) GameManager.MovePiece('x', -1); // left
@@ -56,7 +56,7 @@ public class ButtonFunct : MonoBehaviour
 
     public void BackToMainMenu()
     {
-        // empty button and pieces list
+        // empty button and pieces list (bc they're static) 
         GameManager.buttons.Clear();
         GameManager.allPieces.Clear();
 

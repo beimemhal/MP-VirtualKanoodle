@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.ProBuilder.MeshOperations;
 
 // component of EventSystem
-public class GameManager : MonoBehaviour // TODO later move main fcts to top and help fcts down in same order as called main fct
+public class GameManager : MonoBehaviour
 {
     public static List<GameObject> allPieces = new();
     public static List<ButtonFunct> buttons = new();
@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour // TODO later move main fcts to top and
 
     public static Piece selectedPiece = null;
 
-    public static bool userNotAlgo = true;
+    public static bool userNotAlgo = false;
     [SerializeField] public GameObject WinMessageCanvas;
 
     private void Start()
@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour // TODO later move main fcts to top and
         }
 
         // check if movement buttons changed
-        if (selectedPiece != null) DynamicButtonCheck();
+        if (userNotAlgo && selectedPiece != null) DynamicButtonCheck();
 
         Debug.Log("Grid turned");
     }
@@ -68,7 +68,7 @@ public class GameManager : MonoBehaviour // TODO later move main fcts to top and
     public static void MovePiece(char dir, int posNeg) // dir = 'x' or 'y' or 'z'
     {
         Vector3Int newPos = selectedPiece.gridPos;
-        // calculate new position in grid
+        // 1 calculate new position in grid
         if (dir == 'x')
             newPos.x = selectedPiece.gridPos.x + posNeg;
         else if (dir == 'y')
@@ -76,27 +76,28 @@ public class GameManager : MonoBehaviour // TODO later move main fcts to top and
         else // z
             newPos.z = selectedPiece.gridPos.z + posNeg;
 
-        // check if outside grid
-        if (OutsideGrid(newPos)) { // shouldn't be possible because buttons disabled accordingly
+        // 2 check if outside grid
+        if (OutsideGrid(newPos)) { // shouldn't be possible because buttons disabled accordingly -> happens in solvingAlgo
             Debug.Log("Piece can't be moved in " + (posNeg > 0 ? "positive " : "negative ") + dir + "-direction because it's outside the grid.");
             return; 
         }
 
-        // move is possible
+        // 3 move is possible
         selectedPiece.gridPos = newPos;
         selectedPiece.gameObject.transform.position = GridFunct.CalcGridToGlobalSpace(selectedPiece.gridPos);
 
-        // check for button activation and deactivation 
-        DynamicButtonCheck();
+        // 4 check for button activation and deactivation 
+        if (userNotAlgo)
+            DynamicButtonCheck();
     }
 
-    public static void TurnPiece(char dir, int negPos) // TODO rework !!!
+    public static void TurnPiece(char dir, int negPos)
     {
         if (dir == 'y')
         {
             selectedPiece.gameObject.transform.Rotate(eulers: 60F * negPos * Vector3.up); // rotation *= Quaternion.AngleAxis(60F * negPos, Vector3.up); // 0, 60F * negPos, 0);
             
-            selectedPiece.rotationNrs.y = (selectedPiece.rotationNrs.y + negPos + 6) % 6; // TODO has 4 or 6 states?
+            selectedPiece.rotationNrs.y = (selectedPiece.rotationNrs.y + negPos + 6) % 6;
         }
         else if (dir == 'x')
         {
@@ -120,14 +121,14 @@ public class GameManager : MonoBehaviour // TODO later move main fcts to top and
 
     public static bool Place()
     {
-        Debug.Log("Place button pressed");
+        // Debug.Log("Place button pressed");
 
         // 1 check if position valid/ placeable -> all piece spheres on active grid spheres
         GameObject[] gridSpheres = new GameObject[selectedPiece.sphereNr];
         gridSpheres = GetOverlappingSpheres();
         if (gridSpheres[selectedPiece.sphereNr - 1] == null) // not placeable
         {
-            // TODO (only if player not solution algo) show pop up message "Piece can't be placed there (bc out of grid/ overlaps with other piece)"
+            // TODO (only if player not solution algo) show pop up message "Piece can't be placed here (bc out of grid/ overlaps with other piece)"
             Debug.Log("Placing not possible");
             return false;
         }
@@ -146,26 +147,28 @@ public class GameManager : MonoBehaviour // TODO later move main fcts to top and
         selectedPiece.placed = true;
 
         // 5 remove outline script
-        Destroy(selectedPiece.gameObject.GetComponent<Outline>());
+        if (userNotAlgo)
+            Destroy(selectedPiece.gameObject.GetComponent<Outline>());
 
         // 6 selectedPiece = null
         selectedPiece = null;
 
         // 7 disable buttons
-        DisableAllButtons();
+        if (userNotAlgo)
+            DisableAllButtons();
 
-        // 8 check if won (only place because its more efficient than checking in update) TODO if (solverAlgo) don't
-        if (userNotAlgo && CheckWon())
+        // 8 check if won (only place because its more efficient than checking in update)
+        if (userNotAlgo && GridFunct.CheckWon())
             // activate winning screen/ pop up window 
-            gridParent.GetComponent<GameManager>().WinMessageCanvas.SetActive(true); // TODO disables/ blocks everything else ?
+            gridParent.GetComponent<GameManager>().WinMessageCanvas.SetActive(true); // TODO check if blocks everything/ scene behind
 
-        Debug.Log("Placing successful");
+        // Debug.Log("Placing successful");
         return true;
     }
 
     public static void Remove()
     {
-        Debug.Log("Remove button pressed");
+        // Debug.Log("Remove button pressed");
 
         // 1 enable ghost spheres that overlap with a piece's sphere
         DisOrEnableGridSpheres(selectedPiece.overlapsGridSpheres, true);
@@ -173,7 +176,10 @@ public class GameManager : MonoBehaviour // TODO later move main fcts to top and
         // 2 placed variable in piece = false
         selectedPiece.placed = false;
 
-        // 3 deselect (inital position) TODO later: should stay on the grid as a selected but not placed piece?
+        // 3 reset rotationNrs
+        selectedPiece.rotationNrs = new Vector3Int(0, 0, 0);
+
+        // 4 deselect (inital position) TODO userTest: should stay on the grid as a selected but not placed piece?
         PieceUnselected();
     }
 
@@ -185,11 +191,11 @@ public class GameManager : MonoBehaviour // TODO later move main fcts to top and
         // 1 reset selectedPiece
         PieceUnselected();
 
-        // 1 put pieces in grid at initial positions if moveable TODO
+        // 1 remove pieces in grid if moveable TODO
         // 1.1 after detaching them from the grid 
         // 1.2 reset grid spheres piece was on
 
-        // reset piece's overlapsGridSpheres var to empty
+        // 2 reset piece's overlapsGridSpheres var to empty TODO
 
     }
 
@@ -219,12 +225,12 @@ public class GameManager : MonoBehaviour // TODO later move main fcts to top and
         for (int i = 0; i < toChange.Length; i++)
         {
             // Debug.Log("Buttons " + toChange[i] + " disabled.");
+
             foreach (ButtonFunct button in buttons) 
             {                
                 if (button.buttonNr == toChange[i])
                 {
-                    button.gameObject.SetActive(disOrEnable); // TODO not setActive, dis- or enable collidor
-                    // TODO later if disabled make button colour darker
+                    button.gameObject.SetActive(disOrEnable);
                 }
             }
         }
@@ -241,7 +247,7 @@ public class GameManager : MonoBehaviour // TODO later move main fcts to top and
     }
 
     // disable buttons according to piece's position -> check after each movement
-    public static void DynamicButtonCheck() // TODO
+    public static void DynamicButtonCheck()
     {
         int[] toDisable = new int[6]; // on top: x and z buttons in both dir.s disabled
         int[] toEnable = new int[6];
@@ -249,7 +255,7 @@ public class GameManager : MonoBehaviour // TODO later move main fcts to top and
         int j = 0;
 
         if (selectedPiece.gridPos.x == 0) // no negative x
-            toDisable[i++] = 3; // TODO does i++ work? debug point
+            toDisable[i++] = 3;
         else 
             toEnable[j++] = 3;
         if (selectedPiece.gridPos.x == 5 - selectedPiece.gridPos.y - selectedPiece.gridPos.z) // no positive x
@@ -310,11 +316,11 @@ public class GameManager : MonoBehaviour // TODO later move main fcts to top and
                 // check if gridSphere is active, if not: continue with next gridSphere
                 if (!gridSphere.gameObject.activeSelf) continue;
 
-                isOverlapping = pieceSphere.bounds.Intersects(gridSphere.bounds); // TODO source ChatGPT
+                isOverlapping = pieceSphere.bounds.Intersects(gridSphere.bounds); // TODO does not work: sphere still at initial position
                 if (isOverlapping)
                 {
                     overlappingSpheres[j++] = gridSphere.gameObject;
-                    break; // go to next pieceSphere if overlapping gridSphere found TODO maybe: remove to forbid overlapping with more than one gridSphere, if rotation doesn't forbid it
+                    break; // go to next pieceSphere if overlapping gridSphere found
                 }
             }
         }
@@ -326,20 +332,6 @@ public class GameManager : MonoBehaviour // TODO later move main fcts to top and
     {
         foreach (GameObject sphere in gridSpheres)
             sphere.SetActive(disOrEnable);
-    }
-
-    public static bool CheckWon()
-    {
-        Debug.Log("Check won called on " + GridFunct.gridPoints);
-
-        // if all grid spheres are disabled = solution found
-        foreach (SphereCollider sphere in GridFunct.gridPoints)
-            if (sphere.gameObject.activeSelf)
-                return false;
-
-        Debug.Log("Game won");
-
-        return true;
     }
 
     // when piece is no longer selected but also not placed on grid => put back at initial position

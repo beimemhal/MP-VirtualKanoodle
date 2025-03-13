@@ -35,7 +35,7 @@ public class Piece : MonoBehaviour
         if (moveable)
         {
             // if mouse button down call one of the functions, source for raycast functionality: ChatGPT (slightly altered)
-            if (Input.GetMouseButtonDown(0)) // Left-click
+            if (Input.GetMouseButtonDown(0)) // left-click
             {
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit hit;
@@ -44,7 +44,7 @@ public class Piece : MonoBehaviour
                 {
                     Transform clickedObject = hit.transform;
 
-                    // Check if the clicked object is the parent or one of its children
+                    // check if the clicked object is the parent or one of its children
                     if (clickedObject.IsChildOf(transform))
                     {
                         PieceSelected();
@@ -56,7 +56,7 @@ public class Piece : MonoBehaviour
 
     public void PieceSelected()
     {
-        Debug.Log("Piece " + prefab.name + " selected."); // TODO later delete
+        Debug.Log("Piece " + prefab.name + " selected.");
         
         // check if piece that's being tried to be selected = moveable
         if (!moveable)
@@ -70,14 +70,17 @@ public class Piece : MonoBehaviour
         if (GameManager.selectedPiece != null && !GameManager.selectedPiece.placed)
             GameManager.PieceUnselected();
 
-        // better than below?: search from low to up for free grid position and put piece's sphere 1 there TODO later
         // 2 set selectedPiece in GameManager 
         if (!placed)
         {
             GameManager.selectedPiece = this;
 
             // 3 put at top of grid & attach to grid so that it moves together
-            gridPos = new Vector3Int(0, 5, 0);
+            if (GameManager.userNotAlgo)
+                gridPos = new Vector3Int(0, 5, 0);
+            else
+                gridPos = new Vector3Int(0, 0, 0); // solver algo tries placing the pieces from the bottom
+
             gameObject.transform.position = GridFunct.CalcGridToGlobalSpace(gridPos);
 
             gameObject.transform.SetParent(GameManager.gridParent.transform);
@@ -87,39 +90,45 @@ public class Piece : MonoBehaviour
             GameManager.selectedPiece = this;
         }
 
-        // 4 dis- and enabling buttons
-        int[] placeRemoveB = new int[6];
-        // disable place or remove
-        if (placed)
+        // buttons and outline unnecessary for solving algo (not doing it: time efficient)
+        if (GameManager.userNotAlgo)
         {
-            placeRemoveB[0] = 15; // placeB
-        }
-        else
-            placeRemoveB[0] = 16; // removeB
-        GameManager.DisOrEnableButtons(placeRemoveB, false);
-
-        // enable place or remove
-        if (placed) placeRemoveB[0] = 16; // removeB
-        else
-            placeRemoveB[0] = 15; // placeB
-        GameManager.DisOrEnableButtons(placeRemoveB, true);
-
-        if (!placed)
-        {
-            // movement buttons
-            GameManager.DynamicButtonCheck(); 
-
-            //  rotation buttons enabled
-            for (int i = 0; i < placeRemoveB.Length; i++)
+            // 4 dis- and enabling buttons
+            int[] placeRemoveB = new int[6];
+            // disable place or remove
+            if (placed)
             {
-                placeRemoveB[i] = i + 9;
+                placeRemoveB[0] = 15; // placeB
             }
+            else
+                placeRemoveB[0] = 16; // removeB
+            GameManager.DisOrEnableButtons(placeRemoveB, false);
+
+            // enable place or remove
+            if (placed) placeRemoveB[0] = 16; // removeB
+            else
+                placeRemoveB[0] = 15; // placeB
             GameManager.DisOrEnableButtons(placeRemoveB, true);
+
+            if (!placed)
+            {
+                // movement buttons
+                GameManager.DynamicButtonCheck();
+
+                //  rotation buttons enabled
+                for (int i = 0; i < placeRemoveB.Length; i++)
+                {
+                    placeRemoveB[i] = i + 9;
+                }
+                GameManager.DisOrEnableButtons(placeRemoveB, true);
+            }
+
+            // 6 add outline script
+            gameObject.AddComponent<Outline>();
         }
-        // 6 add outline script (TODO maybe set parameters)
-        gameObject.AddComponent<Outline>();
     }
 
+    // when grid is rotated, piece turn with it -> grid zero is always considered lowest, front, left => pieces coordinates in grid change with changed position
     public void CalcNewGridCoords(int negPos)
     {
         Debug.Log("Old coords: " + gridPos.x + ", " + gridPos.y + ", " + gridPos.z);
