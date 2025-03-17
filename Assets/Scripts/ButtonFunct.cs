@@ -5,11 +5,16 @@ using UnityEngine.SceneManagement;
 
 public class ButtonFunct : MonoBehaviour
 {
+    [SerializeField] GameManager gameManager;
+    [SerializeField] SolutionManager solutionManager;
     public int buttonNr;
 
     private void Start()
     {
         GameManager.buttons.Add(this);
+
+        gameManager = GameObject.Find("GridPrefab").GetComponent<GameManager>();
+        solutionManager = GameObject.Find("SolutionManagerHolder").GetComponent<SolutionManager>();
     }
 
     private void Update() // only be when Button it's attached to is active
@@ -42,10 +47,11 @@ public class ButtonFunct : MonoBehaviour
                     else if (buttonNr == 13) GameManager.TurnPiece('z', 1);
                     else if (buttonNr == 14) GameManager.TurnPiece('z', -1);
                     // other
-                    else if (buttonNr == 15) GameManager.Place();
+                    else if (buttonNr == 15) gameManager.Place();
                     else if (buttonNr == 16) GameManager.Remove();
                     else if (buttonNr == 17) GameManager.Restart();
                     else if (buttonNr == 18) BackToMainMenu();
+                    else if (buttonNr == 19) solutionManager.GiveHint();
 
                     else 
                         Debug.Log("Error in ButtonFunct for buttonNr.: " + buttonNr);

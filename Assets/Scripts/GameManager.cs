@@ -4,7 +4,7 @@ using System.Drawing;
 using UnityEngine;
 using UnityEngine.ProBuilder.MeshOperations;
 
-// component of EventSystem
+// component of GridPrefab
 public class GameManager : MonoBehaviour
 {
     public static List<GameObject> allPieces = new();
@@ -15,7 +15,9 @@ public class GameManager : MonoBehaviour
     public static Piece selectedPiece = null;
 
     public static bool userNotAlgo = false;
-    [SerializeField] public GameObject WinMessageCanvas;
+
+    public GameObject winMessageCanvas;
+    public GameObject popUpCanvas;
 
     private void Start()
     {
@@ -24,12 +26,20 @@ public class GameManager : MonoBehaviour
 
         // disable all (movement) buttons
         DisableAllButtons();
+
+        // TODO if difficulty = 0 : disable hint button
+        if (SolutionManager.difficulty == 0)
+        {
+            int[] hintButton = new int[1];
+            hintButton[0] = 19;
+            DisOrEnableButtons(hintButton, false);
+        }
     }
 
     // turn grids ghost spheres & its attached pieces -> pieces still on disabled ghost spheres
     public static void TurnGridY(int negPos) // i = 1 if turned right, i = -1 if turned left
     {
-        Vector3 turnPoint = new Vector3(-5.5F, 2.541241F, 1.443376F); // = middle of the grid
+        Vector3 turnPoint = new(-5.5F, 2.541241F, 1.443376F); // = middle of the grid
         Vector3 direction = gridParent.transform.position - turnPoint; // vector from turnPoint to object
 
         // rotate this vector around the y axis
@@ -119,7 +129,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public static bool Place()
+    public bool Place()
     {
         // Debug.Log("Place button pressed");
 
@@ -128,7 +138,11 @@ public class GameManager : MonoBehaviour
         gridSpheres = GetOverlappingSpheres();
         if (gridSpheres[selectedPiece.sphereNr - 1] == null) // not placeable
         {
-            // TODO (only if player not solution algo) show pop up message "Piece can't be placed here (bc out of grid/ overlaps with other piece)"
+            // if player (not solution algo) show popUp message
+            if (userNotAlgo)
+            {
+                StartCoroutine(popUpCanvas.GetComponent<PopUpManager>().ShowNotification("Piece can't be placed here (because it's out of grid or overlaps with another piece)!"));
+            }
             Debug.Log("Placing not possible");
             return false;
         }
@@ -159,8 +173,12 @@ public class GameManager : MonoBehaviour
 
         // 8 check if won (only place because its more efficient than checking in update)
         if (userNotAlgo && GridFunct.CheckWon())
+        {
             // activate winning screen/ pop up window 
-            gridParent.GetComponent<GameManager>().WinMessageCanvas.SetActive(true); // TODO check if blocks everything/ scene behind
+            gridParent.GetComponent<GameManager>().winMessageCanvas.SetActive(true);
+            // TODO deactivate all piece colliders (& hint button) 
+
+        }
 
         // Debug.Log("Placing successful");
         return true;
@@ -173,30 +191,37 @@ public class GameManager : MonoBehaviour
         // 1 enable ghost spheres that overlap with a piece's sphere
         DisOrEnableGridSpheres(selectedPiece.overlapsGridSpheres, true);
 
-        // 2 placed variable in piece = false
+        // 2 reset piece's overlapsGridSpheres var to empty
+        selectedPiece.overlapsGridSpheres = new GameObject[selectedPiece.sphereNr];
+
+        // 3 placed variable in piece = false
         selectedPiece.placed = false;
 
-        // 3 reset rotationNrs
+        // 4 reset rotationNrs
         selectedPiece.rotationNrs = new Vector3Int(0, 0, 0);
 
-        // 4 deselect (inital position) TODO userTest: should stay on the grid as a selected but not placed piece?
+        // 5 deselect (inital position) TODO userTest: should stay on the grid as a selected but not placed piece?
         PieceUnselected();
     }
 
-    // TODO = initial game state + initial level build
-    public static void Restart() // TODO
+    // = initial game state + initial level build/ removes all user placed pieces 
+    public static void Restart() // TODO later/ refactoring maybe rework
     {
         Debug.Log("Restart button pressed");
 
         // 1 reset selectedPiece
         PieceUnselected();
 
-        // 1 remove pieces in grid if moveable TODO
-        // 1.1 after detaching them from the grid 
-        // 1.2 reset grid spheres piece was on
-
-        // 2 reset piece's overlapsGridSpheres var to empty TODO
-
+        // 1 remove all moveable pieces in grid TODO userTest not the hint pieces or schon? (remove all lastPlaced except the first difficulty ones)
+        foreach (GameObject p in allPieces)
+        {
+            Piece piece = p.GetComponent<Piece>();
+            if (piece.moveable && piece.placed)
+            {
+                GameManager.selectedPiece = piece;
+                GameManager.Remove();
+            }
+        }
     }
 
     static bool CalcRotationAmount(int toTurn, int other, int y, int negPos) // toTurn x if dir=x, z if dir=z; independent of grid rotation
@@ -236,7 +261,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    static void DisableAllButtons() // except restart and backtomainmenu
+    static void DisableAllButtons() // except restart, backtomainmenu and hint 
     {
         int[] toDisable = new int[14];
 
@@ -249,40 +274,51 @@ public class GameManager : MonoBehaviour
     // disable buttons according to piece's position -> check after each movement
     public static void DynamicButtonCheck()
     {
-        int[] toDisable = new int[6]; // on top: x and z buttons in both dir.s disabled
-        int[] toEnable = new int[6];
-        int i = 0;
-        int j = 0;
+        if (selectedPiece.placed)
+        {
+            DisableAllButtons();
+            int[] toEnable = new int[1];
+            toEnable[0] = 16;
+            DisOrEnableButtons(toEnable, true);
+        }
+        else
+        {
 
-        if (selectedPiece.gridPos.x == 0) // no negative x
-            toDisable[i++] = 3;
-        else 
-            toEnable[j++] = 3;
-        if (selectedPiece.gridPos.x == 5 - selectedPiece.gridPos.y - selectedPiece.gridPos.z) // no positive x
-            toDisable[i++] = 4;
-        else
-            toEnable[j++] = 4;
+            int[] toDisable = new int[6]; // on top: x and z buttons in both dir.s disabled
+            int[] toEnable = new int[6];
+            int i = 0;
+            int j = 0;
 
-        if (selectedPiece.gridPos.y == 0) // no negative y
-            toDisable[i++] = 5;
-        else
-            toEnable[j++] = 5;
-        if (selectedPiece.gridPos.y == 5 - selectedPiece.gridPos.x - selectedPiece.gridPos.z) // no positive y
-            toDisable[i++] = 6;
-        else
-            toEnable[j++] = 6;
+            if (selectedPiece.gridPos.x == 0) // no negative x
+                toDisable[i++] = 3;
+            else
+                toEnable[j++] = 3;
+            if (selectedPiece.gridPos.x == 5 - selectedPiece.gridPos.y - selectedPiece.gridPos.z) // no positive x
+                toDisable[i++] = 4;
+            else
+                toEnable[j++] = 4;
 
-        if (selectedPiece.gridPos.z == 0) // no negative z
-            toDisable[i++] = 7;
-        else
-            toEnable[j++] = 7;
-        if (selectedPiece.gridPos.z == 5 - selectedPiece.gridPos.y - selectedPiece.gridPos.x) // no positive z
-            toDisable[i++] = 8;
-        else
-            toEnable[j++] = 8;
+            if (selectedPiece.gridPos.y == 0) // no negative y
+                toDisable[i++] = 5;
+            else
+                toEnable[j++] = 5;
+            if (selectedPiece.gridPos.y == 5 - selectedPiece.gridPos.x - selectedPiece.gridPos.z) // no positive y
+                toDisable[i++] = 6;
+            else
+                toEnable[j++] = 6;
 
-        DisOrEnableButtons(toDisable, false);
-        DisOrEnableButtons(toEnable, true);
+            if (selectedPiece.gridPos.z == 0) // no negative z
+                toDisable[i++] = 7;
+            else
+                toEnable[j++] = 7;
+            if (selectedPiece.gridPos.z == 5 - selectedPiece.gridPos.y - selectedPiece.gridPos.x) // no positive z
+                toDisable[i++] = 8;
+            else
+                toEnable[j++] = 8;
+
+            DisOrEnableButtons(toDisable, false);
+            DisOrEnableButtons(toEnable, true);
+        }
     }
 
     // piece sphere 1 has to remain on a grid position
@@ -337,27 +373,30 @@ public class GameManager : MonoBehaviour
     // when piece is no longer selected but also not placed on grid => put back at initial position
     public static void PieceUnselected()
     {
-        // 1 put selected to initial position & reset orientation
-        selectedPiece.gameObject.transform.SetPositionAndRotation(selectedPiece.initialPosition, Quaternion.identity);
+        if (selectedPiece != null)
+        {
+            // 1 put selected to initial position & reset orientation
+            selectedPiece.gameObject.transform.SetPositionAndRotation(selectedPiece.initialPosition, Quaternion.identity);
 
-        // 2 detach from grid (no child of grid anymore)
-        selectedPiece.gameObject.transform.SetParent(null);
+            // 2 detach from grid (no child of grid anymore)
+            selectedPiece.gameObject.transform.SetParent(null);
 
-        // 3 remove outline script
-        Destroy(selectedPiece.gameObject.GetComponent<Outline>());
+            // 3 remove outline script
+            Destroy(selectedPiece.gameObject.GetComponent<Outline>());
 
-        // 4 reset rotationNrs
-        selectedPiece.rotationNrs = new Vector3Int(0, 0, 0);
+            // 4 reset rotationNrs
+            selectedPiece.rotationNrs = new Vector3Int(0, 0, 0);
 
-        // 5 selected = null
-        selectedPiece = null;
+            // 5 selected = null
+            selectedPiece = null;
 
-        // 6 disable buttons (movement, rotation and place/ remove)
-        int[] toDisable = new int[14];
+            // 6 disable buttons (movement, rotation and place/ remove)
+            int[] toDisable = new int[14];
 
-        for (int i = 0; i < toDisable.Length; i++)
-            toDisable[i] = i + 3;
+            for (int i = 0; i < toDisable.Length; i++)
+                toDisable[i] = i + 3;
 
-        DisOrEnableButtons(toDisable, false);
+            DisOrEnableButtons(toDisable, false);
+        }
     }
 }

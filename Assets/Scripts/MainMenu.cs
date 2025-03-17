@@ -5,8 +5,33 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    public void Play() // TODO difficulty levels
+    public void PlayEasy()
     {
+        SolutionManager.difficulty = 9; // 9 pieces placed initially, player has to place 3
+        SceneManager.LoadScene("GamePlayScene");
+    }
+    
+    public void PlayMedium()
+    {
+        SolutionManager.difficulty = 7;
+        SceneManager.LoadScene("GamePlayScene");
+    }
+    
+    public void PlayHard()
+    {
+        SolutionManager.difficulty = 6;
+        SceneManager.LoadScene("GamePlayScene");
+    }
+    
+    public void PlayExtraHard()
+    {
+        SolutionManager.difficulty = 4;
+        SceneManager.LoadScene("GamePlayScene");
+    }
+    
+    public void PlayImpossible()
+    {
+        SolutionManager.difficulty = 0;
         SceneManager.LoadScene("GamePlayScene");
     }
 
@@ -15,7 +40,7 @@ public class MainMenu : MonoBehaviour
         Application.Quit();
     }
 
-    // info: How to play & credits TODO ? later
+    // info: How to play, button image explainations & credits TODO ? later
 
     // (settings? -> sound) TODO later
 

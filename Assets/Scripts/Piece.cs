@@ -13,13 +13,13 @@ public class Piece : MonoBehaviour
     public Vector3 initialPosition;
 
     // when piece is placed on the grid, saves the sphere which was used last to position the piece
-    public Vector3Int gridPos = new Vector3Int(-1, -1, -1); // position in grid if placed or selected
-    public Vector3Int rotationNrs = new Vector3Int(0, 0, 0); // saves amount of rotations for x & z direction for turning the piece
+    public Vector3Int gridPos = new(-1, -1, -1); // position in grid if placed or selected
+    public Vector3Int rotationNrs = new(0, 0, 0); // saves amount of rotations for x & z direction for turning the piece
 
     public int sphereNr;
     public GameObject[] overlapsGridSpheres;
 
-    // store initial position in initialPosition variable
+    // store initial position at start of the scene
     void Start()
     {
         initialPosition = prefab.transform.position;
@@ -69,6 +69,11 @@ public class Piece : MonoBehaviour
         // 1 if other piece is currently selected & != placed: reset it (to initial position) 
         if (GameManager.selectedPiece != null && !GameManager.selectedPiece.placed)
             GameManager.PieceUnselected();
+        else if (GameManager.selectedPiece != null && GameManager.selectedPiece.placed) // other piece selected & = placed: just unselect w/o reset
+        {
+            Destroy(GameManager.selectedPiece.gameObject.GetComponent<Outline>());
+            GameManager.selectedPiece = null;
+        }
 
         // 2 set selectedPiece in GameManager 
         if (!placed)
