@@ -1,14 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class SolutionManager : MonoBehaviour
 {
     [SerializeField] GameManager gameManager;
 
-    public static int difficulty = 0;
+    public static int difficulty = 9;
 
     static int hintNr = 0;
 
@@ -36,7 +35,7 @@ public class SolutionManager : MonoBehaviour
             // TODO 3 save solution in dicts
             SaveSolution();
 
-            // TODO 4 level setup (first difficulty ones in lastPlaced)
+            // TODO 4 level setup (first difficulty ones in lastPlaced not moveable)
             LevelSetup();
 
             // TODO 5 reset pieces that are moveable
@@ -90,7 +89,7 @@ public class SolutionManager : MonoBehaviour
 
         tryNext.PieceSelected();
 
-        while (placedPosition.y != 5 && placedRotation.x != 4)
+        while (placedPosition.y != 5 && placedRotation.x != 4 && !success) // TODO true?? && !success?
         {
             // 4 iterate through each grid position 
             int x = 0;
@@ -127,16 +126,14 @@ public class SolutionManager : MonoBehaviour
                                         triedNotPlaced.Remove(GameManager.selectedPiece.gameObject);
                                         lastPlaced.Add(GameManager.selectedPiece);
 
-                                        // 9 recursive call 1(.1 and 1.2)
+                                        // 9 recursive call 1
+                                        if (previouslyTried.Count > 0)
+                                                notTried.AddRange(previouslyTried); // if gone back previously and going down again in another branch: take previouslyTried in again as notTried (for that new branch)
                                         if (notTried.Count > 0)
                                         {
-                                            if (previouslyTried.Count > 0)
-                                                notTried.AddRange(previouslyTried); // if gone back previously and going down again in another branch: take previouslyTried in again as notTried (for that new branch)
                                             unsuccessfulPiece = CalcSolution(notTried, triedNotPlaced);
                                         }
-                                        else if (previouslyTried.Count > 0)
-                                            unsuccessfulPiece = CalcSolution(previouslyTried, triedNotPlaced);
-                                        else // both lists = empty: all pieces placed = win TODO true???
+                                        else // all (3) lists = empty: all pieces placed = win TODO true???
                                         {
                                             won = true;
                                             GameManager.userNotAlgo = true;
@@ -206,6 +203,7 @@ public class SolutionManager : MonoBehaviour
                 Debug.Log("No positioning found");
 
                 Piece lastTried = lastPlaced.ElementAt(lastPlaced.Count - 1);
+                success = false;
 
                 lastPlaced.RemoveAt(lastPlaced.Count - 1); // remove from lastPlaced list
 
@@ -215,14 +213,20 @@ public class SolutionManager : MonoBehaviour
                 triedNotPlaced.Add(lastTried.gameObject); // add back to triedNotPlaced list
 
                 unsuccessfulPiece = CalcSolution(notTried, triedNotPlaced);
+                
+                if (unsuccessfulPiece == null) 
+                    success = true;
 
-                while (unsuccessfulPiece != null) // recursive call unsuccessful (keep in same node, try all possible branches)
+                while (unsuccessfulPiece != null && !won) // recursive call unsuccessful (keep in same node, try all possible branches)
                 {
                     triedNotPlaced.Add(unsuccessfulPiece.gameObject);
                     notTried.Remove(unsuccessfulPiece.gameObject);
 
                     // recursive call 3
                     unsuccessfulPiece = CalcSolution(notTried, triedNotPlaced);
+
+                    if (unsuccessfulPiece == null)
+                        success = true;
                 }
             }
         }
