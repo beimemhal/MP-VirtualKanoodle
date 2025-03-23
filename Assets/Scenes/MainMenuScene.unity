@@ -288,11 +288,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1548704241}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -360}
-  m_SizeDelta: {x: 800, y: 280}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 30, y: 30}
+  m_SizeDelta: {x: 1300, y: 270}
+  m_Pivot: {x: 0, y: 0}
 --- !u!114 &163843979
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -313,14 +313,14 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Gameplay description: This is a virtual version of the 3D puzzle game
-    Kanoodle. The goal is to fill the pyramid grid with the noodles on the right.
-    According to the chosen difficulty level, a number of noodles will be pre-set
-    and cannot be moved. Click on the remaining noodles to select them and move them
-    around the grid with the given buttons below. To place or remove a selected piece,
-    use the tick or cross button. If you want to reset all pieces use the button
+  m_text: "Gameplay description: \nThis is a virtual version of the 3D puzzle game
+    Kanoodle. The goal is to fill the pyramid grid with the noodles on the right.\n\nAccording
+    to the chosen difficulty level, a number of noodles will be pre-set and cannot
+    be moved. Click on the remaining noodles to select them and move them around
+    the grid with the given buttons below. To place or remove a selected piece, use
+    the tick or cross button. \n\nIf you want to reset all pieces use the button
     at the very top and if you need a little help, use the hint button (question
-    sign) on the left.'
+    sign) on the left."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -347,7 +347,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 27.1
+  m_fontSize: 25.55
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

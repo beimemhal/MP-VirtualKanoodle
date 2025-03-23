@@ -174,6 +174,10 @@ PrefabInstance:
       propertyPath: m_IsKinematic
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8334873399309574408, guid: 77f28e8b8a7b13a4890063eda1adcc68, type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 7633931679722283803}
     - target: {fileID: 8515389547665674805, guid: 77f28e8b8a7b13a4890063eda1adcc68, type: 3}
       propertyPath: m_Name
       value: darkGreen
@@ -191,6 +195,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3029566855975631525, guid: 2c313c71ecaf53840b54e69a5d53c856, type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 7633931679722283803}
     - target: {fileID: 3029566855975631525, guid: 2c313c71ecaf53840b54e69a5d53c856, type: 3}
       propertyPath: referenceSphere
       value: 
@@ -304,6 +312,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: lightBlue
       objectReference: {fileID: 0}
+    - target: {fileID: 8326421078172082039, guid: e23c1774962ff1e41ac8b7ced0ebe1a5, type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 7633931679722283803}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -419,6 +431,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 219820209432809382, guid: f0db51c971f6f464f890b42cdf5e42a6, type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 7633931679722283803}
     - target: {fileID: 3568632131863009140, guid: f0db51c971f6f464f890b42cdf5e42a6, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.5
@@ -545,6 +561,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 677304087002860581, guid: 0fdb02b9d1fe63346b336d2fc6b1b101, type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 7633931679722283803}
     - target: {fileID: 3643692273219889574, guid: 0fdb02b9d1fe63346b336d2fc6b1b101, type: 3}
       propertyPath: m_IsKinematic
       value: 1
@@ -905,6 +925,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: lightGreen
       objectReference: {fileID: 0}
+    - target: {fileID: 5119014682603109548, guid: a5ab4394438fb1c42823c3737c1f35e9, type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 7633931679722283803}
     - target: {fileID: 8392264817044951513, guid: a5ab4394438fb1c42823c3737c1f35e9, type: 3}
       propertyPath: m_IsKinematic
       value: 1
@@ -1163,6 +1187,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1420204448826516432, guid: 71bd7ab6517ef44468233c88b845faf8, type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 7633931679722283803}
     - target: {fileID: 1430944458816788495, guid: 71bd7ab6517ef44468233c88b845faf8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 9
@@ -1638,6 +1666,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2371660896541181141, guid: f4da4b95b5c734c47847f5abe1830e69, type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 7633931679722283803}
     - target: {fileID: 6542042116153977814, guid: f4da4b95b5c734c47847f5abe1830e69, type: 3}
       propertyPath: m_Name
       value: grey
@@ -1932,6 +1964,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7334931584846869210, guid: fd62f398dfaa7b44d82b83e200f6cdfb, type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 7633931679722283803}
     - target: {fileID: 9033931831581642467, guid: fd62f398dfaa7b44d82b83e200f6cdfb, type: 3}
       propertyPath: m_IsKinematic
       value: 1
@@ -1993,6 +2029,10 @@ PrefabInstance:
       propertyPath: m_IsKinematic
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8888361505435187801, guid: dd5714eb1126f604d8b7ccc53948101d, type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 7633931679722283803}
     - target: {fileID: 9071868789706708212, guid: dd5714eb1126f604d8b7ccc53948101d, type: 3}
       propertyPath: m_Name
       value: darkBlue
@@ -2252,6 +2292,10 @@ PrefabInstance:
       propertyPath: m_IsKinematic
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4512534613087752065, guid: 9fc3f93e2cfa4c44cb526d7b10b57e66, type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 7633931679722283803}
     - target: {fileID: 7061176163769376430, guid: 9fc3f93e2cfa4c44cb526d7b10b57e66, type: 3}
       propertyPath: m_Name
       value: red
@@ -3350,6 +3394,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3331265407159875070, guid: 0cfb5a0bda60cdd4f8bfb952edaebb5c, type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 7633931679722283803}
     - target: {fileID: 3992881660047789549, guid: 0cfb5a0bda60cdd4f8bfb952edaebb5c, type: 3}
       propertyPath: m_IsKinematic
       value: 1

@@ -151,8 +151,8 @@ public class GameManager : MonoBehaviour
             selectedPiece.overlapsGridSpheres = gridSpheres;
         }
 
-        // 2 attach piece to grid
-        selectedPiece.transform.SetParent(gridParent.transform);
+        // 2 attach piece to grid TODO unnecessary bc already done in selected
+        // selectedPiece.transform.SetParent(gridParent.transform);
 
         // 3 disable ghost spheres that overlap with a pieces sphere
         DisOrEnableGridSpheres(gridSpheres, false);
@@ -197,8 +197,8 @@ public class GameManager : MonoBehaviour
         // 3 placed variable in piece = false
         selectedPiece.placed = false;
 
-        // 4 reset rotationNrs
-        selectedPiece.rotationNrs = new Vector3Int(0, 0, 0);
+        // 4 reset rotationNrs TODO delete, not necessary: done in unselected
+        // selectedPiece.rotationNrs = new Vector3Int(0, 0, 0);
 
         // 5 deselect (inital position) TODO userTest: should stay on the grid as a selected but not placed piece?
         PieceUnselected();
@@ -352,13 +352,17 @@ public class GameManager : MonoBehaviour
                 // check if gridSphere is active, if not: continue with next gridSphere
                 if (!gridSphere.gameObject.activeSelf) continue;
 
-                isOverlapping = pieceSphere.bounds.Intersects(gridSphere.bounds); // TODO does not work: sphere still at initial position
+                isOverlapping = pieceSphere.bounds.Intersects(gridSphere.bounds); // TODO does not work in solver: sphere still at initial position
                 if (isOverlapping)
                 {
                     overlappingSpheres[j++] = gridSphere.gameObject;
                     break; // go to next pieceSphere if overlapping gridSphere found
                 }
             }
+            
+            // if no overlapping grid sphere found for a piece sphere: piece not placeable 
+            if (overlappingSpheres[j] == null)
+                return overlappingSpheres;
         }
 
         return overlappingSpheres;
@@ -376,16 +380,19 @@ public class GameManager : MonoBehaviour
         if (selectedPiece != null)
         {
             // 1 put selected to initial position & reset orientation
-            selectedPiece.gameObject.transform.SetPositionAndRotation(selectedPiece.initialPosition, Quaternion.identity);
+            if (!selectedPiece.placed)
+            {
+                selectedPiece.gameObject.transform.SetPositionAndRotation(selectedPiece.initialPosition, Quaternion.identity);
 
-            // 2 detach from grid (no child of grid anymore)
-            selectedPiece.gameObject.transform.SetParent(null);
+                // 2 detach from grid (no child of grid anymore)
+                selectedPiece.gameObject.transform.SetParent(null);
 
-            // 3 remove outline script
+                // 3 reset rotationNrs
+                selectedPiece.rotationNrs = new Vector3Int(0, 0, 0);
+            }
+
+            // 4 remove outline script
             Destroy(selectedPiece.gameObject.GetComponent<Outline>());
-
-            // 4 reset rotationNrs
-            selectedPiece.rotationNrs = new Vector3Int(0, 0, 0);
 
             // 5 selected = null
             selectedPiece = null;

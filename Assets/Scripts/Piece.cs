@@ -6,6 +6,7 @@ using UnityEngine;
 public class Piece : MonoBehaviour
 {
     public GameObject prefab;
+    [SerializeField] GameManager gameManager;
 
     public bool placed = false;
     public bool moveable = true; // if piece gets set in the level setup, it cannot be moved => cannot be selected
@@ -61,7 +62,11 @@ public class Piece : MonoBehaviour
         // check if piece that's being tried to be selected = moveable
         if (!moveable)
         {
-            // TODO pop-up message that piece can't be selected
+            // pop-up message that piece can't be selected
+            if (!GameManager.userNotAlgo)
+            {
+                StartCoroutine(gameManager.popUpCanvas.GetComponent<PopUpManager>().ShowNotification("Piece can't be selected because it's pre-set!"));
+            }
             Debug.Log("The " + name + " piece can't be removed because it is pre-set.");
             return;
         }
