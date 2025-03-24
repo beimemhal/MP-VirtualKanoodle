@@ -40,8 +40,12 @@ public class MainMenu : MonoBehaviour
         Application.Quit();
     }
 
-    // info: How to play, button image explainations & credits TODO ? later
+    // TODO play against time?
+    public void TimerToggle()
+    {
+        // TODO 
+    }
 
-    // (settings? -> sound) TODO later
+    // info: How to play, button image explainations & credits TODO ? later
 
 }

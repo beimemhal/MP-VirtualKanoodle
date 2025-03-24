@@ -20,8 +20,6 @@ public class SolutionManager : MonoBehaviour
     // store pieces in the order they're placed 
     static List<Piece> lastPlaced = new(); 
 
-    int i = 0; // TODO for debugging: delete
-
     private void Start()
     {
         if (difficulty != 0)
@@ -30,7 +28,7 @@ public class SolutionManager : MonoBehaviour
             DeActivateLoadingScreen(true);
 
             // 2 calls solving algorithm
-            CalcSolution(GameManager.allPieces, new()); // give a new List of allPieces (copy but w/ the same objects)
+            CalcSolution1(GameManager.allPieces, new()); // give a new List of allPieces (copy but w/ the same objects)
 
             // TODO 3 save solution in dicts
             SaveSolution();
@@ -48,6 +46,7 @@ public class SolutionManager : MonoBehaviour
         {
             GameManager.userNotAlgo = true;
         }
+        // TODO clear allPieces (...?) if solver = own scene
     }
 
     // TODO step by sstep solver
@@ -62,9 +61,55 @@ public class SolutionManager : MonoBehaviour
 
         tryNext.PieceSelected();
 
-        // 6 try placing it
-        success = gameManager.Place();
-        GameManager.selectedPiece = null; // TODO new
+        // 4 iterate through each grid position
+        int x = 0;
+        int xMax = 5, zMax = 5;
+        for (int y = 0; y < 5; y++)
+        {
+            if (success || won)
+            {
+                break;
+            }
+            for (int z = 0; z < zMax; z++)
+            {
+                if (success || won)
+                {
+                    break;
+                }
+                for (x = 0; x < xMax; x++)
+                {
+                    if (success || won)
+                    {
+                        break;
+                    }
+                    // 5 iterate through each possible rotation/ orientation TODO not if current grid point disabled
+                    for (int j = 0; j < 4; j++) // rotate in z
+                    {
+                        if (success || won)
+                        {
+                            break;
+                        }
+                        for (int k = 0; k < 6; k++) // rotate in y
+                        {
+                            if (success || won)
+                            {
+                                break;
+                            }
+                            for (int l = 0; l < 4; l++) // rotate in x
+                            {
+                                if (success || won)
+                                {
+                                    break;
+                                }
+                                // 6 try placing it
+                                success = gameManager.Place();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        GameManager.selectedPiece = null; // TODO new -> if piece placed successfully -> done automatically -> make selectedPiece again after rec. call
 
         // 7 if successful: remove from triedNotPlaced list and add to lastPlaced list
         if (success || won)
@@ -79,11 +124,9 @@ public class SolutionManager : MonoBehaviour
     // solving algorithm TODO (tree-based: recursively)
     Piece CalcSolution1(List<GameObject> notTried, List<GameObject> previouslyTried) // returns piece that couldn't be placed, if there is one
     {
-        i++; // TODO delete
-
         // 0 new triedNotPlaced list
         List<GameObject> triedNotPlaced = new();
-        Piece unsuccessfulPiece; // TODO delete? no necessary
+        Piece unsuccessfulPiece; // TODO delete? no, necessary
 
         // if piece couldn't get placed in lower tree node: remember position and rot. to go back and try placing same piece again in other positioning before moving on to the next one
         // TODO 
@@ -131,13 +174,13 @@ public class SolutionManager : MonoBehaviour
                                     placedRotation.x = l;
 
                                     // 6 try placing it
-                                    success = gameManager.Place(); // TODO doesn't work
+                                    success = gameManager.Place();
 
-                                    Debug.Log("In call " + i + " piece placement is " + success);
+                                    Debug.Log("Piece " + tryNext.name + " placement is " + success); // TODO delete: "In call " + i + " piece placement is " + success);
 
                                     if (success || won)
                                     {
-                                        Debug.Log("Piece placed");
+                                        Debug.Log("Piece successfully placed in " + x + ", " + y + ", " + z);
 
                                         // 7 if successful: remove from triedNotPlaced list and add to lastPlaced list (and unselect)
                                         triedNotPlaced.Remove(tryNext.gameObject);
@@ -160,6 +203,9 @@ public class SolutionManager : MonoBehaviour
                                         break;
                                     }
 
+                                    // re-select tryNext: might be unselected in rec. call
+                                    if (GameManager.selectedPiece != tryNext)
+                                        GameManager.selectedPiece = tryNext;
                                     // 5
                                     GameManager.TurnPiece('x', 1);
                                 }
@@ -168,6 +214,9 @@ public class SolutionManager : MonoBehaviour
                                     break; // iteratively break out of loops to try placing the next piece
                                 }
 
+                                // re-select tryNext: might be unselected in rec. call
+                                if (GameManager.selectedPiece != tryNext)
+                                    GameManager.selectedPiece = tryNext;
                                 // 5
                                 GameManager.TurnPiece('y', 1);
                                 placedRotation.z = 0;
@@ -177,6 +226,9 @@ public class SolutionManager : MonoBehaviour
                                 break;
                             }
 
+                            // re-select tryNext: might be unselected in rec. call
+                            if (GameManager.selectedPiece != tryNext)
+                                GameManager.selectedPiece = tryNext;
                             // 5
                             GameManager.TurnPiece('z', 1);
                             placedRotation.y = 0;
@@ -186,6 +238,9 @@ public class SolutionManager : MonoBehaviour
                             break;
                         }
 
+                        // re-select tryNext: might be unselected in rec. call
+                        if (GameManager.selectedPiece != tryNext)
+                            GameManager.selectedPiece = tryNext;
                         // 4 
                         GameManager.MovePiece('x', 1);
                         placedRotation.x = 0;
@@ -195,6 +250,9 @@ public class SolutionManager : MonoBehaviour
                         break;
                     }
 
+                    // re-select tryNext: might be unselected in rec. call
+                    if (GameManager.selectedPiece != tryNext)
+                        GameManager.selectedPiece = tryNext;
                     // 4 
                     GameManager.MovePiece('z', 1);
 
@@ -206,6 +264,9 @@ public class SolutionManager : MonoBehaviour
                     break;
                 }
 
+                // re-select tryNext: might be unselected in rec. call
+                if (GameManager.selectedPiece != tryNext)
+                    GameManager.selectedPiece = tryNext;
                 // 4 
                 GameManager.MovePiece('y', 1);
 
@@ -213,7 +274,7 @@ public class SolutionManager : MonoBehaviour
                 zMax = 5 - y - x;
             }
 
-            Debug.Log("No positioning found or won in fct call " + i);
+            Debug.Log("No positioning found or won"); // in fct call " + i
 
             // 8 recursive call 2: rec. call 1 doesn't find a solution -> gone back from lower node
             if (!won && success)
@@ -277,7 +338,7 @@ public class SolutionManager : MonoBehaviour
     // save solution in dicts
     void SaveSolution()
     {
-        foreach (GameObject p in GameManager.allPieces)
+        foreach (Piece p in lastPlaced)
         {
             solutionPositions.Add(p.name, p.transform.position);
             solutionRotations.Add(p.name, p.transform.rotation);
@@ -302,25 +363,70 @@ public class SolutionManager : MonoBehaviour
 
     public void GiveHint()
     {
-        // choose next moveable piece in lastPlaced
+        // 1 choose next moveable piece in lastPlaced
         Piece p = lastPlaced.ElementAt(difficulty + hintNr);
+
+        // 2 remove intersecting other pieces
+        if (p.placed) // makes sure it's not a child of the grid itself
+        {
+            GameManager.selectedPiece = p;
+            GameManager.Remove();
+        } else if (p == GameManager.selectedPiece)
+            GameManager.PieceUnselected();
+        // put in correct position
         p.gameObject.transform.position = solutionPositions[p.gameObject.name];
         p.gameObject.transform.rotation = solutionRotations[p.gameObject.name];
+
+        RemoveIntersectingPieces(p);
+
+        // 3 place piece and make not moveable
         GameManager.selectedPiece = p;
-
-        // TODO remove intersecting other pieces
-
-        // place piece and make not moveable
         gameManager.Place();
         p.moveable = false;
 
-        // TODO put (flickering) outline around hint piece for 3 sec
+        // TODO refactorign 4 put (flickering) outline around hint piece for 3 sec
 
     }
 
+    void RemoveIntersectingPieces(Piece p)
+    {
+        Piece[] overlapsOtherPieces = new Piece[p.sphereNr];
 
+        // 1 iterate through all spheres of the piece
+        for (int i = 0; i < p.sphereNr; i++)
+        {
+            // 2 check if collider detects collisions
+            Collider pieceSphere = p.gameObject.transform.GetChild(i).gameObject.GetComponent<SphereCollider>();
+            bool isOverlapping = false;
+            
+            // 3 iterate through all of grid's piece children
+            for (int k = 56; k < GameManager.gridParent.transform.childCount; k++) 
+            {
+                if (!GameManager.gridParent.gameObject.transform.GetChild(k).gameObject.GetComponent<Piece>().moveable)
+                    break;
 
-    // 2 try each piece TODO delete
-    // for (int i = ; i > 0; i--) // TODO not tree based -> doesn't go back just one -> brute-force algo
-    // {
+                Collider[] otherPiecesSpheres = GameManager.gridParent.gameObject.transform.GetChild(k).gameObject.GetComponentsInChildren<SphereCollider>();
+
+                // 4 iterate through other piece's spheres and check collisions
+                foreach (Collider c in otherPiecesSpheres)
+                {
+                    isOverlapping = GameManager.CheckIntersects(pieceSphere, c);
+                    if (isOverlapping)
+                    {
+                        overlapsOtherPieces[i] = c.transform.parent.GetComponent<Piece>();
+                        break; // go to next pieceSphere if overlapping gridSphere found
+                    }
+                }
+                if (isOverlapping)
+                    break;
+            }
+        }
+
+        // 5 remove intersecting pieces from grid
+        foreach (Piece otherPiece in overlapsOtherPieces)
+        {
+            GameManager.selectedPiece = otherPiece;
+            GameManager.Remove();
+        }
+    }
 }

@@ -74,7 +74,7 @@ public class Piece : MonoBehaviour
         // 1 if other piece is currently selected & != placed: reset it (to initial position) 
         if (GameManager.selectedPiece != null && !GameManager.selectedPiece.placed)
             GameManager.PieceUnselected();
-        else if (GameManager.selectedPiece != null && GameManager.selectedPiece.placed) // other piece selected & = placed: just unselect w/o reset
+        else if (GameManager.selectedPiece != null && GameManager.selectedPiece.placed) // other piece selected which = placed: just unselect w/o reset
         {
             Destroy(GameManager.selectedPiece.gameObject.GetComponent<Outline>());
             GameManager.selectedPiece = null;

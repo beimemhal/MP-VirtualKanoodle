@@ -131,31 +131,23 @@ public class GameManager : MonoBehaviour
 
     public bool Place()
     {
-        // Debug.Log("Place button pressed");
-
         // 1 check if position valid/ placeable -> all piece spheres on active grid spheres
-        GameObject[] gridSpheres = new GameObject[selectedPiece.sphereNr];
-        gridSpheres = GetOverlappingSpheres();
-        if (gridSpheres[selectedPiece.sphereNr - 1] == null) // not placeable
+        if (!GetOverlappingSpheres()) // not placeable
         {
-            // if player (not solution algo) show popUp message
+            // if player (not solution algo) show explaining popUp message
             if (userNotAlgo)
             {
                 StartCoroutine(popUpCanvas.GetComponent<PopUpManager>().ShowNotification("Piece can't be placed here (because it's out of grid or overlaps with another piece)!"));
             }
-            Debug.Log("Placing not possible");
+            // Debug.Log("Placing not possible");
             return false;
-        }
-        else // save in placed piece
-        {
-            selectedPiece.overlapsGridSpheres = gridSpheres;
         }
 
         // 2 attach piece to grid TODO unnecessary bc already done in selected
         // selectedPiece.transform.SetParent(gridParent.transform);
 
         // 3 disable ghost spheres that overlap with a pieces sphere
-        DisOrEnableGridSpheres(gridSpheres, false);
+        DisOrEnableGridSpheres(selectedPiece.overlapsGridSpheres, false);
 
         // 4 placed variable in piece = true
         selectedPiece.placed = true;
@@ -174,13 +166,13 @@ public class GameManager : MonoBehaviour
         // 8 check if won (only place because its more efficient than checking in update)
         if (userNotAlgo && GridFunct.CheckWon())
         {
+            // TODO deactivate all piece colliders (& buttons) 
+
             // activate winning screen/ pop up window 
             gridParent.GetComponent<GameManager>().winMessageCanvas.SetActive(true);
-            // TODO deactivate all piece colliders (& hint button) 
-
         }
 
-        // Debug.Log("Placing successful");
+        Debug.Log("Placing successful");
         return true;
     }
 
@@ -332,18 +324,15 @@ public class GameManager : MonoBehaviour
     }
 
     // returns array of grid spheres that have to be disabled
-    public static GameObject[] GetOverlappingSpheres()
+    public static bool GetOverlappingSpheres()
     {
-        GameObject[] overlappingSpheres = new GameObject[selectedPiece.sphereNr];
-        int j = 0;
+        selectedPiece.overlapsGridSpheres = new GameObject[selectedPiece.sphereNr];
 
         // iterate through all spheres of the piece
         for (int i = 0; i < selectedPiece.sphereNr; i++)
         {
-            // check if collider detects collisions (still does if gridSphere disabled)
+            // check if collider detects collisions
             Collider pieceSphere = selectedPiece.gameObject.transform.GetChild(i).gameObject.GetComponent<SphereCollider>();
-
-            bool isOverlapping = false;
 
             for (int k = 0; k < 56; k++) // iterate through all gridSpheres
             {
@@ -352,26 +341,47 @@ public class GameManager : MonoBehaviour
                 // check if gridSphere is active, if not: continue with next gridSphere
                 if (!gridSphere.gameObject.activeSelf) continue;
 
-                isOverlapping = pieceSphere.bounds.Intersects(gridSphere.bounds); // TODO does not work in solver: sphere still at initial position
-                if (isOverlapping)
+                // isOverlapping = pieceSphere.bounds.Intersects(gridSphere.bounds); // TODO does not work in solver: sphere still at initial position TODO delete
+                if (CheckIntersects(pieceSphere, gridSphere))
                 {
-                    overlappingSpheres[j++] = gridSphere.gameObject;
+                    selectedPiece.overlapsGridSpheres[i] = gridSphere.gameObject;
                     break; // go to next pieceSphere if overlapping gridSphere found
                 }
             }
             
-            // if no overlapping grid sphere found for a piece sphere: piece not placeable 
-            if (overlappingSpheres[j] == null)
-                return overlappingSpheres;
+            // if no overlapping grid sphere found for one of the piece spheres: piece not placeable 
+            if (selectedPiece.overlapsGridSpheres[i] == null)
+                return false;
         }
 
-        return overlappingSpheres;
+        if (selectedPiece.overlapsGridSpheres[selectedPiece.sphereNr - 1] == null)
+            return false;
+        return true;
     }
 
     static void DisOrEnableGridSpheres(GameObject[] gridSpheres, bool disOrEnable)
     {
         foreach (GameObject sphere in gridSpheres)
             sphere.SetActive(disOrEnable);
+    }
+
+    // self written intersects method (of bounds)
+    public static bool CheckIntersects(Collider sphere1, Collider sphere2)
+    {
+        if (sphere1.transform.position.x + sphere1.bounds.extents.x > sphere2.transform.position.x - sphere2.bounds.extents.x
+            &&
+            sphere1.transform.position.x - sphere1.bounds.extents.x < sphere2.transform.position.x + sphere2.bounds.extents.x
+            &&
+            sphere1.transform.position.z + sphere1.bounds.extents.z > sphere2.transform.position.z - sphere2.bounds.extents.z
+            &&
+            sphere1.transform.position.z - sphere1.bounds.extents.z < sphere2.transform.position.z + sphere2.bounds.extents.z
+            &&
+            sphere1.transform.position.y + sphere1.bounds.extents.y > sphere2.transform.position.y - sphere2.bounds.extents.y
+            &&
+            sphere1.transform.position.y - sphere1.bounds.extents.y < sphere2.transform.position.y + sphere2.bounds.extents.y
+            )
+            return true;
+        return false;
     }
 
     // when piece is no longer selected but also not placed on grid => put back at initial position
