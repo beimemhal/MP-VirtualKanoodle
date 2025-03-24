@@ -143,6 +143,8 @@ public class GameManager : MonoBehaviour
             return false;
         }
 
+        Debug.Log("Placing piece " + selectedPiece.name + " successful.");
+
         // 2 attach piece to grid TODO unnecessary bc already done in selected
         // selectedPiece.transform.SetParent(gridParent.transform);
 
@@ -172,7 +174,6 @@ public class GameManager : MonoBehaviour
             gridParent.GetComponent<GameManager>().winMessageCanvas.SetActive(true);
         }
 
-        Debug.Log("Placing successful");
         return true;
     }
 
@@ -324,24 +325,26 @@ public class GameManager : MonoBehaviour
     }
 
     // returns array of grid spheres that have to be disabled
-    public static bool GetOverlappingSpheres()
+    public static bool GetOverlappingSpheres() // returns false if not placeable
     {
         selectedPiece.overlapsGridSpheres = new GameObject[selectedPiece.sphereNr];
 
-        // iterate through all spheres of the piece
+        // 1 iterate through all spheres of the piece
         for (int i = 0; i < selectedPiece.sphereNr; i++)
         {
-            // check if collider detects collisions
+            // 2 check if collider detects collisions
             Collider pieceSphere = selectedPiece.gameObject.transform.GetChild(i).gameObject.GetComponent<SphereCollider>();
-
-            for (int k = 0; k < 56; k++) // iterate through all gridSpheres
+    
+            // 3 iterate through all gridSpheres
+            foreach (SphereCollider gridSphere in GridFunct.gridPoints)
+            // for (int k = 0; k < 56; k++) TODO delete
             {
-                Collider gridSphere = gridParent.gameObject.transform.GetChild(k).gameObject.GetComponent<SphereCollider>();
+                // Collider gridSphere = gridParent.gameObject.transform.GetChild(k).gameObject.GetComponent<SphereCollider>();  TODO delete
 
-                // check if gridSphere is active, if not: continue with next gridSphere
+                // 4 check if gridSphere is active, if not: continue with next gridSphere
                 if (!gridSphere.gameObject.activeSelf) continue;
 
-                // isOverlapping = pieceSphere.bounds.Intersects(gridSphere.bounds); // TODO does not work in solver: sphere still at initial position TODO delete
+                // isOverlapping = pieceSphere.bounds.Intersects(gridSphere.bounds); // does not work in solver: sphere still at initial position TODO delete
                 if (CheckIntersects(pieceSphere, gridSphere))
                 {
                     selectedPiece.overlapsGridSpheres[i] = gridSphere.gameObject;
@@ -349,7 +352,7 @@ public class GameManager : MonoBehaviour
                 }
             }
             
-            // if no overlapping grid sphere found for one of the piece spheres: piece not placeable 
+            // 5 if no overlapping grid sphere found for one of the piece spheres: piece not placeable 
             if (selectedPiece.overlapsGridSpheres[i] == null)
                 return false;
         }
