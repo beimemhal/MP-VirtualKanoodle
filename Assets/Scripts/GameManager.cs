@@ -87,7 +87,7 @@ public class GameManager : MonoBehaviour
             newPos.z = selectedPiece.gridPos.z + posNeg;
 
         // 2 check if outside grid
-        if (OutsideGrid(newPos)) { // shouldn't be possible because buttons disabled accordingly -> happens in solvingAlgo
+        if (GridFunct.OutsideGrid(newPos)) { // shouldn't be possible because buttons disabled accordingly -> happens in solvingAlgo
             Debug.Log("Piece can't be moved in " + (posNeg > 0 ? "positive " : "negative ") + dir + "-direction because it's outside the grid.");
             return; 
         }
@@ -168,7 +168,19 @@ public class GameManager : MonoBehaviour
         // 8 check if won (only place because its more efficient than checking in update)
         if (userNotAlgo && GridFunct.CheckWon())
         {
-            // TODO deactivate all piece colliders (& buttons) 
+            // deactivate all pieces colliders & disable all buttons so that nothing can be changed after win
+            DisableAllButtons(); 
+            int[] otherButtons = new int[5]; // restart, backtomainmenu, hint & turnGrid
+            otherButtons[0] = 17;
+            otherButtons[1] = 18;
+            otherButtons[2] = 19;
+            otherButtons[3] = 1;
+            otherButtons[4] = 2;
+            DisOrEnableButtons(otherButtons, false);
+            foreach (GameObject p in allPieces)
+            {
+                p.SetActive(false);
+            }
 
             // activate winning screen/ pop up window 
             gridParent.GetComponent<GameManager>().winMessageCanvas.SetActive(true);
@@ -190,10 +202,7 @@ public class GameManager : MonoBehaviour
         // 3 placed variable in piece = false
         selectedPiece.placed = false;
 
-        // 4 reset rotationNrs TODO delete, not necessary: done in unselected
-        // selectedPiece.rotationNrs = new Vector3Int(0, 0, 0);
-
-        // 5 deselect (inital position) TODO userTest: should stay on the grid as a selected but not placed piece?
+        // 4 deselect (inital position) TODO userTest: should stay on the grid as a selected but not placed piece?
         PieceUnselected();
     }
 
@@ -314,16 +323,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // piece sphere 1 has to remain on a grid position
-    static bool OutsideGrid(Vector3Int newPos)
-    {
-        if (newPos.x < 0 || newPos.x > 5 - newPos.y - newPos.z ||
-            newPos.y < 0 || newPos.y > 5 - newPos.x - newPos.z ||
-            newPos.z < 0 || newPos.z > 5 - newPos.y - newPos.x)
-            return true;
-        return false; 
-    }
-
     // returns array of grid spheres that have to be disabled
     public static bool GetOverlappingSpheres() // returns false if not placeable
     {
@@ -337,10 +336,7 @@ public class GameManager : MonoBehaviour
     
             // 3 iterate through all gridSpheres
             foreach (SphereCollider gridSphere in GridFunct.gridPoints)
-            // for (int k = 0; k < 56; k++) TODO delete
             {
-                // Collider gridSphere = gridParent.gameObject.transform.GetChild(k).gameObject.GetComponent<SphereCollider>();  TODO delete
-
                 // 4 check if gridSphere is active, if not: continue with next gridSphere
                 if (!gridSphere.gameObject.activeSelf) continue;
 

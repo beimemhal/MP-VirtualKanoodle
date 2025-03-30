@@ -7,7 +7,7 @@ public class SolutionManager : MonoBehaviour
 {
     [SerializeField] GameManager gameManager;
 
-    public static int difficulty = 9;
+    public static int difficulty = 0;
 
     static int hintNr = 0;
 
@@ -56,9 +56,9 @@ public class SolutionManager : MonoBehaviour
 
         // 0 new triedNotPlaced list
         List<GameObject> triedNotPlaced = new();
-        Piece unsuccessfulPiece = null; // TODO delete? no, necessary
+        Piece unsuccessfulPiece = null;
 
-        // if piece couldn't get placed in lower tree node: remember position and rot. to go back and try placing same piece again in other positioning before moving on to the next one TODO working?
+        // 0.5 if piece couldn't get placed in lower tree node: remember position and rot. to go back and try placing same piece again in other positioning before moving on to the next one TODO working?
         Vector3Int placedPosition = new(0, 0, 0);
         Vector3Int placedRotation = new(0, 0, 0);
 
@@ -66,8 +66,13 @@ public class SolutionManager : MonoBehaviour
         if (BaseCaseCheck(notTried.Count))
             return null;
 
-        if (notTried.Count == 0) // TODO new correct?
+        // 1.5 all pieces have been tried (pieces in previouslyTried = tried but not placeable or placement not resulted in solution) go back up to remove last successfully placed piece and try another one first
+        if (notTried.Count == 0 && previouslyTried.Count > 0) // TODO: make sure previously tried correct at each iteration
             return previouslyTried.ElementAt(0).GetComponent<Piece>();
+        
+        else if (notTried.Count == 0)
+            return null; 
+        
 
         // 2 select random piece of available ones
         int rdm = Random.Range(0, notTried.Count);
@@ -80,7 +85,7 @@ public class SolutionManager : MonoBehaviour
 
         tryNext.PieceSelected();
 
-        while (placedPosition.y != 5 && !success) // try until placement successfull or all placements tried) TODO true?
+        // while (placedPosition.y + placedRotation.x + placedRotation.y + placedRotation.z < 16 || success) // try until placement successfull or all placements tried) TODO true?
         {
             // 4 iterate through each grid position
             int x = 0;
@@ -95,7 +100,7 @@ public class SolutionManager : MonoBehaviour
                     {
                         placedPosition.x = x;
 
-                        // if grid at x, y, z = disabled: continue with next position;
+                        // 4.5 if grid at x, y, z = disabled: continue with next position;
                         if (!GridFunct.gridPoints[GridFunct.CalcGridSpaceToArrayIndex(new Vector3Int(x, y, z))].gameObject.activeSelf)
                         {
                             Debug.Log("Placement skipped.");
@@ -108,7 +113,7 @@ public class SolutionManager : MonoBehaviour
                         }
 
                         // 5 iterate through each possible rotation/ orientation
-                        for (int j = placedRotation.z; j < 4; j++) // rotate in z
+                        for (int j = placedRotation.z; j < 4; j++) // rotate in z TODO refactor: start at random number of rotation to make it more random -> potentially slower if always start at weird angle
                         {
                             placedRotation.z = j;
                             for (int k = placedRotation.y; k < 6; k++) // rotate in y
@@ -121,8 +126,6 @@ public class SolutionManager : MonoBehaviour
                                     // 6 try placing it
                                     success = gameManager.Place();
 
-                                    // TODO check if grid point isolated: remove and continue trying to place
-
                                     if (!success)
                                     {
                                         i++;
@@ -132,6 +135,24 @@ public class SolutionManager : MonoBehaviour
 
                                     if (success || won)
                                     {
+                                        // 6.5 check if grid point is isolated: remove and continue trying to place differently
+                                        if (GridFunct.CheckIsolatedPoints())
+                                        {
+                                            if (GameManager.selectedPiece != tryNext) // Place() removes selectedPiece
+                                                GameManager.selectedPiece = tryNext;
+
+                                            GameManager.Remove();
+                                            success = false;
+
+                                            // go to next positioning
+                                            if (GameManager.selectedPiece != tryNext) // Remove() removes selectedPiece
+                                            GameManager.selectedPiece = tryNext;
+
+                                            GameManager.TurnPiece('x', 1);
+                                            placedRotation.x = 0;
+                                            break;
+                                        }
+
                                         Debug.Log("Piece successfully placed in " + x + ", " + y + ", " + z);
 
                                         // 7 if successful: remove from triedNotPlaced list and add to lastPlaced list (and unselect)
@@ -160,7 +181,7 @@ public class SolutionManager : MonoBehaviour
                                         break;
                                     }
 
-                                    // re-select tryNext: might be unselected in rec. call
+                                    // re-select tryNext: might be unselected in rec. call or removed in Place() or Remove()
                                     if (GameManager.selectedPiece != tryNext)
                                         GameManager.selectedPiece = tryNext;
 
@@ -279,6 +300,9 @@ public class SolutionManager : MonoBehaviour
 
                 while (unsuccessfulPiece != null && !won) // recursive call unsuccessful (keep in same node, try all possible branches)
                 {
+                    if (notTried.Count == 0)
+                        break;
+
                     triedNotPlaced.Add(unsuccessfulPiece.gameObject);
                     notTried.Remove(unsuccessfulPiece.gameObject);
 

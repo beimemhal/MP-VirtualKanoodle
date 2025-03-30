@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
 
 public static class GridFunct 
 {
@@ -20,7 +21,7 @@ public static class GridFunct
             gridHeightZ*(z + y/3F) + GameManager.gridParent.transform.position.z);
     }
 
-    // calculate gridSpace to array index TODO correct?
+    // calculate gridSpace to array index
     public static int CalcGridSpaceToArrayIndex(Vector3Int gridPos)
     {
         int index = 0;
@@ -55,5 +56,77 @@ public static class GridFunct
         // Debug.Log("Game won");
 
         return true;
+    }
+
+    public static bool CheckIsolatedPoints() // to make solver quicker; true if a point isolated, false if not
+    {
+        foreach (SphereCollider coll in gridPoints)
+        {
+            GameObject g = coll.gameObject;
+            int counter = 12; // = number of neighboring spheres
+
+            if (g.activeSelf)
+            {
+                Vector3Int gridPos = new(g.name[8], g.name[6], g.name[7]); // extracts grid coordinates out of grid points names
+
+                // check each neighbor in the grid  
+                gridPos.x--;
+                counter = CheckActiveNeighbor(counter, gridPos);
+                gridPos.z++;
+                counter = CheckActiveNeighbor(counter, gridPos);
+                gridPos.x++;
+                counter = CheckActiveNeighbor(counter, gridPos);
+                gridPos.z -= 2;
+                counter = CheckActiveNeighbor(counter, gridPos);
+                gridPos.x++;
+                counter = CheckActiveNeighbor(counter, gridPos);
+                gridPos.z++;
+                counter = CheckActiveNeighbor(counter, gridPos);
+
+                gridPos.y--;
+                counter = CheckActiveNeighbor(counter, gridPos);
+                gridPos.x--;
+                counter = CheckActiveNeighbor(counter, gridPos);
+                gridPos.z++;
+                counter = CheckActiveNeighbor(counter, gridPos);
+
+                gridPos.y += 2;
+                gridPos.z--;
+                counter = CheckActiveNeighbor(counter, gridPos);
+                gridPos.z--;
+                counter = CheckActiveNeighbor(counter, gridPos);
+                gridPos.z++;
+                gridPos.x--;
+                counter = CheckActiveNeighbor(counter, gridPos);
+            }
+
+            if (counter == 0) // no neighbours active
+                return true;
+        }
+
+        return false; // no grid points isolated
+    }
+
+    // piece sphere 1 has to remain on a grid position
+    public static bool OutsideGrid(Vector3Int newPos)
+    {
+        if (newPos.x < 0 || newPos.x > 5 - newPos.y - newPos.z ||
+            newPos.y < 0 || newPos.y > 5 - newPos.x - newPos.z ||
+            newPos.z < 0 || newPos.z > 5 - newPos.y - newPos.x)
+            return true;
+        return false;
+    }
+
+    static int CheckActiveNeighbor(int counter, Vector3Int gridPos)
+    {
+        if (!OutsideGrid(gridPos))
+        {
+            if (!gridPoints[CalcGridSpaceToArrayIndex(gridPos)].gameObject.activeSelf)
+                counter--;
+        }
+        else
+            counter--; // neighbour doesn't exist/ outside border point
+
+        return counter;
     }
 }
