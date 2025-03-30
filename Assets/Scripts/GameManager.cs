@@ -14,7 +14,8 @@ public class GameManager : MonoBehaviour
 
     public static Piece selectedPiece = null;
 
-    public static bool userNotAlgo = false;
+    public static bool userNotAlgo = false; // TODO change back
+    public static bool won = false;
 
     public GameObject winMessageCanvas;
     public GameObject popUpCanvas;
@@ -181,6 +182,8 @@ public class GameManager : MonoBehaviour
             {
                 p.SetActive(false);
             }
+
+            won = true;
 
             // activate winning screen/ pop up window 
             gridParent.GetComponent<GameManager>().winMessageCanvas.SetActive(true);

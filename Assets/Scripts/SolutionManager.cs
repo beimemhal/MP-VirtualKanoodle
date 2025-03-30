@@ -7,11 +7,9 @@ public class SolutionManager : MonoBehaviour
 {
     [SerializeField] GameManager gameManager;
 
-    public static int difficulty = 0;
+    public static int difficulty = 9; // TODO change back to easy
 
     static int hintNr = 0;
-
-    bool won = false;
 
     // solution storage for each piece store position and rotation in global space TODO clear when backtomainmenu 
     static Dictionary<string, Vector3> solutionPositions = new();
@@ -133,9 +131,10 @@ public class SolutionManager : MonoBehaviour
                                     else 
                                         Debug.Log("Piece " + tryNext.name + " placed after " + i + " unsuccessful tries.");
 
-                                    if (success || won)
+                                    if (success || GameManager.userNotAlgo)
                                     {
-                                        // 6.5 check if grid point is isolated: remove and continue trying to place differently
+                                        // 6.5 check if grid point is isolated: remove and continue trying to place differently TODO
+                                        /*
                                         if (GridFunct.CheckIsolatedPoints())
                                         {
                                             if (GameManager.selectedPiece != tryNext) // Place() removes selectedPiece
@@ -152,6 +151,7 @@ public class SolutionManager : MonoBehaviour
                                             placedRotation.x = 0;
                                             break;
                                         }
+                                        */
 
                                         Debug.Log("Piece successfully placed in " + x + ", " + y + ", " + z);
 
@@ -174,8 +174,7 @@ public class SolutionManager : MonoBehaviour
                                             unsuccessfulPiece = CalcSolution(new(triedNotPlaced), new());
                                         else // all (three) lists (notTried, previouslyTried, triedNotPlaced) = empty: all pieces placed = win TODO true???
                                         {
-                                            won = true;
-                                            GameManager.userNotAlgo = true;
+                                            // GameManager.userNotAlgo = true; // indicates win/ solution found TODO true?
                                         }
 
                                         break;
@@ -189,7 +188,7 @@ public class SolutionManager : MonoBehaviour
                                     GameManager.TurnPiece('x', 1);
                                     placedRotation.x = 0;
                                 }
-                                if (success || won)
+                                if (success || GameManager.userNotAlgo)
                                 {
                                     break; // iteratively break out of loops to try placing the next piece
                                 }
@@ -202,7 +201,7 @@ public class SolutionManager : MonoBehaviour
                                 GameManager.TurnPiece('y', 1);
                                 placedRotation.y = 0;
                             }
-                            if (success || won)
+                            if (success || GameManager.userNotAlgo)
                             {
                                 break;
                             }
@@ -215,7 +214,7 @@ public class SolutionManager : MonoBehaviour
                             GameManager.TurnPiece('z', 1);
                             placedRotation.z = 0;
                         }
-                        if (success || won)
+                        if (success || GameManager.userNotAlgo)
                         {
                             break;
                         }
@@ -231,7 +230,7 @@ public class SolutionManager : MonoBehaviour
                         }
                         GameManager.MovePiece('x', 1);
                     }
-                    if (success || won)
+                    if (success || GameManager.userNotAlgo)
                     {
                         break;
                     }
@@ -250,7 +249,7 @@ public class SolutionManager : MonoBehaviour
 
                     GameManager.MovePiece('z', 1);
                 }
-                if (success || won)
+                if (success || GameManager.userNotAlgo)
                 {
                     break;
                 }
@@ -273,7 +272,7 @@ public class SolutionManager : MonoBehaviour
             }
 
             // 8 recursive call 2: rec. call 1 doesn't find a solution -> gone back from lower node
-            if (!won && success)
+            if (!GameManager.userNotAlgo && success)
             {
                 Debug.Log("No solution found for placement of " + tryNext.name + ". Remove and try diff. position.");
                 // remove last from lastPlaced list again
@@ -298,7 +297,7 @@ public class SolutionManager : MonoBehaviour
                 if (unsuccessfulPiece == null)
                     success = true;
 
-                while (unsuccessfulPiece != null && !won) // recursive call unsuccessful (keep in same node, try all possible branches)
+                while (unsuccessfulPiece != null && !GameManager.userNotAlgo) // recursive call unsuccessful (keep in same node, try all possible branches)
                 {
                     if (notTried.Count == 0)
                         break;
@@ -315,7 +314,7 @@ public class SolutionManager : MonoBehaviour
             }
         }
 
-        if (success || won)
+        if (success || GameManager.userNotAlgo)
         {
             Debug.Log("Success or won. Return at end.");
             return null;
@@ -329,7 +328,6 @@ public class SolutionManager : MonoBehaviour
     {
         if (GridFunct.CheckWon())
         {
-            won = true;
             GameManager.userNotAlgo = true;
 
             Debug.Log("Solution found");

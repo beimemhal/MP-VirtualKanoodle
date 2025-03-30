@@ -33,7 +33,7 @@ public class Piece : MonoBehaviour
     // if clicked on, becomes selected piece in GameManager 
     private void Update()
     {
-        if (moveable)
+        if (moveable || this != GameManager.selectedPiece) // cannot be selected if it already is
         {
             // if mouse button down call one of the functions, source for raycast functionality: ChatGPT (slightly altered)
             if (Input.GetMouseButtonDown(0)) // left-click
