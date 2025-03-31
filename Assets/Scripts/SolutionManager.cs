@@ -2,31 +2,50 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static UnityEngine.UIElements.UxmlAttributeDescription;
 
 public class SolutionManager : MonoBehaviour
 {
     [SerializeField] GameManager gameManager;
 
-    public static int difficulty = 9; // TODO change back to easy
+    public static int difficulty = 0; // TODO change back to easy
 
     static int hintNr = 0;
 
     // solution storage for each piece store position and rotation in global space TODO clear when backtomainmenu 
-    static Dictionary<string, Vector3> solutionPositions = new();
-    static Dictionary<string, Quaternion> solutionRotations = new();
+    public static Dictionary<string, Vector3> solutionPositions = new();
+    public static Dictionary<string, Quaternion> solutionRotations = new();
 
     // store pieces in the order they're placed 
     static List<Piece> lastPlaced = new(); 
 
     private void Start()
     {
-        if (difficulty != 0)
+        if (difficulty != 0 && !GameManager.userNotAlgo)
         {
             // TODO 1 activate loading screen (if new level in between? -> maybe go back to main menu for that)
             DeActivateLoadingScreen(true);
 
             // 2 calls solving algorithm
-            CalcSolution(GameManager.allPieces, new()); // give a new List of allPieces (copy but w/ the same objects)
+            CalcSolution(GameManager.allPieces, new());
+            // CalcSolution2(new List<GameObject>(), new HashSet<GameObject>());
+            /*
+            List<GameObject> previouslyTried = new();
+            while (!GameManager.userNotAlgo)
+            {
+                Piece unsuccessfulPiece = CalcSolution1(GameManager.allPieces, new(previouslyTried), null); // give a new List of allPieces (copy but w/ the same objects)
+
+                // first placed piece didn't result in solution
+                if (unsuccessfulPiece != null)
+                {
+                    unsuccessfulPiece.PieceSelected();
+                    GameManager.Remove();
+                    lastPlaced.Remove(unsuccessfulPiece);
+
+                    previouslyTried.Add(unsuccessfulPiece.gameObject);
+                }
+            }
+            */
 
             // TODO 3 save solution in dicts
             SaveSolution();
@@ -61,7 +80,7 @@ public class SolutionManager : MonoBehaviour
         Vector3Int placedRotation = new(0, 0, 0);
 
         // 1 base case: check if won: all pieces placed successfully
-        if (BaseCaseCheck(notTried.Count))
+        if (BaseCaseCheck())
             return null;
 
         // 1.5 all pieces have been tried (pieces in previouslyTried = tried but not placeable or placement not resulted in solution) go back up to remove last successfully placed piece and try another one first
@@ -131,27 +150,20 @@ public class SolutionManager : MonoBehaviour
                                     else 
                                         Debug.Log("Piece " + tryNext.name + " placed after " + i + " unsuccessful tries.");
 
-                                    if (success || GameManager.userNotAlgo)
+                                    if (success)
                                     {
-                                        // 6.5 check if grid point is isolated: remove and continue trying to place differently TODO
-                                        /*
-                                        if (GridFunct.CheckIsolatedPoints())
+                                        // 6.5 check if grid point is isolated: remove and continue trying to place differently 
+                                        if (lastPlaced.Count > 4 && GridFunct.CheckIsolatedPoints()) // do only after at least 4 pieces have been placed (if won: returns false bc all inactive)
                                         {
-                                            if (GameManager.selectedPiece != tryNext) // Place() removes selectedPiece
-                                                GameManager.selectedPiece = tryNext;
-
+                                            tryNext.PieceSelected(); // Place() removes selectedPiece
                                             GameManager.Remove();
                                             success = false;
 
                                             // go to next positioning
-                                            if (GameManager.selectedPiece != tryNext) // Remove() removes selectedPiece
-                                            GameManager.selectedPiece = tryNext;
-
+                                            tryNext.PieceSelected(); // Remove() removes selectedPiece
                                             GameManager.TurnPiece('x', 1);
-                                            placedRotation.x = 0;
-                                            break;
+                                            continue;
                                         }
-                                        */
 
                                         Debug.Log("Piece successfully placed in " + x + ", " + y + ", " + z);
 
@@ -159,7 +171,7 @@ public class SolutionManager : MonoBehaviour
                                         triedNotPlaced.Remove(tryNext.gameObject);
                                         lastPlaced.Add(tryNext);
 
-                                        // 9 recursive call 1
+                                        // 8 recursive call 1
                                         List<GameObject> tmpNT = new(notTried); // TODO try adding to notPlaced
                                         if (previouslyTried.Count > 0)
                                         {
@@ -182,7 +194,7 @@ public class SolutionManager : MonoBehaviour
 
                                     // re-select tryNext: might be unselected in rec. call or removed in Place() or Remove()
                                     if (GameManager.selectedPiece != tryNext)
-                                        GameManager.selectedPiece = tryNext;
+                                        tryNext.PieceSelected();
 
                                     // 5
                                     GameManager.TurnPiece('x', 1);
@@ -195,7 +207,7 @@ public class SolutionManager : MonoBehaviour
 
                                 // re-select tryNext: might be unselected in rec. call
                                 if (GameManager.selectedPiece != tryNext)
-                                    GameManager.selectedPiece = tryNext;
+                                    tryNext.PieceSelected();
 
                                 // 5
                                 GameManager.TurnPiece('y', 1);
@@ -208,7 +220,7 @@ public class SolutionManager : MonoBehaviour
 
                             // re-select tryNext: might be unselected in rec. call
                             if (GameManager.selectedPiece != tryNext)
-                                GameManager.selectedPiece = tryNext;
+                                tryNext.PieceSelected();
 
                             // 5
                             GameManager.TurnPiece('z', 1);
@@ -221,7 +233,7 @@ public class SolutionManager : MonoBehaviour
 
                         // re-select tryNext: might be unselected in rec. call
                         if (GameManager.selectedPiece != tryNext)
-                            GameManager.selectedPiece = tryNext;
+                            tryNext.PieceSelected();
 
                         // 4 
                         if (x == xMax)
@@ -237,7 +249,7 @@ public class SolutionManager : MonoBehaviour
 
                     // re-select tryNext: might be unselected in rec. call
                     if (GameManager.selectedPiece != tryNext)
-                        GameManager.selectedPiece = tryNext;
+                        tryNext.PieceSelected();
 
                     // 4 
                     if (z == zMax)
@@ -256,7 +268,7 @@ public class SolutionManager : MonoBehaviour
 
                 // re-select tryNext: might be unselected in rec. call
                 if (GameManager.selectedPiece != tryNext)
-                    GameManager.selectedPiece = tryNext;
+                    tryNext.PieceSelected();
 
                 // 4 
                 if (y == 5)
@@ -271,12 +283,16 @@ public class SolutionManager : MonoBehaviour
                 GameManager.MovePiece('y', 1);
             }
 
-            // 8 recursive call 2: rec. call 1 doesn't find a solution -> gone back from lower node
+            // if (unsuccessfulPiece != null) TODO ????
+                // try another piece first -> put in previously tried?
+
+            // 9 recursive call 2: rec. call 1 doesn't find a solution -> gone back from lower node
             if (!GameManager.userNotAlgo && success)
             {
                 Debug.Log("No solution found for placement of " + tryNext.name + ". Remove and try diff. position.");
                 // remove last from lastPlaced list again
                 Piece lastTried = lastPlaced.ElementAt(lastPlaced.Count - 1);
+                // if (lastTried == tryNext) TODO ?
                 lastPlaced.RemoveAt(lastPlaced.Count - 1); 
                 success = false;
 
@@ -297,7 +313,7 @@ public class SolutionManager : MonoBehaviour
                 if (unsuccessfulPiece == null)
                     success = true;
 
-                while (unsuccessfulPiece != null && !GameManager.userNotAlgo) // recursive call unsuccessful (keep in same node, try all possible branches)
+                while (unsuccessfulPiece != null && !GameManager.userNotAlgo) // 10 recursive call 2 unsuccessful (keep in same node, try all possible branches)
                 {
                     if (notTried.Count == 0)
                         break;
@@ -314,7 +330,8 @@ public class SolutionManager : MonoBehaviour
             }
         }
 
-        if (success || GameManager.userNotAlgo)
+        // leave function when no placement found or all pieces succesfully placed (won)
+        if (GameManager.userNotAlgo) // success || TODO success not necessary cause if success, all other pieces in lower levels have to also be success in the recursive calls
         {
             Debug.Log("Success or won. Return at end.");
             return null;
@@ -323,8 +340,8 @@ public class SolutionManager : MonoBehaviour
             return tryNext;
     }
 
-    // TODO help methods solver
-    bool BaseCaseCheck(int notTriedCount) // break out of recursion call if returns true
+    // help methods solver
+    bool BaseCaseCheck() // break out of recursion call if returns true
     {
         if (GridFunct.CheckWon())
         {
@@ -334,9 +351,6 @@ public class SolutionManager : MonoBehaviour
 
             return true;
         }
-        // or: no remaining pieces in notTried list (doesn't garantee win, but needs going back up in tree)
-        // if (notTriedCount == 0)
-            // return true;
         
         return false;
     }
@@ -433,6 +447,320 @@ public class SolutionManager : MonoBehaviour
         {
             GameManager.selectedPiece = otherPiece;
             GameManager.Remove();
+        }
+    }
+
+    // TODO delete try 2
+    private Piece CalcSolution1(List<GameObject> notTried, List<GameObject> previouslyTried, Piece tryNext) // returns piece that couldn't be placed, if there is one
+    {
+        // 0 new triedNotPlaced list
+        Piece unsuccessfulPiece = null;
+
+        // 1 base case: check if won: all pieces placed successfully
+        if (GridFunct.CheckWon())
+        {
+            GameManager.userNotAlgo = true;
+
+            Debug.Log("Solution found");
+
+            return null;
+        }
+
+        // 2 select random piece of available ones
+        if (tryNext == null)
+        {
+            int rdm = Random.Range(0, notTried.Count);
+            tryNext = notTried[rdm].GetComponent<Piece>();
+
+            // 3 save tryNext piece in triedNotPlaced list and remove from notTried
+            // notTried.RemoveAt(rdm); remains there until placed successfully
+        }
+        bool success = false;
+
+        tryNext.PieceSelected();
+
+        // 4 iterate through each grid position
+        int x = 0;
+        int xMax = 5, zMax = 5;
+        for (int y = 0; y <= 5; y++)
+        {
+            for (int z = 0; z <= zMax; z++)
+            {
+                for (x = 0; x <= xMax; x++)
+                {
+                    // 4.5 if grid at x, y, z = disabled: continue with next position;
+                    if (!GridFunct.gridPoints[GridFunct.CalcGridSpaceToArrayIndex(new Vector3Int(x, y, z))].gameObject.activeSelf)
+                    {
+                        Debug.Log("Placement skipped.");
+
+                        if (x == xMax) break;
+
+                        GameManager.MovePiece('x', 1);
+                        continue;
+                    }
+
+                    // 5 iterate through each possible rotation/ orientation
+                    for (int j = 0; j < 4; j++) // rotate in z
+                    {
+                        for (int k = 0; k < 6; k++) // rotate in y
+                        {
+                            for (int l = 0; l < 4; l++) // rotate in x
+                            {
+                                // 6 try placing it
+                                success = gameManager.Place();
+
+                                if (success)
+                                {
+                                    // 6.5 check if grid point is isolated: remove and continue trying to place differently 
+                                    if (lastPlaced.Count > 4 && GridFunct.CheckIsolatedPoints()) // do only after at least 4 pieces have been placed (if won: returns false bc all inactive) TODO evtl delete?
+                                    {
+                                        tryNext.PieceSelected(); // Place() removes selectedPiece
+                                        GameManager.Remove();
+                                        success = false;
+
+                                        // go to next positioning
+                                        tryNext.PieceSelected(); // Remove() removes selectedPiece
+                                        GameManager.TurnPiece('x', 1);
+                                        continue;
+                                    }
+
+                                    Debug.Log("Piece successfully placed in " + x + ", " + y + ", " + z);
+
+                                    // 7 remove from notTried list and add to lastPlaced list (and unselect)
+                                    notTried.Remove(tryNext.gameObject);
+                                    lastPlaced.Add(tryNext);
+
+                                    // 8 recursive call 1
+                                    List<GameObject> tmp = new(notTried);
+                                    if (previouslyTried.Count > 0 && unsuccessfulPiece == null)
+                                    {
+                                        tmp.AddRange(previouslyTried);
+                                    }
+                                    unsuccessfulPiece = CalcSolution1(tmp, previouslyTried, unsuccessfulPiece);
+
+                                    // if win in recursion: iteratively break out of loops
+                                    if (GameManager.userNotAlgo) break;
+
+                                    // 9 recursive call unsuccessful: continue placing tryNext another way
+                                    if (unsuccessfulPiece != null)
+                                    {
+                                        tryNext.PieceSelected();
+                                        GameManager.Remove();
+                                        notTried.Add(tryNext.gameObject);
+                                        lastPlaced.Remove(tryNext);
+                                        success = false;
+                                    }
+                                }
+
+                                // re-select tryNext: unselected in rec. call or in Place() or Remove()
+                                if (GameManager.selectedPiece != tryNext) tryNext.PieceSelected();
+                                // 5
+                                GameManager.TurnPiece('x', 1);
+                            }
+                            if (GameManager.userNotAlgo) break;
+
+                            // 5
+                            if (GameManager.selectedPiece != tryNext) tryNext.PieceSelected();
+                            GameManager.TurnPiece('y', 1);
+                        }
+                        if (GameManager.userNotAlgo) break;
+
+                        // 5
+                        if (GameManager.selectedPiece != tryNext) tryNext.PieceSelected();
+                        GameManager.TurnPiece('z', 1);
+                    }
+                    if (GameManager.userNotAlgo) break;
+
+                    // 4
+                    if (GameManager.selectedPiece != tryNext) tryNext.PieceSelected();
+                    if (x == xMax) break;
+
+                    GameManager.MovePiece('x', 1);
+                }
+                if (GameManager.userNotAlgo) break;
+
+                // 4
+                if (GameManager.selectedPiece != tryNext) tryNext.PieceSelected();
+                if (z == zMax) break;
+
+                GameManager.selectedPiece.gridPos.x = 0;
+                xMax = 4 - z - y; // = 4 because z (only, needs to calc w/ new one already) counted up after this (new loop it.)
+
+                GameManager.MovePiece('z', 1);
+            }
+            if (GameManager.userNotAlgo) break;
+
+            // 4 
+            if (GameManager.selectedPiece != tryNext) tryNext.PieceSelected();
+            if (y == 5) break;
+
+            GameManager.selectedPiece.gridPos.z = 0;
+            GameManager.selectedPiece.gridPos.x = 0;
+            zMax = 4 - y - x;
+
+            GameManager.MovePiece('y', 1);
+        } // piece cannot be placed anywhere on the grid: only reason to go up (apart from win)
+
+        if (!success) 
+
+        // leave function when no placement found or all pieces succesfully placed (won)
+        if (GameManager.userNotAlgo)
+        {
+            Debug.Log("Success or won. Return at end.");
+            return null;
+        }
+
+        notTried.Remove(tryNext.gameObject);
+        return tryNext; // unsuccessful branch
+    }
+
+
+    // TODO delete try 3
+    private void CalcSolution2(List<GameObject> placed, HashSet<GameObject> previouslyTried) // returns piece that couldn't be placed, if there is one
+    {
+        // 1 base case: check if won: all pieces placed successfully
+        if (GridFunct.CheckWon()) // placed.Count == GameManager.allPieces.Count
+        {
+            GameManager.userNotAlgo = true;
+
+            Debug.Log("Solution found");
+
+            return;
+        }
+
+        // 2 select random piece of available ones
+        List<GameObject> notTried = new List<GameObject>(GameManager.allPieces);
+        notTried.RemoveAll(obj => previouslyTried.Contains(obj)); // Remove used objects
+        Shuffle(notTried); // random order
+
+        foreach (GameObject g in notTried)
+        {
+            Piece tryNext = g.GetComponent<Piece>();
+            tryNext.PieceSelected();
+            bool success = false;
+
+            // 4 iterate through each grid position
+            int x = 0;
+            int xMax = 5, zMax = 5;
+            for (int y = 0; y <= 5; y++)
+            {
+                for (int z = 0; z <= zMax; z++)
+                {
+                    for (x = 0; x <= xMax; x++)
+                    {
+                        // 4.5 if grid at x, y, z = disabled: continue with next position;
+                        if (!GridFunct.gridPoints[GridFunct.CalcGridSpaceToArrayIndex(new Vector3Int(x, y, z))].gameObject.activeSelf)
+                        {
+                            Debug.Log("Placement skipped.");
+
+                            if (x == xMax) break;
+
+                            GameManager.MovePiece('x', 1);
+                            continue;
+                        }
+
+                        // 5 iterate through each possible rotation/ orientation
+                        for (int j = 0; j < 4; j++) // rotate in z
+                        {
+                            for (int k = 0; k < 6; k++) // rotate in y
+                            {
+                                for (int l = 0; l < 4; l++) // rotate in x
+                                {
+                                    // 6 try placing it
+                                    success = gameManager.Place();
+
+                                    if (success)
+                                    {
+                                        // 6.5 check if grid point is isolated: remove and continue trying to place differently 
+                                        if (lastPlaced.Count > 4 && GridFunct.CheckIsolatedPoints()) // do only after at least 4 pieces have been placed (if won: returns false bc all inactive) TODO evtl delete?
+                                        {
+                                            tryNext.PieceSelected(); // Place() removes selectedPiece
+                                            GameManager.Remove();
+                                            success = false;
+
+                                            // go to next positioning
+                                            tryNext.PieceSelected(); // Remove() removes selectedPiece
+                                            GameManager.TurnPiece('x', 1);
+                                            continue;
+                                        }
+
+                                        Debug.Log("Piece successfully placed in " + x + ", " + y + ", " + z);
+
+                                        // 7 remove from notTried list and add to lastPlaced list (and unselect)
+                                        placed.Add(tryNext.gameObject);
+                                        previouslyTried.Add(tryNext.gameObject);
+
+                                        // 8 recursive call 1
+                                        CalcSolution2(placed, previouslyTried);
+
+                                        // if win in recursion: iteratively break out of loops
+                                        if (GameManager.userNotAlgo) break;
+
+                                        // 9 backtrack
+                                        placed.RemoveAt(placed.Count - 1);
+                                        previouslyTried.Remove(g);
+                                        tryNext.PieceSelected(); // Place() removes selectedPiece
+                                        GameManager.Remove();
+                                    }
+
+                                    // re-select tryNext: unselected in rec. call or in Place() or Remove()
+                                    if (GameManager.selectedPiece != tryNext) tryNext.PieceSelected();
+                                    // 5
+                                    GameManager.TurnPiece('x', 1);
+                                }
+                                if (GameManager.userNotAlgo) break;
+
+                                // 5
+                                if (GameManager.selectedPiece != tryNext) tryNext.PieceSelected();
+                                GameManager.TurnPiece('y', 1);
+                            }
+                            if (GameManager.userNotAlgo) break;
+
+                            // 5
+                            if (GameManager.selectedPiece != tryNext) tryNext.PieceSelected();
+                            GameManager.TurnPiece('z', 1);
+                        }
+                        if (GameManager.userNotAlgo) break;
+
+                        // 4
+                        if (GameManager.selectedPiece != tryNext) tryNext.PieceSelected();
+                        if (x == xMax) break;
+
+                        GameManager.MovePiece('x', 1);
+                    }
+                    if (GameManager.userNotAlgo) break;
+
+                    // 4
+                    if (GameManager.selectedPiece != tryNext) tryNext.PieceSelected();
+                    if (z == zMax) break;
+
+                    GameManager.selectedPiece.gridPos.x = 0;
+                    xMax = 4 - z - y; // = 4 because z (only, needs to calc w/ new one already) counted up after this (new loop it.)
+
+                    GameManager.MovePiece('z', 1);
+                }
+                if (GameManager.userNotAlgo) break;
+
+                // 4 
+                if (GameManager.selectedPiece != tryNext) tryNext.PieceSelected();
+                if (y == 5) break;
+
+                GameManager.selectedPiece.gridPos.z = 0;
+                GameManager.selectedPiece.gridPos.x = 0;
+                zMax = 4 - y - x;
+
+                GameManager.MovePiece('y', 1);
+            } // piece cannot be placed anywhere on the grid: only reason to go up (apart from win)
+            if (GameManager.userNotAlgo) break;
+        }
+    }
+
+    void Shuffle(List<GameObject> list)
+    {
+        for (int i = list.Count - 1; i > 0; i--)
+        {
+            int randIndex = Random.Range(0, i + 1);
+            (list[i], list[randIndex]) = (list[randIndex], list[i]);
         }
     }
 }

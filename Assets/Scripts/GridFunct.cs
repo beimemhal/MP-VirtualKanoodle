@@ -55,6 +55,8 @@ public static class GridFunct
 
         // Debug.Log("Game won");
 
+        HardCodedLvl.SaveSolution();
+
         return true;
     }
 
@@ -67,9 +69,10 @@ public static class GridFunct
 
             if (g.activeSelf)
             {
-                Vector3Int gridPos = new(g.name[8], g.name[6], g.name[7]); // extracts grid coordinates out of grid points names
+                Vector3Int gridPos = new(int.Parse(g.name[8].ToString()) - 1, int.Parse(g.name[6].ToString()) - 1, int.Parse(g.name[7].ToString()) - 1); // extracts grid coordinates out of grid points names
 
                 // check each neighbor in the grid  
+                // six on same level/ y
                 gridPos.x--;
                 counter = CheckActiveNeighbor(counter, gridPos);
                 gridPos.z++;
@@ -83,6 +86,7 @@ public static class GridFunct
                 gridPos.z++;
                 counter = CheckActiveNeighbor(counter, gridPos);
 
+                // three below
                 gridPos.y--;
                 counter = CheckActiveNeighbor(counter, gridPos);
                 gridPos.x--;
@@ -90,6 +94,7 @@ public static class GridFunct
                 gridPos.z++;
                 counter = CheckActiveNeighbor(counter, gridPos);
 
+                // three above
                 gridPos.y += 2;
                 gridPos.z--;
                 counter = CheckActiveNeighbor(counter, gridPos);

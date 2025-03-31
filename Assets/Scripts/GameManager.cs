@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
 
     public static Piece selectedPiece = null;
 
-    public static bool userNotAlgo = false; // TODO change back
+    public static bool userNotAlgo = true; // TODO change back for solver, reset when back to main menu?
     public static bool won = false;
 
     public GameObject winMessageCanvas;
