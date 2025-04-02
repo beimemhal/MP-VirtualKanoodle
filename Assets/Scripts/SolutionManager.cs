@@ -6,65 +6,70 @@ using static UnityEngine.UIElements.UxmlAttributeDescription;
 
 public class SolutionManager : MonoBehaviour
 {
-    [SerializeField] GameManager gameManager;
+    public static int difficulty; // TODO change back to easy
 
-    public static int difficulty = 0; // TODO change back to easy
-
-    static int hintNr = 0;
+    static int hintNr;
 
     // solution storage for each piece store position and rotation in global space TODO clear when backtomainmenu 
     public static Dictionary<string, Vector3> solutionPositions = new();
     public static Dictionary<string, Quaternion> solutionRotations = new();
 
     // store pieces in the order they're placed 
-    static List<Piece> lastPlaced = new(); 
+    public static List<Piece> lastPlaced = new(); 
 
     private void Start()
     {
+        hintNr = 0;
+
+        /* TODO de-comment if solver works
         if (difficulty != 0 && !GameManager.userNotAlgo)
-        {
-            // TODO 1 activate loading screen (if new level in between? -> maybe go back to main menu for that)
-            DeActivateLoadingScreen(true);
+    {
+        // TODO 1 activate loading screen (if new level in between? -> maybe go back to main menu for that)
+        DeActivateLoadingScreen(true);
 
-            // 2 calls solving algorithm
-            CalcSolution(GameManager.allPieces, new());
-            // CalcSolution2(new List<GameObject>(), new HashSet<GameObject>());
-            /*
-            List<GameObject> previouslyTried = new();
-            while (!GameManager.userNotAlgo)
+        // 2 calls solving algorithm
+        CalcSolution(GameManager.allPieces, new());
+
+        // TODO delete
+        List<GameObject> previouslyTried = new();
+        while (!GameManager.userNotAlgo)
+        {
+            Piece unsuccessfulPiece = CalcSolution1(GameManager.allPieces, new(previouslyTried), null); // give a new List of allPieces (copy but w/ the same objects)
+
+            // first placed piece didn't result in solution
+            if (unsuccessfulPiece != null)
             {
-                Piece unsuccessfulPiece = CalcSolution1(GameManager.allPieces, new(previouslyTried), null); // give a new List of allPieces (copy but w/ the same objects)
+                unsuccessfulPiece.PieceSelected();
+                GameManager.Remove();
+                lastPlaced.Remove(unsuccessfulPiece);
 
-                // first placed piece didn't result in solution
-                if (unsuccessfulPiece != null)
-                {
-                    unsuccessfulPiece.PieceSelected();
-                    GameManager.Remove();
-                    lastPlaced.Remove(unsuccessfulPiece);
-
-                    previouslyTried.Add(unsuccessfulPiece.gameObject);
-                }
+                previouslyTried.Add(unsuccessfulPiece.gameObject);
             }
-            */
-
-            // TODO 3 save solution in dicts
-            SaveSolution();
-
-            // TODO 4 level setup (first difficulty ones in lastPlaced not moveable)
-            // LevelSetup();
-
-            // TODO 5 reset pieces that are moveable
-            // GameManager.Restart();
-
-            // TODO 6 de-activate loading screen
-            DeActivateLoadingScreen(false);
         }
-        else
-        {
-            GameManager.userNotAlgo = true;
-        }
-        // TODO clear allPieces (...?) if solver = own scene
+
+        // TODO delete
+        // CalcSolution2(new List<GameObject>(), new HashSet<GameObject>());
+
+        /
+
+        // TODO 3 save solution in dicts
+        SaveSolution();
+
+        // TODO 4 level setup (first difficulty ones in lastPlaced not moveable)
+        // LevelSetup();
+
+        // TODO 5 reset pieces that are moveable
+        // GameManager.Restart();
+
+        // TODO 6 de-activate loading screen
+        DeActivateLoadingScreen(false);
     }
+    else
+    {
+        GameManager.userNotAlgo = true;
+    }
+    */
+}
 
     // solving algorithm TODO (tree-based: recursively)
     private Piece CalcSolution(List<GameObject> notTried, List<GameObject> previouslyTried) // returns piece that couldn't be placed, if there is one
@@ -141,7 +146,7 @@ public class SolutionManager : MonoBehaviour
                                     placedRotation.x = l;
 
                                     // 6 try placing it
-                                    success = gameManager.Place();
+                                    success = GameManager.gameManager.Place();
 
                                     if (!success)
                                     {
@@ -340,21 +345,6 @@ public class SolutionManager : MonoBehaviour
             return tryNext;
     }
 
-    // help methods solver
-    bool BaseCaseCheck() // break out of recursion call if returns true
-    {
-        if (GridFunct.CheckWon())
-        {
-            GameManager.userNotAlgo = true;
-
-            Debug.Log("Solution found");
-
-            return true;
-        }
-        
-        return false;
-    }
-
     // save solution in dicts
     void SaveSolution()
     {
@@ -384,7 +374,7 @@ public class SolutionManager : MonoBehaviour
     public void GiveHint()
     {
         // 1 choose next moveable piece in lastPlaced
-        Piece p = lastPlaced.ElementAt(difficulty + hintNr);
+        Piece p = GameObject.Find(HardCodedLvl.lastPlaced.ElementAt(difficulty + hintNr)).GetComponent<Piece>(); // TODO change back when solver works
 
         // 2 remove intersecting other pieces
         if (p.placed) // makes sure it's not a child of the grid itself
@@ -401,11 +391,29 @@ public class SolutionManager : MonoBehaviour
 
         // 3 place piece and make not moveable
         GameManager.selectedPiece = p;
-        gameManager.Place();
+        GameManager.gameManager.Place();
         p.moveable = false;
 
-        // TODO refactorign 4 put (flickering) outline around hint piece for 3 sec
+        // 4 count up number of hints
+        hintNr++;
 
+        // TODO refactorign 5 put (flickering) outline around hint piece for 3 sec
+
+    }
+
+    // help methods solver
+    bool BaseCaseCheck() // break out of recursion call if returns true
+    {
+        if (GridFunct.CheckWon())
+        {
+            GameManager.userNotAlgo = true;
+
+            Debug.Log("Solution found");
+
+            return true;
+        }
+
+        return false;
     }
 
     void RemoveIntersectingPieces(Piece p)
@@ -419,34 +427,38 @@ public class SolutionManager : MonoBehaviour
             Collider pieceSphere = p.gameObject.transform.GetChild(i).gameObject.GetComponent<SphereCollider>();
             bool isOverlapping = false;
             
-            // 3 iterate through all of grid's piece children
+            // 3 iterate through all of grid's piece's children
             for (int k = 56; k < GameManager.gridParent.transform.childCount; k++) 
             {
-                if (!GameManager.gridParent.gameObject.transform.GetChild(k).gameObject.GetComponent<Piece>().moveable)
-                    break;
-
-                Collider[] otherPiecesSpheres = GameManager.gridParent.gameObject.transform.GetChild(k).gameObject.GetComponentsInChildren<SphereCollider>();
-
-                // 4 iterate through other piece's spheres and check collisions
-                foreach (Collider c in otherPiecesSpheres)
+                if (GameManager.gridParent.gameObject.transform.GetChild(k).gameObject.GetComponent<Piece>().moveable)
                 {
-                    isOverlapping = GameManager.CheckIntersects(pieceSphere, c);
-                    if (isOverlapping)
+                    Collider[] otherPiecesSpheres = GameManager.gridParent.gameObject.transform.GetChild(k).gameObject.GetComponentsInChildren<SphereCollider>();
+
+                    // 4 iterate through other piece's spheres and check collisions
+                    foreach (Collider c in otherPiecesSpheres)
                     {
-                        overlapsOtherPieces[i] = c.transform.parent.GetComponent<Piece>();
-                        break; // go to next pieceSphere if overlapping gridSphere found
+                        isOverlapping = GameManager.CheckIntersects(pieceSphere, c);
+                        if (isOverlapping)
+                        {
+                            overlapsOtherPieces[i] = c.transform.parent.GetComponent<Piece>();
+                            break; // go to next pieceSphere if overlapping gridSphere found
+                        }
                     }
+                    if (isOverlapping)
+                        break;
                 }
-                if (isOverlapping)
-                    break;
+
             }
         }
 
         // 5 remove intersecting pieces from grid
         foreach (Piece otherPiece in overlapsOtherPieces)
         {
-            GameManager.selectedPiece = otherPiece;
-            GameManager.Remove();
+            if (otherPiece != null)
+            {
+                GameManager.selectedPiece = otherPiece;
+                GameManager.Remove();
+            }
         }
     }
 
@@ -507,7 +519,7 @@ public class SolutionManager : MonoBehaviour
                             for (int l = 0; l < 4; l++) // rotate in x
                             {
                                 // 6 try placing it
-                                success = gameManager.Place();
+                                success = GameManager.gameManager.Place();
 
                                 if (success)
                                 {
@@ -629,7 +641,7 @@ public class SolutionManager : MonoBehaviour
         }
 
         // 2 select random piece of available ones
-        List<GameObject> notTried = new List<GameObject>(GameManager.allPieces);
+        List<GameObject> notTried = new(GameManager.allPieces);
         notTried.RemoveAll(obj => previouslyTried.Contains(obj)); // Remove used objects
         Shuffle(notTried); // random order
 
@@ -667,7 +679,7 @@ public class SolutionManager : MonoBehaviour
                                 for (int l = 0; l < 4; l++) // rotate in x
                                 {
                                     // 6 try placing it
-                                    success = gameManager.Place();
+                                    success = GameManager.gameManager.Place();
 
                                     if (success)
                                     {

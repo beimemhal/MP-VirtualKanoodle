@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class ButtonFunct : MonoBehaviour
 {
-    [SerializeField] GameManager gameManager;
     [SerializeField] SolutionManager solutionManager;
     public int buttonNr;
 
@@ -13,7 +12,7 @@ public class ButtonFunct : MonoBehaviour
     {
         GameManager.buttons.Add(this);
 
-        gameManager = GameObject.Find("GridPrefab").GetComponent<GameManager>();
+        GameManager.gameManager = GameObject.Find("GridPrefab").GetComponent<GameManager>();
         solutionManager = GameObject.Find("SolutionManagerHolder").GetComponent<SolutionManager>();
     }
 
@@ -47,7 +46,7 @@ public class ButtonFunct : MonoBehaviour
                     else if (buttonNr == 13) GameManager.TurnPiece('z', 1);
                     else if (buttonNr == 14) GameManager.TurnPiece('z', -1);
                     // other
-                    else if (buttonNr == 15) gameManager.Place();
+                    else if (buttonNr == 15) GameManager.gameManager.Place();
                     else if (buttonNr == 16) GameManager.Remove();
                     else if (buttonNr == 17) GameManager.Restart();
                     else if (buttonNr == 18) BackToMainMenu();
@@ -65,6 +64,11 @@ public class ButtonFunct : MonoBehaviour
         // empty button and pieces list (bc they're static) 
         GameManager.buttons.Clear();
         GameManager.allPieces.Clear();
+        GameManager.userNotAlgo = false;
+        // GridFunct.gridPoints.Clear();
+        SolutionManager.solutionRotations.Clear();
+        SolutionManager.solutionPositions.Clear();
+        HardCodedLvl.lastPlaced.Clear();
 
         SceneManager.LoadScene("MainMenuScene");
     }

@@ -1,14 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
 
-public static class GridFunct 
+public class GridFunct 
 {
-    public static SphereCollider[] gridPoints = GameManager.gridParent.transform.GetComponentsInChildren<SphereCollider>();
+    public static List<SphereCollider> gridPoints = GameManager.gridParent.transform.GetComponentsInChildren<SphereCollider>().ToList();
 
-    static float gridHeightY = 0.8164966F, gridHeightZ = 0.8660254F; // gridWidthX = 1
+    static readonly float gridHeightY = 0.8164966F, gridHeightZ = 0.8660254F; // gridWidthX = 1
 
     public static Vector3 CalcGridToGlobalSpace(Vector3Int gridPos)
     {
@@ -55,7 +56,7 @@ public static class GridFunct
 
         // Debug.Log("Game won");
 
-        HardCodedLvl.SaveSolution();
+        // HardCodedLvl.SaveSolutions(); // TODO delete
 
         return true;
     }

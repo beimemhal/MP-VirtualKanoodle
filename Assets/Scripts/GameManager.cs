@@ -1,20 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using UnityEditor.PackageManager.Requests;
 using UnityEngine;
-using UnityEngine.ProBuilder.MeshOperations;
 
 // component of GridPrefab
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] public static GameManager gameManager; // this variable to make it available in other scripts
+    public static GameObject gridParent;
+
     public static List<GameObject> allPieces = new();
     public static List<ButtonFunct> buttons = new();
 
-    public static GameObject gridParent;
-
     public static Piece selectedPiece = null;
 
-    public static bool userNotAlgo = true; // TODO change back for solver, reset when back to main menu?
+    public static bool userNotAlgo = false; // TODO change back for solver, reset when back to main menu?
     public static bool won = false;
 
     public GameObject winMessageCanvas;
@@ -180,7 +181,8 @@ public class GameManager : MonoBehaviour
             DisOrEnableButtons(otherButtons, false);
             foreach (GameObject p in allPieces)
             {
-                p.SetActive(false);
+                foreach (SphereCollider collider in p.GetComponentsInChildren<SphereCollider>())
+                    collider.enabled = false;
             }
 
             won = true;

@@ -6,7 +6,6 @@ using UnityEngine;
 public class Piece : MonoBehaviour
 {
     public GameObject prefab;
-    [SerializeField] GameManager gameManager;
 
     public bool placed = false;
     public bool moveable = true; // if piece gets set in the level setup, it cannot be moved => cannot be selected
@@ -23,6 +22,9 @@ public class Piece : MonoBehaviour
     // store initial position at start of the scene
     void Start()
     {
+        placed = false;
+        moveable = true;
+
         initialPosition = prefab.transform.position;
 
         GameManager.allPieces.Add(gameObject);
@@ -33,7 +35,7 @@ public class Piece : MonoBehaviour
     // if clicked on, becomes selected piece in GameManager 
     private void Update()
     {
-        if (moveable || this != GameManager.selectedPiece) // cannot be selected if it already is
+        if (moveable && this != GameManager.selectedPiece) // cannot be selected if it already is
         {
             // if mouse button down call one of the functions, source for raycast functionality: ChatGPT (slightly altered)
             if (Input.GetMouseButtonDown(0)) // left-click
@@ -65,7 +67,7 @@ public class Piece : MonoBehaviour
             // pop-up message that piece can't be selected
             if (!GameManager.userNotAlgo)
             {
-                StartCoroutine(gameManager.popUpCanvas.GetComponent<PopUpManager>().ShowNotification("Piece can't be selected because it's pre-set!"));
+                StartCoroutine(GameManager.gameManager.popUpCanvas.GetComponent<PopUpManager>().ShowNotification("Piece can't be selected because it's pre-set!"));
             }
             Debug.Log("The " + name + " piece can't be removed because it is pre-set.");
             return;
