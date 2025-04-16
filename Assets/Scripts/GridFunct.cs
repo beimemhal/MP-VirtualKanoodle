@@ -5,11 +5,19 @@ using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
 
-public class GridFunct 
+public class GridFunct : ScriptableObject
 {
     public static List<SphereCollider> gridPoints = GameManager.gridParent.transform.GetComponentsInChildren<SphereCollider>().ToList();
 
     static readonly float gridHeightY = 0.8164966F, gridHeightZ = 0.8660254F; // gridWidthX = 1
+
+    public static int gridTurns = 0;
+
+    private void Start()
+    {
+        if (gridPoints.Count == 0)
+            gridPoints = GameManager.gridParent.transform.GetComponentsInChildren<SphereCollider>().ToList();
+    }
 
     public static Vector3 CalcGridToGlobalSpace(Vector3Int gridPos)
     {
@@ -56,7 +64,7 @@ public class GridFunct
 
         // Debug.Log("Game won");
 
-        // HardCodedLvl.SaveSolutions(); // TODO delete
+        HardCodedLvl.SaveSolutions(0); // TODO delete
 
         return true;
     }

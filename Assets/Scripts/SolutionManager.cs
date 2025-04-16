@@ -373,6 +373,13 @@ public class SolutionManager : MonoBehaviour
 
     public void GiveHint()
     {
+        // 0 turn grid to initial position
+        int turns = GridFunct.gridTurns;
+        if (turns == 1)
+            GameManager.TurnGridY(-1);
+        else if (turns == 2)
+            GameManager.TurnGridY(1);
+
         // 1 choose next moveable piece in lastPlaced
         Piece p = GameObject.Find(HardCodedLvl.lastPlaced.ElementAt(difficulty + hintNr)).GetComponent<Piece>(); // TODO change back when solver works
 
@@ -399,6 +406,12 @@ public class SolutionManager : MonoBehaviour
 
         // TODO refactorign 5 put (flickering) outline around hint piece for 3 sec
 
+
+        // turn grid back
+        if (turns == 1)
+            GameManager.TurnGridY(1);
+        else if (turns == 2)
+            GameManager.TurnGridY(-1);
     }
 
     // help methods solver

@@ -65,10 +65,11 @@ public class ButtonFunct : MonoBehaviour
         GameManager.buttons.Clear();
         GameManager.allPieces.Clear();
         GameManager.userNotAlgo = false;
-        // GridFunct.gridPoints.Clear();
+        GridFunct.gridPoints.Clear();
         SolutionManager.solutionRotations.Clear();
         SolutionManager.solutionPositions.Clear();
         HardCodedLvl.lastPlaced.Clear();
+        GridFunct.gridTurns = 0;
 
         SceneManager.LoadScene("MainMenuScene");
     }

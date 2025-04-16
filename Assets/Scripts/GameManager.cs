@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 
@@ -44,34 +45,37 @@ public class GameManager : MonoBehaviour
         Vector3 turnPoint = new(-5.5F, 2.541241F, 1.443376F); // = middle of the grid
         Vector3 direction = gridParent.transform.position - turnPoint; // vector from turnPoint to object
 
-        // rotate this vector around the y axis
+        // 1 rotate this vector around the y axis
         Quaternion rotation = Quaternion.AngleAxis(120F * negPos, Vector3.up);
         Vector3 newDirection = rotation * direction;
 
-        // set grids new position and rotate
+        // 2 set grids new position and rotate
         gridParent.transform.position = turnPoint + newDirection; // grid centre + rotated vector from turnPoint to gridPrefab
         gridParent.transform.Rotate(Vector3.up, 120F * negPos, Space.World);
 
         // Debug.Log("gridparent " + gridParent.name);
 
-        // change grid pos of child pieces
+        // 3 change grid pos of child pieces
         foreach (var piece in allPieces) // iterate through all pieces
         {
             // Debug.Log("piece " + piece.name);
-            if (piece.transform.parent != null)
+            if (piece.GetComponent<Piece>().placed) // (piece.transform.parent != null) TODO delete
             {
                 // Debug.Log("pieces parent " + piece.transform.parent.name);
 
-                if (piece.transform.parent.name == gridParent.name) // if piece is a child of grid
-                {
+                // if (piece.transform.parent.name == gridParent.name) // if piece is a child of grid
+                
                     // Debug.Log("is child");
 
                     piece.GetComponent<Piece>().CalcNewGridCoords(negPos);
-                }
+                
             }
         }
 
-        // check if movement buttons changed
+        // 4 count up gridTurns
+        GridFunct.gridTurns = (GridFunct.gridTurns + negPos + 3) % 3;
+
+        // 5 check if movement buttons changed
         if (userNotAlgo && selectedPiece != null) DynamicButtonCheck();
 
         Debug.Log("Grid turned");
@@ -134,7 +138,7 @@ public class GameManager : MonoBehaviour
     public bool Place()
     {
         // 1 check if position valid/ placeable -> all piece spheres on active grid spheres
-        if (!GetOverlappingSpheres()) // not placeable
+        if (!OverlappingSpheres) // not placeable
         {
             // if player (not solution algo) show explaining popUp message
             if (userNotAlgo)
@@ -328,39 +332,46 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // returns array of grid spheres that have to be disabled
-    public static bool GetOverlappingSpheres() // returns false if not placeable
+    // returns array of grid spheres that have to be disabled TODO
+    // returns false if not placeable
+    public static bool OverlappingSpheres
     {
-        selectedPiece.overlapsGridSpheres = new GameObject[selectedPiece.sphereNr];
-
-        // 1 iterate through all spheres of the piece
-        for (int i = 0; i < selectedPiece.sphereNr; i++)
+        get // recommended bc after reopening scene, function was not gone into anymore
         {
-            // 2 check if collider detects collisions
-            Collider pieceSphere = selectedPiece.gameObject.transform.GetChild(i).gameObject.GetComponent<SphereCollider>();
-    
-            // 3 iterate through all gridSpheres
-            foreach (SphereCollider gridSphere in GridFunct.gridPoints)
+            selectedPiece.overlapsGridSpheres = new GameObject[selectedPiece.sphereNr];
+
+            // 1 iterate through all spheres of the piece
+            for (int i = 0; i < selectedPiece.sphereNr; i++)
             {
-                // 4 check if gridSphere is active, if not: continue with next gridSphere
-                if (!gridSphere.gameObject.activeSelf) continue;
+                // 2 check if collider detects collisions
+                Collider pieceSphere = selectedPiece.gameObject.transform.GetChild(i).gameObject.GetComponent<SphereCollider>();
 
-                // isOverlapping = pieceSphere.bounds.Intersects(gridSphere.bounds); // does not work in solver: sphere still at initial position TODO delete
-                if (CheckIntersects(pieceSphere, gridSphere))
+
+                if (GridFunct.gridPoints.Count == 0)
+                    GridFunct.gridPoints = GameManager.gridParent.transform.GetComponentsInChildren<SphereCollider>().ToList();
+                // 3 iterate through all gridSpheres
+                foreach (SphereCollider gridSphere in GridFunct.gridPoints)
                 {
-                    selectedPiece.overlapsGridSpheres[i] = gridSphere.gameObject;
-                    break; // go to next pieceSphere if overlapping gridSphere found
-                }
-            }
-            
-            // 5 if no overlapping grid sphere found for one of the piece spheres: piece not placeable 
-            if (selectedPiece.overlapsGridSpheres[i] == null)
-                return false;
-        }
+                    // 4 check if gridSphere is active, if not: continue with next gridSphere
+                    if (!gridSphere.gameObject.activeSelf) continue;
 
-        if (selectedPiece.overlapsGridSpheres[selectedPiece.sphereNr - 1] == null)
-            return false;
-        return true;
+                    // isOverlapping = pieceSphere.bounds.Intersects(gridSphere.bounds); // does not work in solver: sphere still at initial position TODO delete
+                    if (CheckIntersects(pieceSphere, gridSphere))
+                    {
+                        selectedPiece.overlapsGridSpheres[i] = gridSphere.gameObject;
+                        break; // go to next pieceSphere if overlapping gridSphere found
+                    }
+                }
+
+                // 5 if no overlapping grid sphere found for one of the piece spheres: piece not placeable 
+                if (selectedPiece.overlapsGridSpheres[i] == null)
+                    return false;
+            }
+
+            if (selectedPiece.overlapsGridSpheres[selectedPiece.sphereNr - 1] == null)
+                return false;
+            return true;
+        }
     }
 
     static void DisOrEnableGridSpheres(GameObject[] gridSpheres, bool disOrEnable)
@@ -369,7 +380,7 @@ public class GameManager : MonoBehaviour
             sphere.SetActive(disOrEnable);
     }
 
-    // self written intersects method (of bounds)
+    // self written intersects method (equates to bounds)
     public static bool CheckIntersects(Collider sphere1, Collider sphere2)
     {
         if (sphere1.transform.position.x + sphere1.bounds.extents.x > sphere2.transform.position.x - sphere2.bounds.extents.x
