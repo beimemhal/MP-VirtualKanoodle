@@ -5,7 +5,7 @@ using TMPro;
 
 public class Timer : MonoBehaviour
 {
-    public float timeValue = 0;
+    public static float timeValue = 0;
 
     public TMP_Text timeText;
 
