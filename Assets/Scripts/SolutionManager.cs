@@ -8,7 +8,7 @@ public class SolutionManager : MonoBehaviour
 {
     public static int difficulty; // TODO change back to easy
 
-    static int hintNr;
+    public static int hintNr;
 
     // solution storage for each piece store position and rotation in global space TODO clear when backtomainmenu 
     public static Dictionary<string, Vector3> solutionPositions = new();

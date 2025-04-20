@@ -5,6 +5,8 @@ using UnityEngine;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 
+using UnityEngine.SceneManagement;
+
 public class MenuManager : MonoBehaviour
 {
     
@@ -73,7 +75,7 @@ public class MenuManager : MonoBehaviour
                 PanelManager.Open("auth");
             }
         }
-        catch (Exception exception)
+        catch (Exception exception) // causes warning (var not used): ignore
         {
             ShowError(ErrorMenu.Action.StartService, "Failed to connect to the network.", "Retry");
         }
@@ -94,6 +96,7 @@ public class MenuManager : MonoBehaviour
         {
             ShowError(ErrorMenu.Action.SignIn, "Failed to connect to the network.", "Retry");
         }
+        SceneManager.LoadScene("MainMenuScene"); // new
     }
     
     public async void SignInWithUsernameAndPasswordAsync(string username, string password)
@@ -111,6 +114,7 @@ public class MenuManager : MonoBehaviour
         {
             ShowError(ErrorMenu.Action.OpenAuthMenu, "Failed to connect to the network.", "OK");
         }
+        SceneManager.LoadScene("MainMenuScene"); // new
     }
     
     public async void SignUpWithUsernameAndPasswordAsync(string username, string password)
@@ -128,8 +132,9 @@ public class MenuManager : MonoBehaviour
         {
             ShowError(ErrorMenu.Action.OpenAuthMenu, "Failed to connect to the network.", "OK");
         }
+        SceneManager.LoadScene("MainMenuScene"); // new
     }
-    
+
     public void SignOut()
     {
         AuthenticationService.Instance.SignOut();
@@ -137,15 +142,15 @@ public class MenuManager : MonoBehaviour
         PanelManager.Open("auth");
     }
     
-    private void SetupEvents()
+    private void SetupEvents() // method to open certain panels (auth
     {
         eventsInitialized = true;
         AuthenticationService.Instance.SignedIn += () =>
         {
-            SignInConfirmAsync();
+            SignInConfirmAsync(); // signs in with players specified name or as Player and go to main screen (
         };
 
-        AuthenticationService.Instance.SignedOut += () =>
+        AuthenticationService.Instance.SignedOut += () => // goes to auth panel to sign in
         {
             PanelManager.CloseAll();
             PanelManager.Open("auth");
@@ -153,7 +158,7 @@ public class MenuManager : MonoBehaviour
         
         AuthenticationService.Instance.Expired += () =>
         {
-            SignInAnonymouslyAsync();
+            SignInAnonymouslyAsync(); // signs in as guest with player name Player
         };
     }
     

@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using UnityEditor.PackageManager.Requests;
 using UnityEngine;
+using TMPro;
 
 // component of GridPrefab
 public class GameManager : MonoBehaviour
@@ -20,6 +20,9 @@ public class GameManager : MonoBehaviour
     public static bool won = false;
 
     public GameObject winMessageCanvas;
+    public TMP_Text winMessageText;
+    public GameObject leaderboardMessage; // to dis- and enable leaderboard add button
+
     public GameObject popUpCanvas;
 
     private void Start()
@@ -191,8 +194,13 @@ public class GameManager : MonoBehaviour
 
             won = true;
 
-            // activate winning screen/ pop up window 
+            // set up winning screen and activate
+            winMessageText.text = "You have successfully solved this puzzle in " + Timer.timeText + "!";
             gridParent.GetComponent<GameManager>().winMessageCanvas.SetActive(true);
+
+            // if hint used, time can't be added to leaderbord
+            if (SolutionManager.hintNr > 0)
+                leaderboardMessage.SetActive(false);
         }
 
         return true;

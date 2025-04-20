@@ -5,8 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class ButtonFunct : MonoBehaviour
 {
-    [SerializeField] SolutionManager solutionManager;
+    SolutionManager solutionManager;
     public int buttonNr;
+
+    public static bool updateLeaderboardEntry = false;
 
     private void Start()
     {
@@ -59,9 +61,15 @@ public class ButtonFunct : MonoBehaviour
         }
     }
 
+    public void AddEntryToLeaderboard() // passes/ stores time as mmss(ms)(ms)(ms) as an int
+    {
+        updateLeaderboardEntry = true;
+        SceneManager.LoadScene("Login&Leaderboard");
+    }
+
     public void BackToMainMenu()
     {
-        // empty button and pieces list (bc they're static) 
+        // reset game scene: empty button and pieces list (static variables meant reset when leaving the scene) 
         GameManager.buttons.Clear();
         GameManager.allPieces.Clear();
         GameManager.userNotAlgo = false;
@@ -71,6 +79,10 @@ public class ButtonFunct : MonoBehaviour
         HardCodedLvl.lastPlaced.Clear();
         GridFunct.gridTurns = 0;
 
+        SceneManager.LoadScene("MainMenuScene");
+    }
+    public void BTMM() // short: only scene change without game reset -> from leaderboard to main menu scene
+    {
         SceneManager.LoadScene("MainMenuScene");
     }
 }

@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class AuthenticationMenu : Panel
 {
-
     [SerializeField] private TMP_InputField usernameInput = null;
     [SerializeField] private TMP_InputField passwordInput = null;
     [SerializeField] private Button signinButton = null;

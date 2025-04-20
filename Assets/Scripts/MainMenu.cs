@@ -12,8 +12,6 @@ public class MainMenu : MonoBehaviour
     public GameObject difficulties;
     public GameObject leaderboardButton;
 
-    public Canvas mainMenu;
-
     public void PlayEasy()
     {
         SolutionManager.difficulty = 9; // 9 pieces placed initially, player has to place 3
@@ -50,22 +48,23 @@ public class MainMenu : MonoBehaviour
         {
             infoButtonText.text = "Show Info";
             infoText.enabled = false;
+            mainMenuText.enabled = true;
             difficulties.SetActive(true);
             leaderboardButton.SetActive(true);
         }
-        else // info text not showing: show
+        else // info text not showing (normal main menu screen): show
         {
             leaderboardButton.SetActive(false);
             difficulties.SetActive(false);
             infoButtonText.text = "Close Info";
+            mainMenuText.enabled = false;
             infoText.enabled = true;
         }
     }
 
     public void LeaderboardButton()
     {
-        // TODO if else
-        // leaderboardParent.SetActive(false);
+        SceneManager.LoadScene("Login&Leaderboard");
     }
 
     public void Quit() // only useable if desktop application

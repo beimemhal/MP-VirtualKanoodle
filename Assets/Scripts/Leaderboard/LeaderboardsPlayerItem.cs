@@ -7,31 +7,17 @@ using UnityEngine.UI;
 
 public class LeaderboardsPlayerItem : MonoBehaviour
 {
-
     [SerializeField] public TextMeshProUGUI rankText = null;
     [SerializeField] public TextMeshProUGUI nameText = null;
-    [SerializeField] public TextMeshProUGUI scoreText = null;
-    [SerializeField] private Button selectButton = null;
+    [SerializeField] public TextMeshProUGUI timeText = null;
     
     private LeaderboardEntry player = null;
-    
-    private void Start()
-    {
-        selectButton.onClick.AddListener(Clicked);
-    }
-
-    
+  
     public void Initialize(LeaderboardEntry player)
     {
         this.player = player;
         rankText.text = (player.Rank + 1).ToString();
         nameText.text = player.PlayerName;
-        scoreText.text = player.Score.ToString();
+        timeText.text = Timer.DisplayTime((float)player.Score); // change: format as timer shows it
     }
-    
-    private void Clicked()
-    {
-        Debug.Log("TODO -> Open profile: " + player.PlayerName);
-    }
-    
 }

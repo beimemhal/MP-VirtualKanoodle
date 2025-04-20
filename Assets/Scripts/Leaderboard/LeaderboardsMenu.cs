@@ -12,11 +12,14 @@ public class LeaderboardsMenu : Panel
     [SerializeField] private int playersPerPage = 25;
     [SerializeField] private LeaderboardsPlayerItem playerItemPrefab = null;
     [SerializeField] private RectTransform playersContainer = null;
-    [SerializeField] public TextMeshProUGUI pageText = null;
+    [SerializeField] public TextMeshProUGUI pageText = null; // shows the current page and total page nr
     [SerializeField] private Button nextButton = null;
     [SerializeField] private Button prevButton = null;
     [SerializeField] private Button closeButton = null;
     [SerializeField] private Button addScoreButton = null;
+
+    [SerializeField] private string leaderboardID = "leaderboardEasy";
+
 
     private int currentPage = 1;
     private int totalPages = 0;
@@ -31,8 +34,18 @@ public class LeaderboardsMenu : Panel
         closeButton.onClick.AddListener(ClosePanel);
         nextButton.onClick.AddListener(NextPage);
         prevButton.onClick.AddListener(PrevPage);
-        addScoreButton.onClick.AddListener(AddScore);
+        // addScoreButton.onClick.AddListener(AddScore); // TODO delete and put in screen after win
         base.Initialize();
+    }
+
+    // new code:
+    void Start()
+    {
+        if (ButtonFunct.updateLeaderboardEntry) // won and add entry button pressed
+        {
+            AddScoreAsync(Timer.timerValueText); // add score to leaderboard in format int (m)(m)(s)(s)(ms)(ms)(ms)
+            ButtonFunct.updateLeaderboardEntry = false;
+        }
     }
     
     public override void Open()
@@ -46,18 +59,13 @@ public class LeaderboardsMenu : Panel
         totalPages = 0;
         LoadPlayers(1);
     }
-    
-    private void AddScore()
-    {
-        AddScoreAsync(10);
-    }
-    
-    public async void AddScoreAsync(int score)
+
+    public async void AddScoreAsync(int score) // TODO call in screen after win with the achieved time
     {
         addScoreButton.interactable = false;
         try
         {
-            var playerEntry = await LeaderboardsService.Instance.AddPlayerScoreAsync("test", score);
+            var playerEntry = await LeaderboardsService.Instance.AddPlayerScoreAsync(leaderboardID, score);
             LoadPlayers(currentPage);
         }
         catch (Exception exception)
@@ -76,7 +84,7 @@ public class LeaderboardsMenu : Panel
             GetScoresOptions options = new GetScoresOptions();
             options.Offset = (page - 1) * playersPerPage;
             options.Limit = playersPerPage;
-            var scores = await LeaderboardsService.Instance.GetScoresAsync("test", options);
+            var scores = await LeaderboardsService.Instance.GetScoresAsync(leaderboardID, options);
             ClearPlayersList();
             for (int i = 0; i < scores.Results.Count; i++)
             {
