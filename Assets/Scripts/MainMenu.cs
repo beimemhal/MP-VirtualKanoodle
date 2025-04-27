@@ -7,20 +7,20 @@ using TMPro;
 public class MainMenu : MonoBehaviour
 {
     public TMP_Text infoButtonText;
-    public TMP_Text infoText;
+    public GameObject infoText;
     public TMP_Text mainMenuText;
     public GameObject difficulties;
     public GameObject leaderboardButton;
 
     public void PlayEasy()
     {
-        SolutionManager.difficulty = 9; // 9 pieces placed initially, player has to place 3
+        SolutionManager.difficulty = 10; // 10 pieces placed initially, player has to place 2
         SceneManager.LoadScene("GamePlayScene");
     }
     
     public void PlayMedium()
     {
-        SolutionManager.difficulty = 7;
+        SolutionManager.difficulty = 8;
         SceneManager.LoadScene("GamePlayScene");
     }
     
@@ -44,10 +44,10 @@ public class MainMenu : MonoBehaviour
 
     public void InfoButton() 
     {
-        if (infoText.enabled) // info text is showing: hide
+        if (infoText.activeSelf) // info text is showing: hide
         {
             infoButtonText.text = "Show Info";
-            infoText.enabled = false;
+            infoText.SetActive(false);
             mainMenuText.enabled = true;
             difficulties.SetActive(true);
             leaderboardButton.SetActive(true);
@@ -58,7 +58,7 @@ public class MainMenu : MonoBehaviour
             difficulties.SetActive(false);
             infoButtonText.text = "Close Info";
             mainMenuText.enabled = false;
-            infoText.enabled = true;
+            infoText.SetActive(true);
         }
     }
 
@@ -67,7 +67,7 @@ public class MainMenu : MonoBehaviour
         SceneManager.LoadScene("Login&Leaderboard");
     }
 
-    public void Quit() // only useable if desktop application
+    public void Quit() // only useable if desktop application TODO delete for web application
     {
         Application.Quit();
     }

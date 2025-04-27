@@ -18,6 +18,6 @@ public class LeaderboardsPlayerItem : MonoBehaviour
         this.player = player;
         rankText.text = (player.Rank + 1).ToString();
         nameText.text = player.PlayerName;
-        timeText.text = Timer.DisplayTime((float)player.Score); // change: format as timer shows it
+        timeText.text = Timer.DisplayTime(((float)player.Score) / 1000); // change: format as timer shows it
     }
 }

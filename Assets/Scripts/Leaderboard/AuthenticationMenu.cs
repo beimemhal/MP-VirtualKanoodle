@@ -4,6 +4,8 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
+using UnityEngine.SceneManagement; // new 
+
 public class AuthenticationMenu : Panel
 {
     [SerializeField] private TMP_InputField usernameInput = null;
@@ -34,6 +36,7 @@ public class AuthenticationMenu : Panel
     private void AnonymousSignIn()
     {
         MenuManager.Singleton.SignInAnonymouslyAsync();
+        // SceneManager.LoadScene("MainMenuScene"); // new
     }
 
     private void SignIn()
@@ -44,6 +47,7 @@ public class AuthenticationMenu : Panel
         {
             MenuManager.Singleton.SignInWithUsernameAndPasswordAsync(user, pass);
         }
+        // SceneManager.LoadScene("MainMenuScene"); // new
     }
 
     private void SignUp()
@@ -62,6 +66,7 @@ public class AuthenticationMenu : Panel
                 panel.Open(ErrorMenu.Action.None, "Password does not match requirements. Insert at least 1 uppercase, 1 lowercase, 1 digit and 1 symbol. With minimum 8 and a maximum of 30 characters.", "OK");
             }
         }
+        // SceneManager.LoadScene("MainMenuScene"); // new
     }
     
     private bool IsPasswordValid(string password)

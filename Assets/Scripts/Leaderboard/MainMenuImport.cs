@@ -5,6 +5,8 @@ using TMPro;
 using Unity.Services.Authentication;
 using UnityEngine.UI;
 
+using UnityEngine.SceneManagement;
+
 public class MainMenuImport : Panel
 {
 
@@ -14,6 +16,7 @@ public class MainMenuImport : Panel
     [SerializeField] private Button leaderboardMediumButton = null;
     [SerializeField] private Button leaderboardHardButton = null;
     [SerializeField] private Button leaderboardVeryHardButton = null;
+    [SerializeField] private Button backToMainMenuButton = null;
     
     public override void Initialize()
     {
@@ -26,6 +29,7 @@ public class MainMenuImport : Panel
         leaderboardMediumButton.onClick.AddListener(LeaderboardMedium);
         leaderboardHardButton.onClick.AddListener(LeaderboardHard);
         leaderboardVeryHardButton.onClick.AddListener(LeaderboardVeryHard);
+        backToMainMenuButton.onClick.AddListener(BTMM);
         base.Initialize();
     }
     
@@ -63,6 +67,10 @@ public class MainMenuImport : Panel
     private void LeaderboardVeryHard()
     {
         PanelManager.Open("leaderboardVeryHard");
+    } 
+    
+    private void BTMM() // short: only scene change without game reset -> from leaderboard to main menu scene
+    {
+        SceneManager.LoadScene("MainMenuScene");
     }
-
 }

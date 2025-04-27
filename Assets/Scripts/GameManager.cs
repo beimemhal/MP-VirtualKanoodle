@@ -42,6 +42,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+        if (!won && GridFunct.CheckWon()) Won();
+    }
+
     // turn grids ghost spheres & its attached pieces -> pieces still on disabled ghost spheres
     public static void TurnGridY(int negPos) // i = 1 if turned right, i = -1 if turned left
     {
@@ -58,11 +63,11 @@ public class GameManager : MonoBehaviour
 
         // Debug.Log("gridparent " + gridParent.name);
 
-        // 3 change grid pos of child pieces
+        // 3 change grid pos of child pieces (if not fixed)
         foreach (var piece in allPieces) // iterate through all pieces
         {
             // Debug.Log("piece " + piece.name);
-            if (piece.GetComponent<Piece>().placed) // (piece.transform.parent != null) TODO delete
+            if (piece.GetComponent<Piece>().moveable && piece.transform.parent != null) // GetComponent<Piece>().placed) // (piece.transform.parent != null) TODO delete
             {
                 // Debug.Log("pieces parent " + piece.transform.parent.name);
 
@@ -103,6 +108,7 @@ public class GameManager : MonoBehaviour
 
         // 3 move is possible
         selectedPiece.gridPos = newPos;
+        Debug.Log("New grid coords: " + newPos.x + ", " + newPos.y + ", " + newPos.z);
         selectedPiece.gameObject.transform.position = GridFunct.CalcGridToGlobalSpace(selectedPiece.gridPos);
 
         // 4 check for button activation and deactivation 
@@ -175,33 +181,7 @@ public class GameManager : MonoBehaviour
             DisableAllButtons();
 
         // 8 check if won (only place because its more efficient than checking in update)
-        if (userNotAlgo && GridFunct.CheckWon())
-        {
-            // deactivate all pieces colliders & disable all buttons so that nothing can be changed after win
-            DisableAllButtons(); 
-            int[] otherButtons = new int[5]; // restart, backtomainmenu, hint & turnGrid
-            otherButtons[0] = 17;
-            otherButtons[1] = 18;
-            otherButtons[2] = 19;
-            otherButtons[3] = 1;
-            otherButtons[4] = 2;
-            DisOrEnableButtons(otherButtons, false);
-            foreach (GameObject p in allPieces)
-            {
-                foreach (SphereCollider collider in p.GetComponentsInChildren<SphereCollider>())
-                    collider.enabled = false;
-            }
-
-            won = true;
-
-            // set up winning screen and activate
-            winMessageText.text = "You have successfully solved this puzzle in " + Timer.timeText + "!";
-            gridParent.GetComponent<GameManager>().winMessageCanvas.SetActive(true);
-
-            // if hint used, time can't be added to leaderbord
-            if (SolutionManager.hintNr > 0)
-                leaderboardMessage.SetActive(false);
-        }
+        if (GridFunct.CheckWon()) Won();
 
         return true;
     }
@@ -382,7 +362,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    static void DisOrEnableGridSpheres(GameObject[] gridSpheres, bool disOrEnable)
+    public static void DisOrEnableGridSpheres(GameObject[] gridSpheres, bool disOrEnable)
     {
         foreach (GameObject sphere in gridSpheres)
             sphere.SetActive(disOrEnable);
@@ -438,5 +418,32 @@ public class GameManager : MonoBehaviour
 
             DisOrEnableButtons(toDisable, false);
         }
+    }
+
+    public void Won()
+    {
+        // deactivate all pieces colliders & disable all buttons so that nothing can be changed after win
+        DisableAllButtons();
+        int[] otherButtons = new int[5]; // restart, backtomainmenu, hint & turnGrid
+        otherButtons[0] = 17;
+        otherButtons[1] = 18;
+        otherButtons[2] = 19;
+        otherButtons[3] = 1;
+        otherButtons[4] = 2;
+        DisOrEnableButtons(otherButtons, false);
+        foreach (GameObject p in allPieces)
+        {
+            foreach (SphereCollider collider in p.GetComponentsInChildren<SphereCollider>())
+                collider.enabled = false;
+        }
+
+        won = true;
+
+        // set up winning screen and activate
+        winMessageText.text = "You have successfully solved this puzzle in " + Timer.timerText + "!";
+        gridParent.GetComponent<GameManager>().winMessageCanvas.SetActive(true);
+
+        // if hint used, time can't be added to leaderbord
+        if (SolutionManager.hintNr > 0) leaderboardMessage.SetActive(false);
     }
 }

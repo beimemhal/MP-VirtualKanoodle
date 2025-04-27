@@ -7,9 +7,8 @@ public class Timer : MonoBehaviour
 {
     public static float timeValue = 0;
 
-    public static int timerValueText = 0;
-
-    public static TMP_Text timeText;
+    public TMP_Text timeText;
+    public static string timerText = "00:00:000";
 
     void Start()
     {
@@ -23,13 +22,7 @@ public class Timer : MonoBehaviour
             timeValue += Time.deltaTime;
 
             timeText.text = DisplayTime(timeValue);
-        }
-        else
-        {
-            // int a = Mathf.FloorToInt(Timer.timeValue / 60) * 10000000; // first two digits
-            // int b = Mathf.FloorToInt(Timer.timeValue % 60) * 100000; // third and forth digits
-            // int c = (int)(Timer.timeValue % 1) * 1000; // last three digits
-            timerValueText = Mathf.FloorToInt(Timer.timeValue / 60) * 10000000 + Mathf.FloorToInt(Timer.timeValue % 60) * 100000 + (int)(Timer.timeValue % 1) * 1000;
+            timerText = timeText.text;
         }
     }
 

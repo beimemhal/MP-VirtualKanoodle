@@ -5,7 +5,7 @@ using UnityEngine;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 
-using UnityEngine.SceneManagement;
+// using UnityEngine.SceneManagement; // new 
 
 public class MenuManager : MonoBehaviour
 {
@@ -96,7 +96,7 @@ public class MenuManager : MonoBehaviour
         {
             ShowError(ErrorMenu.Action.SignIn, "Failed to connect to the network.", "Retry");
         }
-        SceneManager.LoadScene("MainMenuScene"); // new
+        // SceneManager.LoadScene("MainMenuScene"); // new
     }
     
     public async void SignInWithUsernameAndPasswordAsync(string username, string password)
@@ -114,7 +114,7 @@ public class MenuManager : MonoBehaviour
         {
             ShowError(ErrorMenu.Action.OpenAuthMenu, "Failed to connect to the network.", "OK");
         }
-        SceneManager.LoadScene("MainMenuScene"); // new
+        // SceneManager.LoadScene("MainMenuScene"); // new
     }
     
     public async void SignUpWithUsernameAndPasswordAsync(string username, string password)
@@ -132,7 +132,7 @@ public class MenuManager : MonoBehaviour
         {
             ShowError(ErrorMenu.Action.OpenAuthMenu, "Failed to connect to the network.", "OK");
         }
-        SceneManager.LoadScene("MainMenuScene"); // new
+        // SceneManager.LoadScene("MainMenuScene"); // new
     }
 
     public void SignOut()
@@ -185,5 +185,4 @@ public class MenuManager : MonoBehaviour
             
         }
     }
-    
 }

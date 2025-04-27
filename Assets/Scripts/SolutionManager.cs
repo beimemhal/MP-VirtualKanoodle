@@ -6,9 +6,9 @@ using static UnityEngine.UIElements.UxmlAttributeDescription;
 
 public class SolutionManager : MonoBehaviour
 {
-    public static int difficulty; // TODO change back to easy
+    public static int difficulty = 10;
 
-    public static int hintNr;
+    public static int hintNr = 0;
 
     // solution storage for each piece store position and rotation in global space TODO clear when backtomainmenu 
     public static Dictionary<string, Vector3> solutionPositions = new();
@@ -365,11 +365,8 @@ public class SolutionManager : MonoBehaviour
         }
     }
 
-    // TODO
-    void DeActivateLoadingScreen(bool deOrActive) // true if activate, false to deactivate
-    {
-
-    }
+    // void DeActivateLoadingScreen(bool deOrActive) // true if activate, false to deactivate
+    // {}
 
     public void GiveHint()
     {
@@ -386,9 +383,10 @@ public class SolutionManager : MonoBehaviour
         // 2 remove intersecting other pieces
         if (p.placed) // makes sure it's not a child of the grid itself
         {
-            GameManager.selectedPiece = p;
+            p.PieceSelected();
             GameManager.Remove();
-        } else if (p == GameManager.selectedPiece)
+        } 
+        if (GameManager.selectedPiece != null)
             GameManager.PieceUnselected();
         // put in correct position
         p.gameObject.transform.position = solutionPositions[p.gameObject.name];
@@ -398,14 +396,12 @@ public class SolutionManager : MonoBehaviour
 
         // 3 place piece and make not moveable
         GameManager.selectedPiece = p;
+        GameManager.selectedPiece.gameObject.transform.SetParent(GameManager.gridParent.transform);
         GameManager.gameManager.Place();
         p.moveable = false;
 
         // 4 count up number of hints
         hintNr++;
-
-        // TODO refactorign 5 put (flickering) outline around hint piece for 3 sec
-
 
         // turn grid back
         if (turns == 1)

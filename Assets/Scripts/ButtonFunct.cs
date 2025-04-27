@@ -63,6 +63,13 @@ public class ButtonFunct : MonoBehaviour
 
     public void AddEntryToLeaderboard() // passes/ stores time as mmss(ms)(ms)(ms) as an int
     {
+        string difficultyText = "Easy";
+        if (SolutionManager.difficulty == 8) difficultyText = "Medium";
+        else if (SolutionManager.difficulty == 6) difficultyText = "Hard";
+        else if (SolutionManager.difficulty == 4) difficultyText = "VeryHard";
+
+        LeaderboardsMenu.leaderboardID = "leaderboard" + difficultyText;
+
         updateLeaderboardEntry = true;
         SceneManager.LoadScene("Login&Leaderboard");
     }
@@ -78,11 +85,9 @@ public class ButtonFunct : MonoBehaviour
         SolutionManager.solutionPositions.Clear();
         HardCodedLvl.lastPlaced.Clear();
         GridFunct.gridTurns = 0;
+        GridFunct.gridPoints.Clear();
+        SolutionManager.hintNr = 0;
 
-        SceneManager.LoadScene("MainMenuScene");
-    }
-    public void BTMM() // short: only scene change without game reset -> from leaderboard to main menu scene
-    {
         SceneManager.LoadScene("MainMenuScene");
     }
 }

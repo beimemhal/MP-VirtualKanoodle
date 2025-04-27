@@ -16,9 +16,9 @@ public class LeaderboardsMenu : Panel
     [SerializeField] private Button nextButton = null;
     [SerializeField] private Button prevButton = null;
     [SerializeField] private Button closeButton = null;
-    [SerializeField] private Button addScoreButton = null;
+    // [SerializeField] private Button addScoreButton = null;
 
-    [SerializeField] private string leaderboardID = "leaderboardEasy";
+    public static string leaderboardID = "leaderboardEasy";
 
 
     private int currentPage = 1;
@@ -39,12 +39,12 @@ public class LeaderboardsMenu : Panel
     }
 
     // new code:
-    void Start()
+    void Update()
     {
         if (ButtonFunct.updateLeaderboardEntry) // won and add entry button pressed
         {
-            AddScoreAsync(Timer.timerValueText); // add score to leaderboard in format int (m)(m)(s)(s)(ms)(ms)(ms)
             ButtonFunct.updateLeaderboardEntry = false;
+            AddScoreAsync((int) (Timer.timeValue * 1000)); // TODO add score to leaderboard in format int (m)(m)(s)(s)(ms)(ms)(ms)
         }
     }
     
@@ -62,7 +62,9 @@ public class LeaderboardsMenu : Panel
 
     public async void AddScoreAsync(int score) // TODO call in screen after win with the achieved time
     {
-        addScoreButton.interactable = false;
+        // ButtonFunct.updateLeaderboardEntry = false;
+        Debug.Log("Score to be added: " + score);
+        // addScoreButton.interactable = false;
         try
         {
             var playerEntry = await LeaderboardsService.Instance.AddPlayerScoreAsync(leaderboardID, score);
@@ -72,7 +74,7 @@ public class LeaderboardsMenu : Panel
         {
             Debug.Log(exception.Message);
         }
-        addScoreButton.interactable = true;
+        // addScoreButton.interactable = true;
     }
 
     private async void LoadPlayers(int page)
@@ -84,7 +86,7 @@ public class LeaderboardsMenu : Panel
             GetScoresOptions options = new GetScoresOptions();
             options.Offset = (page - 1) * playersPerPage;
             options.Limit = playersPerPage;
-            var scores = await LeaderboardsService.Instance.GetScoresAsync(leaderboardID, options);
+            var scores = await LeaderboardsService.Instance.GetScoresAsync(leaderboardID, options); // TODO error Leaderboard config could not be found -> leaderboardID not found
             ClearPlayersList();
             for (int i = 0; i < scores.Results.Count; i++)
             {

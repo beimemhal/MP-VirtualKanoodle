@@ -12,21 +12,23 @@ public class GridFunct : ScriptableObject
 
     public static int gridTurns = 0;
 
-    private void Start()
+    static Vector3 gridRoot = new Vector3(-8F, 0.5F, 0F);
+
+    private void Update()
     {
         if (gridPoints.Count == 0)
             gridPoints = GameManager.gridParent.transform.GetComponentsInChildren<SphereCollider>().ToList();
     }
-
+    
     public static Vector3 CalcGridToGlobalSpace(Vector3Int gridPos)
     {
         float x = (float) gridPos.x;
         float y = (float) gridPos.y;
         float z = (float) gridPos.z;
-        
-        return new Vector3(x + 0.5F*(y + z) + GameManager.gridParent.transform.position.x, 
-            gridHeightY*y + GameManager.gridParent.transform.position.y, 
-            gridHeightZ*(z + y/3F) + GameManager.gridParent.transform.position.z);
+
+        return new Vector3(x + 0.5F * (y + z) + gridRoot.x, // GameManager.gridParent.transform.position.x, 
+            gridHeightY * y + gridRoot.y, // GameManager.gridParent.transform.position.y, 
+            gridHeightZ * (z + y / 3F) + gridRoot.z); // GameManager.gridParent.transform.position.z);
     }
 
     // calculate gridSpace to array index
@@ -63,7 +65,7 @@ public class GridFunct : ScriptableObject
 
         // Debug.Log("Game won");
 
-        HardCodedLvl.SaveSolutions(0); // TODO delete
+        // HardCodedLvl.SaveSolutions(0); // TODO delete
 
         return true;
     }
