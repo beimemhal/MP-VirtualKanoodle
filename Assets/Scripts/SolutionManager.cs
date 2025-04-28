@@ -123,7 +123,7 @@ public class SolutionManager : MonoBehaviour
                         placedPosition.x = x;
 
                         // 4.5 if grid at x, y, z = disabled: continue with next position;
-                        if (!GridFunct.gridPoints[GridFunct.CalcGridSpaceToArrayIndex(new Vector3Int(x, y, z))].gameObject.activeSelf)
+                        if (!GameManager.gridPoints[GridFunct.CalcGridSpaceToArrayIndex(new Vector3Int(x, y, z))].gameObject.activeSelf)
                         {
                             Debug.Log("Placement skipped.");
 
@@ -510,7 +510,7 @@ public class SolutionManager : MonoBehaviour
                 for (x = 0; x <= xMax; x++)
                 {
                     // 4.5 if grid at x, y, z = disabled: continue with next position;
-                    if (!GridFunct.gridPoints[GridFunct.CalcGridSpaceToArrayIndex(new Vector3Int(x, y, z))].gameObject.activeSelf)
+                    if (!GameManager.gridPoints[GridFunct.CalcGridSpaceToArrayIndex(new Vector3Int(x, y, z))].gameObject.activeSelf)
                     {
                         Debug.Log("Placement skipped.");
 
@@ -670,7 +670,7 @@ public class SolutionManager : MonoBehaviour
                     for (x = 0; x <= xMax; x++)
                     {
                         // 4.5 if grid at x, y, z = disabled: continue with next position;
-                        if (!GridFunct.gridPoints[GridFunct.CalcGridSpaceToArrayIndex(new Vector3Int(x, y, z))].gameObject.activeSelf)
+                        if (!GameManager.gridPoints[GridFunct.CalcGridSpaceToArrayIndex(new Vector3Int(x, y, z))].gameObject.activeSelf)
                         {
                             Debug.Log("Placement skipped.");
 

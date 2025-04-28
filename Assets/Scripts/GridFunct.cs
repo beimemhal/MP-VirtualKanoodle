@@ -6,19 +6,11 @@ using UnityEngine;
 
 public class GridFunct : ScriptableObject
 {
-    public static List<SphereCollider> gridPoints = GameManager.gridParent.transform.GetComponentsInChildren<SphereCollider>().ToList();
-
     static readonly float gridHeightY = 0.8164966F, gridHeightZ = 0.8660254F; // gridWidthX = 1
 
     public static int gridTurns = 0;
 
     static Vector3 gridRoot = new Vector3(-8F, 0.5F, 0F);
-
-    private void Update()
-    {
-        if (gridPoints.Count == 0)
-            gridPoints = GameManager.gridParent.transform.GetComponentsInChildren<SphereCollider>().ToList();
-    }
     
     public static Vector3 CalcGridToGlobalSpace(Vector3Int gridPos)
     {
@@ -59,7 +51,7 @@ public class GridFunct : ScriptableObject
         // Debug.Log("Check won called on " + gridPoints);
 
         // if all grid spheres are disabled = solution found
-        foreach (SphereCollider sphere in gridPoints)
+        foreach (SphereCollider sphere in GameManager.gridPoints)
             if (sphere.gameObject.activeSelf)
                 return false;
 
@@ -72,7 +64,7 @@ public class GridFunct : ScriptableObject
 
     public static bool CheckIsolatedPoints() // to make solver quicker; true if a point isolated, false if not
     {
-        foreach (SphereCollider coll in gridPoints)
+        foreach (SphereCollider coll in GameManager.gridPoints)
         {
             GameObject g = coll.gameObject;
             int counter = 12; // = number of neighboring spheres
@@ -136,7 +128,7 @@ public class GridFunct : ScriptableObject
     {
         if (!OutsideGrid(gridPos))
         {
-            if (!gridPoints[CalcGridSpaceToArrayIndex(gridPos)].gameObject.activeSelf)
+            if (!GameManager.gridPoints[CalcGridSpaceToArrayIndex(gridPos)].gameObject.activeSelf)
                 counter--;
         }
         else

@@ -20,19 +20,25 @@ public class MainMenu : MonoBehaviour
     
     public void PlayMedium()
     {
-        SolutionManager.difficulty = 8;
+        SolutionManager.difficulty = 9;
         SceneManager.LoadScene("GamePlayScene");
     }
     
     public void PlayHard()
     {
-        SolutionManager.difficulty = 6;
+        SolutionManager.difficulty = 8;
         SceneManager.LoadScene("GamePlayScene");
     }
     
     public void PlayExtraHard()
     {
-        SolutionManager.difficulty = 4;
+        SolutionManager.difficulty = 7;
+        SceneManager.LoadScene("GamePlayScene");
+    }
+
+    public void PlayExtreme()
+    {
+        SolutionManager.difficulty = 5;
         SceneManager.LoadScene("GamePlayScene");
     }
     
@@ -46,7 +52,7 @@ public class MainMenu : MonoBehaviour
     {
         if (infoText.activeSelf) // info text is showing: hide
         {
-            infoButtonText.text = "Show Info";
+            infoButtonText.text = "Info";
             infoText.SetActive(false);
             mainMenuText.enabled = true;
             difficulties.SetActive(true);

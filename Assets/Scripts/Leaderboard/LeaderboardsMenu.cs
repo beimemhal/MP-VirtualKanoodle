@@ -18,7 +18,7 @@ public class LeaderboardsMenu : Panel
     [SerializeField] private Button closeButton = null;
     // [SerializeField] private Button addScoreButton = null;
 
-    public static string leaderboardID = "leaderboardEasy";
+    // [SerializeField] public static string leaderboardID = "leaderboardEasy";
 
 
     private int currentPage = 1;
@@ -44,7 +44,7 @@ public class LeaderboardsMenu : Panel
         if (ButtonFunct.updateLeaderboardEntry) // won and add entry button pressed
         {
             ButtonFunct.updateLeaderboardEntry = false;
-            AddScoreAsync((int) (Timer.timeValue * 1000)); // TODO add score to leaderboard in format int (m)(m)(s)(s)(ms)(ms)(ms)
+            AddScoreAsync((int) (Timer.staticTime.timeValue * 1000)); // TODO add score to leaderboard in format int (m)(m)(s)(s)(ms)(ms)(ms)
         }
     }
     
@@ -60,14 +60,14 @@ public class LeaderboardsMenu : Panel
         LoadPlayers(1);
     }
 
-    public async void AddScoreAsync(int score) // TODO call in screen after win with the achieved time
+    public async void AddScoreAsync(int score) // call after win with the achieved time
     {
         // ButtonFunct.updateLeaderboardEntry = false;
         Debug.Log("Score to be added: " + score);
         // addScoreButton.interactable = false;
         try
         {
-            var playerEntry = await LeaderboardsService.Instance.AddPlayerScoreAsync(leaderboardID, score);
+            var playerEntry = await LeaderboardsService.Instance.AddPlayerScoreAsync(MainMenuImport.leaderboardID, score);
             LoadPlayers(currentPage);
         }
         catch (Exception exception)
@@ -86,7 +86,7 @@ public class LeaderboardsMenu : Panel
             GetScoresOptions options = new GetScoresOptions();
             options.Offset = (page - 1) * playersPerPage;
             options.Limit = playersPerPage;
-            var scores = await LeaderboardsService.Instance.GetScoresAsync(leaderboardID, options); // TODO error Leaderboard config could not be found -> leaderboardID not found
+            var scores = await LeaderboardsService.Instance.GetScoresAsync(MainMenuImport.leaderboardID, options); // TODO error Leaderboard config could not be found -> leaderboardID not found
             ClearPlayersList();
             for (int i = 0; i < scores.Results.Count; i++)
             {

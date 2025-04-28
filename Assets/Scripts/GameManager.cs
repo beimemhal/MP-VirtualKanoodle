@@ -12,7 +12,8 @@ public class GameManager : MonoBehaviour
     public static GameObject gridParent;
 
     public static List<GameObject> allPieces = new();
-    public static List<ButtonFunct> buttons = new();
+    public List<ButtonFunct> buttons = new();
+    public static List<SphereCollider> gridPoints;
 
     public static Piece selectedPiece = null;
 
@@ -29,6 +30,7 @@ public class GameManager : MonoBehaviour
     {
         // needed for Rotate which needs gridParent to be static 
         gridParent = gameObject;
+        gridPoints = gameObject.transform.GetComponentsInChildren<SphereCollider>().ToList();
 
         // disable all (movement) buttons
         DisableAllButtons();
@@ -40,11 +42,6 @@ public class GameManager : MonoBehaviour
             hintButton[0] = 19;
             DisOrEnableButtons(hintButton, false);
         }
-    }
-
-    void Update()
-    {
-        if (!won && GridFunct.CheckWon()) Won();
     }
 
     // turn grids ghost spheres & its attached pieces -> pieces still on disabled ghost spheres
@@ -250,7 +247,7 @@ public class GameManager : MonoBehaviour
         {
             // Debug.Log("Buttons " + toChange[i] + " disabled.");
 
-            foreach (ButtonFunct button in buttons) 
+            foreach (ButtonFunct button in gameManager.buttons) 
             {                
                 if (button.buttonNr == toChange[i])
                 {
@@ -335,10 +332,10 @@ public class GameManager : MonoBehaviour
                 Collider pieceSphere = selectedPiece.gameObject.transform.GetChild(i).gameObject.GetComponent<SphereCollider>();
 
 
-                if (GridFunct.gridPoints.Count == 0)
-                    GridFunct.gridPoints = GameManager.gridParent.transform.GetComponentsInChildren<SphereCollider>().ToList();
+                if (GameManager.gridPoints.Count == 0)
+                    GameManager.gridPoints = gridParent.transform.GetComponentsInChildren<SphereCollider>().ToList();
                 // 3 iterate through all gridSpheres
-                foreach (SphereCollider gridSphere in GridFunct.gridPoints)
+                foreach (SphereCollider gridSphere in GameManager.gridPoints)
                 {
                     // 4 check if gridSphere is active, if not: continue with next gridSphere
                     if (!gridSphere.gameObject.activeSelf) continue;
@@ -440,7 +437,7 @@ public class GameManager : MonoBehaviour
         won = true;
 
         // set up winning screen and activate
-        winMessageText.text = "You have successfully solved this puzzle in " + Timer.timerText + "!";
+        winMessageText.text = "You have successfully solved this puzzle in " + Timer.staticTime.timerText + "!";
         gridParent.GetComponent<GameManager>().winMessageCanvas.SetActive(true);
 
         // if hint used, time can't be added to leaderbord

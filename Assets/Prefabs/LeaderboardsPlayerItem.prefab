@@ -190,8 +190,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rankText: {fileID: 7399921260944813107}
   nameText: {fileID: 7688422273907325299}
-  scoreText: {fileID: 1317025149682368855}
-  selectButton: {fileID: 6775083780424446620}
+  timeText: {fileID: 1317025149682368855}
 --- !u!222 &6197246743919179487
 CanvasRenderer:
   m_ObjectHideFlags: 0

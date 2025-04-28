@@ -5,28 +5,30 @@ using TMPro;
 
 public class Timer : MonoBehaviour
 {
-    public static float timeValue = 0;
+    public static Timer staticTime;
+
+    public float timeValue = 0;
 
     public TMP_Text timeText;
-    public static string timerText = "00:00:000";
+    public string timerText = "00:00:000";
 
     void Start()
     {
-        timeText.text = "0";
+        staticTime = this;
     }
 
     void Update()
     {
         if (!GameManager.won)
         {
-            timeValue += Time.deltaTime;
+            this.timeValue += Time.deltaTime;
 
-            timeText.text = DisplayTime(timeValue);
+            timeText.text = DisplayTime(this.timeValue);
             timerText = timeText.text;
         }
     }
 
-    public static string DisplayTime(float timeToDisplay)
+    public static string DisplayTime(float timeToDisplay) // TODO not working when won once
     {
         float minutes = Mathf.FloorToInt(timeToDisplay / 60); // two digits as an int
         float seconds = Mathf.FloorToInt(timeToDisplay % 60);

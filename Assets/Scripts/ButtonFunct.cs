@@ -12,9 +12,9 @@ public class ButtonFunct : MonoBehaviour
 
     private void Start()
     {
-        GameManager.buttons.Add(this);
-
         GameManager.gameManager = GameObject.Find("GridPrefab").GetComponent<GameManager>();
+        GameManager.gameManager.buttons.Add(this);
+
         solutionManager = GameObject.Find("SolutionManagerHolder").GetComponent<SolutionManager>();
     }
 
@@ -64,30 +64,41 @@ public class ButtonFunct : MonoBehaviour
     public void AddEntryToLeaderboard() // passes/ stores time as mmss(ms)(ms)(ms) as an int
     {
         string difficultyText = "Easy";
-        if (SolutionManager.difficulty == 8) difficultyText = "Medium";
-        else if (SolutionManager.difficulty == 6) difficultyText = "Hard";
-        else if (SolutionManager.difficulty == 4) difficultyText = "VeryHard";
+        if (SolutionManager.difficulty == 9) difficultyText = "Medium";
+        else if (SolutionManager.difficulty == 8) difficultyText = "Hard";
+        else if (SolutionManager.difficulty == 7) difficultyText = "VeryHard";
+        else if (SolutionManager.difficulty == 5) difficultyText = "Extreme";
 
-        LeaderboardsMenu.leaderboardID = "leaderboard" + difficultyText;
+            MainMenuImport.leaderboardID = "leaderboard" + difficultyText;
 
         updateLeaderboardEntry = true;
+
+        // reset game scene
+        ResetGameScene();
+
         SceneManager.LoadScene("Login&Leaderboard");
     }
 
     public void BackToMainMenu()
     {
         // reset game scene: empty button and pieces list (static variables meant reset when leaving the scene) 
-        GameManager.buttons.Clear();
+        ResetGameScene();
+        Timer.staticTime.timeValue = 0;
+
+        SceneManager.LoadScene("MainMenuScene");
+    }
+
+    void ResetGameScene()
+    {
+        GameManager.gameManager.buttons.Clear();
         GameManager.allPieces.Clear();
         GameManager.userNotAlgo = false;
-        GridFunct.gridPoints.Clear();
+        GameManager.gridPoints.Clear();
         SolutionManager.solutionRotations.Clear();
         SolutionManager.solutionPositions.Clear();
         HardCodedLvl.lastPlaced.Clear();
         GridFunct.gridTurns = 0;
-        GridFunct.gridPoints.Clear();
         SolutionManager.hintNr = 0;
-
-        SceneManager.LoadScene("MainMenuScene");
+        GameManager.won = false;
     }
 }
