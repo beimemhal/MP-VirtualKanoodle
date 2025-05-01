@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7212392509330980218}
   - component: {fileID: 4487437319497596353}
   m_Layer: 0
-  m_Name: Visualization
+  m_Name: PlaneVisualization
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -116,7 +116,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 100000, guid: 67fc7cc8eb18d07478486e47f680c96c, type: 3}
       propertyPath: m_Name
-      value: ControlButtonFbx
+      value: ButtonEnabled
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 67fc7cc8eb18d07478486e47f680c96c, type: 3}
       propertyPath: m_IsActive
@@ -232,7 +232,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 604b1e913adb9614ab61a76338c2d2e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameManager: {fileID: 2025380765804884206, guid: 0f14cc0ee2d5ce24db5c87b9fcee2ed8, type: 3}
   buttonNr: 0
 --- !u!1001 &1603531472064337956
 PrefabInstance:
@@ -351,7 +350,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 100000, guid: 344e0888a6435b94685032a6bdff2c35, type: 3}
       propertyPath: m_Name
-      value: MoveButton
+      value: ButtonPrefab
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 344e0888a6435b94685032a6bdff2c35, type: 3}
       propertyPath: m_LocalScale.x

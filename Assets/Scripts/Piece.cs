@@ -6,23 +6,23 @@ using UnityEngine;
 public class Piece : MonoBehaviour
 {
     public GameObject prefab;
+    public int sphereNr;
 
     public bool placed = false;
     public bool moveable = true; // if piece gets set in the level setup, it cannot be moved => cannot be selected
-
-    public Vector3 initialPosition;
 
     // when piece is placed on the grid, saves the sphere which was used last to position the piece
     public Vector3Int gridPos = new(-1, -1, -1); // position in grid if placed or selected
     public Vector3Int rotationNrs = new(0, 0, 0); // saves amount of rotations for x & z direction for turning the piece
 
-    public int sphereNr;
+    public Vector3 initialPosition;
+
     public GameObject[] overlapsGridSpheres;
 
     // store initial position at start of the scene
     void Start()
     {
-        placed = false;
+        placed = false; // TODO try remove
         moveable = true;
 
         initialPosition = prefab.transform.position;
@@ -37,7 +37,8 @@ public class Piece : MonoBehaviour
     {
         if (moveable && this != GameManager.selectedPiece) // cannot be selected if it already is
         {
-            // if mouse button down call one of the functions, source for raycast functionality: ChatGPT (slightly altered)
+            // if mouse button down call one of the functions
+            // source for raycast functionality: https://discussions.unity.com/t/how-to-get-gameobject-that-is-clicked-by-a-mouse/41511 (slightly altered)
             if (Input.GetMouseButtonDown(0)) // left-click
             {
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -47,7 +48,7 @@ public class Piece : MonoBehaviour
                 {
                     Transform clickedObject = hit.transform;
 
-                    // check if the clicked object is the parent or one of its children
+                    // check if clickedObject is the GameObject (or one of its children) this script is attached to
                     if (clickedObject.IsChildOf(transform))
                     {
                         PieceSelected();
@@ -59,17 +60,17 @@ public class Piece : MonoBehaviour
 
     public void PieceSelected()
     {
-        Debug.Log("Piece " + prefab.name + " selected.");
+        // Debug.Log("Piece " + prefab.name + " selected.");
         
         // check if piece that's being tried to be selected = moveable
         if (!moveable)
         {
             // pop-up message that piece can't be selected
-            if (!GameManager.userNotAlgo)
+            if (GameManager.userNotAlgo)
             {
                 StartCoroutine(GameManager.gameManager.popUpCanvas.GetComponent<PopUpManager>().ShowNotification("Piece can't be selected because it's pre-set!"));
             }
-            Debug.Log("The " + name + " piece can't be removed because it is pre-set.");
+            // Debug.Log("The " + name + " piece can't be removed because it is pre-set.");
             return;
         }
 
@@ -83,10 +84,10 @@ public class Piece : MonoBehaviour
         }
 
         // 2 set selectedPiece in GameManager 
+        GameManager.selectedPiece = this;
+
         if (!placed)
         {
-            GameManager.selectedPiece = this;
-
             // 3 put at top of grid & attach to grid so that it moves together
             if (GameManager.userNotAlgo)
                 gridPos = new Vector3Int(0, 5, 0);
@@ -96,10 +97,6 @@ public class Piece : MonoBehaviour
             gameObject.transform.position = GridFunct.CalcGridToGlobalSpace(gridPos);
 
             gameObject.transform.SetParent(GameManager.gridParent.transform);
-        }
-        else // 2
-        {
-            GameManager.selectedPiece = this;
         }
 
         // buttons and outline unnecessary for solving algo (not doing it: time efficient)
@@ -127,7 +124,7 @@ public class Piece : MonoBehaviour
                 // movement buttons
                 GameManager.DynamicButtonCheck();
 
-                //  rotation buttons enabled
+                //  enable rotation buttons
                 for (int i = 0; i < placeRemoveB.Length; i++)
                 {
                     placeRemoveB[i] = i + 9;
@@ -143,7 +140,7 @@ public class Piece : MonoBehaviour
     // when grid is rotated, piece turn with it -> grid zero is always considered lowest, front, left => pieces coordinates in grid change with changed position
     public void CalcNewGridCoords(int negPos)
     {
-        Debug.Log("Old coords: " + gridPos.x + ", " + gridPos.y + ", " + gridPos.z);
+        // Debug.Log("Old coords: " + gridPos.x + ", " + gridPos.y + ", " + gridPos.z);
 
         if (negPos == 1)
         {
@@ -158,7 +155,7 @@ public class Piece : MonoBehaviour
             gridPos.z = xOld;
         }
 
-        Debug.Log("New coords: " + gridPos.x + ", " + gridPos.y + ", " + gridPos.z);
+        // Debug.Log("New coords: " + gridPos.x + ", " + gridPos.y + ", " + gridPos.z);
     }
 
 }

@@ -25,14 +25,14 @@ public class HardCodedLvl : MonoBehaviour
     public static void SaveSolutions(int rdm)
     {
         /*
-        // output of solutions
+        // output of solutions, used to output the lines for InitialisePieces()
         foreach (GameObject p in GameManager.allPieces)
         {
             Debug.Log("SolutionManager.solutionPositions.Add(\"" + p.name + "\", new(" + p.transform.position.x + "F, " + p.transform.position.y + "F, " + p.transform.position.z  + "F));");
             Debug.Log("SolutionManager.solutionRotations.Add(\"" + p.name + "\", new(" + p.transform.rotation.x + "F, " + p.transform.rotation.y + "F, " + p.transform.rotation.z + "F, " + p.transform.rotation.w + "F));");
         }
         */
-        
+
         // solution 1
         if (rdm == 1)
         {
@@ -277,7 +277,7 @@ public class HardCodedLvl : MonoBehaviour
 
     void InitialisePieces()
     {
-        Debug.Log("pieces initialised.");
+        // Debug.Log("pieces initialised.");
 
         // put difficulty first pieces in solution dict on the grid (select and place)
         for (int i = 0; i < SolutionManager.difficulty; i++)
@@ -291,7 +291,6 @@ public class HardCodedLvl : MonoBehaviour
 
             // set not moveable
             p.moveable = false;
-            // TODO also disable sphereColliders so clicking on it not possible
         }
 
     }

@@ -5,11 +5,11 @@ using TMPro;
 
 public class PopUpManager : MonoBehaviour
 {
-    public IEnumerator ShowNotification(string message)
+    public IEnumerator ShowNotification(string message) 
     {
         gameObject.transform.GetComponentInChildren<TMP_Text>().SetText(message);
         gameObject.SetActive(true);
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(3); // source: https://docs.unity3d.com/6000.0/Documentation/Manual/coroutines.html
         gameObject.SetActive(false);
     }
 }

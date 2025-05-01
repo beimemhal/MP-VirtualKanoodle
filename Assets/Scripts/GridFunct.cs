@@ -23,7 +23,7 @@ public class GridFunct : ScriptableObject
             gridHeightZ * (z + y / 3F) + gridRoot.z); // GameManager.gridParent.transform.position.z);
     }
 
-    // calculate gridSpace to array index
+    // calculate gridSpace to array index of gridPoints in GameManager
     public static int CalcGridSpaceToArrayIndex(Vector3Int gridPos)
     {
         int index = 0;
@@ -48,8 +48,6 @@ public class GridFunct : ScriptableObject
 
     public static bool CheckWon()
     {
-        // Debug.Log("Check won called on " + gridPoints);
-
         // if all grid spheres are disabled = solution found
         foreach (SphereCollider sphere in GameManager.gridPoints)
             if (sphere.gameObject.activeSelf)
@@ -57,12 +55,23 @@ public class GridFunct : ScriptableObject
 
         // Debug.Log("Game won");
 
-        // HardCodedLvl.SaveSolutions(0); // TODO delete
+        // HardCodedLvl.SaveSolutions(0); // used for implementation of hard-coded levels
 
         return true;
     }
 
-    public static bool CheckIsolatedPoints() // to make solver quicker; true if a point isolated, false if not
+    // piece sphere 1 has to remain on a grid position
+    public static bool OutsideGrid(Vector3Int newPos)
+    {
+        if (newPos.x < 0 || newPos.x > 5 - newPos.y - newPos.z ||
+            newPos.y < 0 || newPos.y > 5 - newPos.x - newPos.z ||
+            newPos.z < 0 || newPos.z > 5 - newPos.y - newPos.x)
+            return true;
+        return false;
+    }
+
+    // to make solver quicker; true if a point isolated/ no available grid points neighbouring, false if not
+    public static bool CheckIsolatedPoints()
     {
         foreach (SphereCollider coll in GameManager.gridPoints)
         {
@@ -114,16 +123,7 @@ public class GridFunct : ScriptableObject
         return false; // no grid points isolated
     }
 
-    // piece sphere 1 has to remain on a grid position
-    public static bool OutsideGrid(Vector3Int newPos)
-    {
-        if (newPos.x < 0 || newPos.x > 5 - newPos.y - newPos.z ||
-            newPos.y < 0 || newPos.y > 5 - newPos.x - newPos.z ||
-            newPos.z < 0 || newPos.z > 5 - newPos.y - newPos.x)
-            return true;
-        return false;
-    }
-
+    // counts down by one if given position is outside of the grid or occupied by a piece
     static int CheckActiveNeighbor(int counter, Vector3Int gridPos)
     {
         if (!OutsideGrid(gridPos))

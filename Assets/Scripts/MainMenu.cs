@@ -52,7 +52,7 @@ public class MainMenu : MonoBehaviour
     {
         if (infoText.activeSelf) // info text is showing: hide
         {
-            infoButtonText.text = "Info";
+            infoButtonText.text = "How To Play";
             infoText.SetActive(false);
             mainMenuText.enabled = true;
             difficulties.SetActive(true);

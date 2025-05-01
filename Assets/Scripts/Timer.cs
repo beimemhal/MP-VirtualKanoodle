@@ -28,14 +28,12 @@ public class Timer : MonoBehaviour
         }
     }
 
-    public static string DisplayTime(float timeToDisplay) // TODO not working when won once
+    public static string DisplayTime(float timeToDisplay)
     {
         float minutes = Mathf.FloorToInt(timeToDisplay / 60); // two digits as an int
         float seconds = Mathf.FloorToInt(timeToDisplay % 60);
         float milliSeconds = (timeToDisplay % 1) * 1000; // three digits as an int
 
         return string.Format("{0:00}:{1:00}:{2:000}", minutes, seconds, milliSeconds);
-
-        // TODO maybe if an hour+ quit application
     }
 }

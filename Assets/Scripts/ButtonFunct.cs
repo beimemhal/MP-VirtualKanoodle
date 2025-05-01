@@ -20,7 +20,7 @@ public class ButtonFunct : MonoBehaviour
 
     private void Update() // only be when Button it's attached to is active
     {
-        // if mouse button down call one of the functions, source for raycast functionality: ChatGPT (altered)
+        // if mouse button down call one of the functions
         if (Input.GetMouseButtonDown(0)) // Left-click
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); // for checking wether mouse click is on the button
@@ -31,7 +31,7 @@ public class ButtonFunct : MonoBehaviour
                 if (hit.collider.gameObject == gameObject)
                 {
                     // turn grid
-                    if (buttonNr == 1) GameManager.TurnGridY(1); // TODO refactoring: switch-case
+                    if (buttonNr == 1) GameManager.TurnGridY(1);
                     else if (buttonNr == 2) GameManager.TurnGridY(-1);
                     // move pieces
                     else if (buttonNr == 3) GameManager.MovePiece('x', -1); // left

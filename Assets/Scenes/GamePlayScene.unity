@@ -2251,7 +2251,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Help:'
+  m_text: 'Hint:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -7335,6 +7335,38 @@ PrefabInstance:
       propertyPath: m_IsKinematic
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 703266632068429380, guid: 0f14cc0ee2d5ce24db5c87b9fcee2ed8, type: 3}
+      propertyPath: popUpCanvas
+      value: 
+      objectReference: {fileID: 1320685697}
+    - target: {fileID: 703266632068429380, guid: 0f14cc0ee2d5ce24db5c87b9fcee2ed8, type: 3}
+      propertyPath: winMessageText
+      value: 
+      objectReference: {fileID: 1351390517}
+    - target: {fileID: 703266632068429380, guid: 0f14cc0ee2d5ce24db5c87b9fcee2ed8, type: 3}
+      propertyPath: winMessageCanvas
+      value: 
+      objectReference: {fileID: 788539628}
+    - target: {fileID: 703266632068429380, guid: 0f14cc0ee2d5ce24db5c87b9fcee2ed8, type: 3}
+      propertyPath: leaderboardMessage
+      value: 
+      objectReference: {fileID: 1012048339}
+    - target: {fileID: 3885866463477038786, guid: 0f14cc0ee2d5ce24db5c87b9fcee2ed8, type: 3}
+      propertyPath: popUpCanvas
+      value: 
+      objectReference: {fileID: 1320685697}
+    - target: {fileID: 3885866463477038786, guid: 0f14cc0ee2d5ce24db5c87b9fcee2ed8, type: 3}
+      propertyPath: winMessageText
+      value: 
+      objectReference: {fileID: 1351390517}
+    - target: {fileID: 3885866463477038786, guid: 0f14cc0ee2d5ce24db5c87b9fcee2ed8, type: 3}
+      propertyPath: winMessageCanvas
+      value: 
+      objectReference: {fileID: 788539628}
+    - target: {fileID: 3885866463477038786, guid: 0f14cc0ee2d5ce24db5c87b9fcee2ed8, type: 3}
+      propertyPath: leaderboardMessage
+      value: 
+      objectReference: {fileID: 1012048339}
     - target: {fileID: 5379062574976165666, guid: 0f14cc0ee2d5ce24db5c87b9fcee2ed8, type: 3}
       propertyPath: m_Name
       value: GridPrefab
@@ -7379,37 +7411,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 2025380765804884206, guid: 0f14cc0ee2d5ce24db5c87b9fcee2ed8, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5379062574976165666, guid: 0f14cc0ee2d5ce24db5c87b9fcee2ed8, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7633931679722283803}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f14cc0ee2d5ce24db5c87b9fcee2ed8, type: 3}
---- !u!1 &7633931679722283802 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5379062574976165666, guid: 0f14cc0ee2d5ce24db5c87b9fcee2ed8, type: 3}
+--- !u!114 &7633931679722283803 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3885866463477038786, guid: 0f14cc0ee2d5ce24db5c87b9fcee2ed8, type: 3}
   m_PrefabInstance: {fileID: 7633931679722283801}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7633931679722283803
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7633931679722283802}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: af6506a4d975ddf468d5ad93ad20e188, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttons: []
-  winMessageCanvas: {fileID: 788539628}
-  winMessageText: {fileID: 1351390517}
-  leaderboardMessage: {fileID: 1012048339}
-  popUpCanvas: {fileID: 1320685697}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

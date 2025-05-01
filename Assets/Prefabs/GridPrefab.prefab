@@ -4927,7 +4927,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8538714897135539272}
   - component: {fileID: 207190798597969383}
-  - component: {fileID: 2025380765804884206}
+  - component: {fileID: 3885866463477038786}
   m_Layer: 0
   m_Name: GridPrefab
   m_TagString: Untagged
@@ -5033,7 +5033,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &2025380765804884206
+--- !u!114 &3885866463477038786
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5045,7 +5045,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af6506a4d975ddf468d5ad93ad20e188, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttons: []
   winMessageCanvas: {fileID: 0}
+  winMessageText: {fileID: 0}
+  leaderboardMessage: {fileID: 0}
   popUpCanvas: {fileID: 0}
 --- !u!1 &5934174114168825985
 GameObject:
