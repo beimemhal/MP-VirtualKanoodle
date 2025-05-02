@@ -5,6 +5,7 @@ using TMPro;
 
 public class PopUpManager : MonoBehaviour
 {
+    // enables a pop up canvas for 3 seconds
     public IEnumerator ShowNotification(string message) 
     {
         gameObject.transform.GetComponentInChildren<TMP_Text>().SetText(message);

@@ -22,12 +22,9 @@ public class Piece : MonoBehaviour
     // store initial position at start of the scene
     void Start()
     {
-        placed = false; // TODO try remove
-        moveable = true;
-
         initialPosition = prefab.transform.position;
 
-        GameManager.allPieces.Add(gameObject);
+        GameManager.gameManager.allPieces.Add(gameObject);
 
         overlapsGridSpheres = new GameObject[sphereNr];
     }
@@ -35,29 +32,29 @@ public class Piece : MonoBehaviour
     // if clicked on, becomes selected piece in GameManager 
     private void Update()
     {
-        if (moveable && this != GameManager.selectedPiece) // cannot be selected if it already is
+        // if mouse button down call one of the functions
+        // source for raycast functionality: https://discussions.unity.com/t/how-to-get-gameobject-that-is-clicked-by-a-mouse/41511 (slightly altered)
+        if (Input.GetMouseButtonDown(0)) // left-click
         {
-            // if mouse button down call one of the functions
-            // source for raycast functionality: https://discussions.unity.com/t/how-to-get-gameobject-that-is-clicked-by-a-mouse/41511 (slightly altered)
-            if (Input.GetMouseButtonDown(0)) // left-click
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit))
             {
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                RaycastHit hit;
+                Transform clickedObject = hit.transform;
 
-                if (Physics.Raycast(ray, out hit))
+                // check if clickedObject is the GameObject (or one of its children) this script is attached to
+                if (clickedObject.IsChildOf(transform))
                 {
-                    Transform clickedObject = hit.transform;
-
-                    // check if clickedObject is the GameObject (or one of its children) this script is attached to
-                    if (clickedObject.IsChildOf(transform))
-                    {
-                        PieceSelected();
-                    }
+                    if (GameManager.gameManager.selectedPiece == this)
+                        GameManager.PieceUnselected();
+                    else PieceSelected();
                 }
             }
         }
     }
 
+    // script put in GameManager gameManager.selectedPiece variable and attached piece prefab on top of grid (disables buttons that cannot be used)
     public void PieceSelected()
     {
         // Debug.Log("Piece " + prefab.name + " selected.");
@@ -66,7 +63,7 @@ public class Piece : MonoBehaviour
         if (!moveable)
         {
             // pop-up message that piece can't be selected
-            if (GameManager.userNotAlgo)
+            if (GameManager.gameManager.userNotAlgo)
             {
                 StartCoroutine(GameManager.gameManager.popUpCanvas.GetComponent<PopUpManager>().ShowNotification("Piece can't be selected because it's pre-set!"));
             }
@@ -75,21 +72,21 @@ public class Piece : MonoBehaviour
         }
 
         // 1 if other piece is currently selected & != placed: reset it (to initial position) 
-        if (GameManager.selectedPiece != null && !GameManager.selectedPiece.placed)
+        if (GameManager.gameManager.selectedPiece != null && !GameManager.gameManager.selectedPiece.placed)
             GameManager.PieceUnselected();
-        else if (GameManager.selectedPiece != null && GameManager.selectedPiece.placed) // other piece selected which = placed: just unselect w/o reset
+        else if (GameManager.gameManager.selectedPiece != null && GameManager.gameManager.selectedPiece.placed) // other piece selected which = placed: just unselect w/o reset
         {
-            Destroy(GameManager.selectedPiece.gameObject.GetComponent<Outline>());
-            GameManager.selectedPiece = null;
+            Destroy(GameManager.gameManager.selectedPiece.gameObject.GetComponent<Outline>());
+            GameManager.gameManager.selectedPiece = null;
         }
 
-        // 2 set selectedPiece in GameManager 
-        GameManager.selectedPiece = this;
+        // 2 set gameManager.selectedPiece in GameManager 
+        GameManager.gameManager.selectedPiece = this;
 
         if (!placed)
         {
             // 3 put at top of grid & attach to grid so that it moves together
-            if (GameManager.userNotAlgo)
+            if (GameManager.gameManager.userNotAlgo)
                 gridPos = new Vector3Int(0, 5, 0);
             else
                 gridPos = new Vector3Int(0, 0, 0); // solver algo tries placing the pieces from the bottom
@@ -100,7 +97,7 @@ public class Piece : MonoBehaviour
         }
 
         // buttons and outline unnecessary for solving algo (not doing it: time efficient)
-        if (GameManager.userNotAlgo)
+        if (GameManager.gameManager.userNotAlgo)
         {
             // 4 dis- and enabling buttons
             int[] placeRemoveB = new int[6];

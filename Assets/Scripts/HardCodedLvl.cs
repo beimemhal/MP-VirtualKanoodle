@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Net.NetworkInformation;
 using UnityEngine;
 
-public class HardCodedLvl : MonoBehaviour
+public class HardCodedLvl : MonoBehaviour // TODO disable/ delete if solver algo works
 {
     public static List<string> lastPlaced;
 
-    void Start() // TODO disable/ delete if solver algo works
+    void Start() 
     {
         lastPlaced = new();
 
@@ -19,9 +19,10 @@ public class HardCodedLvl : MonoBehaviour
         InitialisePieces();
 
         // set user true
-        GameManager.userNotAlgo = true;
+        GameManager.gameManager.userNotAlgo = true;
     }
 
+    // manually sets pieces order, posititons and orientations in the according storages (chooses solution number rdm)
     public static void SaveSolutions(int rdm)
     {
         /*
@@ -275,6 +276,7 @@ public class HardCodedLvl : MonoBehaviour
         }
     }
 
+    // puts pieces in grid at start
     void InitialisePieces()
     {
         // Debug.Log("pieces initialised.");

@@ -12,18 +12,19 @@ public class GridFunct : ScriptableObject
 
     static Vector3 gridRoot = new Vector3(-8F, 0.5F, 0F);
     
+    // converts from gridPos vector to a vector containing corresponding position in world space
     public static Vector3 CalcGridToGlobalSpace(Vector3Int gridPos)
     {
         float x = (float) gridPos.x;
         float y = (float) gridPos.y;
         float z = (float) gridPos.z;
 
-        return new Vector3(x + 0.5F * (y + z) + gridRoot.x, // GameManager.gridParent.transform.position.x, 
-            gridHeightY * y + gridRoot.y, // GameManager.gridParent.transform.position.y, 
-            gridHeightZ * (z + y / 3F) + gridRoot.z); // GameManager.gridParent.transform.position.z);
+        return new Vector3(x + 0.5F * (y + z) + gridRoot.x, 
+            gridHeightY * y + gridRoot.y, 
+            gridHeightZ * (z + y / 3F) + gridRoot.z);
     }
 
-    // calculate gridSpace to array index of gridPoints in GameManager
+    // calculate gridPos to array index of gridPoints in GameManager
     public static int CalcGridSpaceToArrayIndex(Vector3Int gridPos)
     {
         int index = 0;
@@ -32,7 +33,7 @@ public class GridFunct : ScriptableObject
         {
             for (int z = 0; z < 6 - y; z++)
             {
-                index += 6 - y - z; // = xMax
+                index += 6 - y - z;
             }
         }
 
@@ -46,10 +47,11 @@ public class GridFunct : ScriptableObject
         return index;
     }
 
+    // true if game is won (when all gridPoints are disabled)
     public static bool CheckWon()
     {
         // if all grid spheres are disabled = solution found
-        foreach (SphereCollider sphere in GameManager.gridPoints)
+        foreach (SphereCollider sphere in GameManager.gameManager.gridPoints)
             if (sphere.gameObject.activeSelf)
                 return false;
 
@@ -60,7 +62,7 @@ public class GridFunct : ScriptableObject
         return true;
     }
 
-    // piece sphere 1 has to remain on a grid position
+    // (piece sphere 1 has to remain on a grid position) checks if newPos is outside of the grid
     public static bool OutsideGrid(Vector3Int newPos)
     {
         if (newPos.x < 0 || newPos.x > 5 - newPos.y - newPos.z ||
@@ -73,7 +75,7 @@ public class GridFunct : ScriptableObject
     // to make solver quicker; true if a point isolated/ no available grid points neighbouring, false if not
     public static bool CheckIsolatedPoints()
     {
-        foreach (SphereCollider coll in GameManager.gridPoints)
+        foreach (SphereCollider coll in GameManager.gameManager.gridPoints)
         {
             GameObject g = coll.gameObject;
             int counter = 12; // = number of neighboring spheres
@@ -128,7 +130,7 @@ public class GridFunct : ScriptableObject
     {
         if (!OutsideGrid(gridPos))
         {
-            if (!GameManager.gridPoints[CalcGridSpaceToArrayIndex(gridPos)].gameObject.activeSelf)
+            if (!GameManager.gameManager.gridPoints[CalcGridSpaceToArrayIndex(gridPos)].gameObject.activeSelf)
                 counter--;
         }
         else

@@ -19,7 +19,7 @@ public class Timer : MonoBehaviour
 
     void Update()
     {
-        if (!GameManager.won)
+        if (!GameManager.gameManager.won)
         {
             this.timeValue += Time.deltaTime;
 
@@ -28,6 +28,7 @@ public class Timer : MonoBehaviour
         }
     }
 
+    // transforms the float parameter to the timer text in format (m)(m):(s)(s):(ms)(ms)(ms)
     public static string DisplayTime(float timeToDisplay)
     {
         float minutes = Mathf.FloorToInt(timeToDisplay / 60); // two digits as an int

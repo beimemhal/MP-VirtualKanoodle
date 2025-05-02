@@ -452,14 +452,14 @@ MonoBehaviour:
     starting the game, a random solution will be picked from the available ones.
     According to the chosen difficulty level, a certain number of pieces will be
     pre-set in the grid to make it easier for you to fill the rest. These pieces
-    cannot be moved. \n\nMovement mechanic:\nClick on a piece to select it. The selected
-    piece can be moved in the grid with the given buttons below the grid. To place
-    or remove a selected piece, use the tick or cross button to the right of the
-    grid. \n\nOther Buttons:\nIf you want to reset all pieces use the top button
-    in the middle. If you need a little help, use the hint button (question sign)
-    on the left. Above that you can quit the level and go back to the main menu.\n\nLeaderboards:\nIf
-    you finish a level and did not use the hint button, you can add your name and
-    time to the corresponding leaderboard."
+    cannot be moved. \n\nMovement mechanic:\nClick on a piece to select or unselect
+    it. The selected piece can be moved in the grid with the given buttons below
+    the grid. To place or remove a selected piece, use the tick or cross button to
+    the right of the grid. \n\nOther Buttons:\nIf you want to reset all pieces use
+    the top button in the middle. If you need a little help, use the hint button
+    (question sign) on the left. Above that you can quit the level and go back to
+    the main menu.\n\nLeaderboards:\nIf you finish a level and did not use the hint
+    button, you can add your name and time to the corresponding leaderboard."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -486,7 +486,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 37.1
+  m_fontSize: 36.35
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

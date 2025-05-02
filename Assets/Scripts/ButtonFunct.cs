@@ -18,7 +18,8 @@ public class ButtonFunct : MonoBehaviour
         solutionManager = GameObject.Find("SolutionManagerHolder").GetComponent<SolutionManager>();
     }
 
-    private void Update() // only be when Button it's attached to is active
+    // implements clicking a button functionality
+    private void Update() // only when Button it's attached to is active
     {
         // if mouse button down call one of the functions
         if (Input.GetMouseButtonDown(0)) // Left-click
@@ -61,6 +62,7 @@ public class ButtonFunct : MonoBehaviour
         }
     }
 
+    // assigned to button "Entry Leaderboard", initiates entry to leaderboard by setting variables accordingly and starts leaderboard scene
     public void AddEntryToLeaderboard() // passes/ stores time as mmss(ms)(ms)(ms) as an int
     {
         string difficultyText = "Easy";
@@ -79,6 +81,7 @@ public class ButtonFunct : MonoBehaviour
         SceneManager.LoadScene("Login&Leaderboard");
     }
 
+    // resets gameplay scene and load main menu scene
     public void BackToMainMenu()
     {
         // reset game scene: empty button and pieces list (static variables meant reset when leaving the scene) 
@@ -88,17 +91,13 @@ public class ButtonFunct : MonoBehaviour
         SceneManager.LoadScene("MainMenuScene");
     }
 
+    // resets gameplay scene's static variables
     void ResetGameScene()
     {
-        GameManager.gameManager.buttons.Clear();
-        GameManager.allPieces.Clear();
-        GameManager.userNotAlgo = false;
-        GameManager.gridPoints.Clear();
         SolutionManager.solutionRotations.Clear();
         SolutionManager.solutionPositions.Clear();
         HardCodedLvl.lastPlaced.Clear();
         GridFunct.gridTurns = 0;
         SolutionManager.hintNr = 0;
-        GameManager.won = false;
     }
 }

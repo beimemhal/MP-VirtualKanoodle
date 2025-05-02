@@ -12,42 +12,50 @@ public class MainMenu : MonoBehaviour
     public GameObject difficulties;
     public GameObject leaderboardButton;
 
+    // starts gameplay scene with 10 initially placed pieces (2 left for player)
     public void PlayEasy()
     {
-        SolutionManager.difficulty = 10; // 10 pieces placed initially, player has to place 2
+        SolutionManager.difficulty = 10;
         SceneManager.LoadScene("GamePlayScene");
     }
-    
+
+    // starts gameplay scene with 9 initially placed pieces
     public void PlayMedium()
     {
         SolutionManager.difficulty = 9;
         SceneManager.LoadScene("GamePlayScene");
     }
-    
+
+    // starts gameplay scene with 8 initially placed pieces
     public void PlayHard()
     {
         SolutionManager.difficulty = 8;
         SceneManager.LoadScene("GamePlayScene");
     }
-    
+
+    // starts gameplay scene with 7 initially placed pieces
     public void PlayExtraHard()
     {
         SolutionManager.difficulty = 7;
         SceneManager.LoadScene("GamePlayScene");
     }
 
+    // starts gameplay scene with 5 initially placed pieces
     public void PlayExtreme()
     {
         SolutionManager.difficulty = 5;
         SceneManager.LoadScene("GamePlayScene");
     }
     
+    /*
     public void PlayImpossible()
     {
         SolutionManager.difficulty = 0;
         SceneManager.LoadScene("GamePlayScene");
     }
+    */
 
+    // shows and hides description text (and hides or re-enables the rest of the main menu reversed)
     public void InfoButton() 
     {
         if (infoText.activeSelf) // info text is showing: hide
@@ -68,12 +76,14 @@ public class MainMenu : MonoBehaviour
         }
     }
 
+    // go to leaderboard scene
     public void LeaderboardButton()
     {
         SceneManager.LoadScene("Login&Leaderboard");
     }
 
-    public void Quit() // only useable if desktop application TODO delete for web application
+    // quits desktop application, unused in web build
+    public void Quit()
     {
         Application.Quit();
     }
